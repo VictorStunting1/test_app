@@ -148,7 +148,6 @@ export function Invitation() {
     setDecisionRevision((v) => v + 1);
     scrollTimer.cancel();
     setSummaryReady(false);
-    if (id !== "yes" && id !== "no") showSummary();
     return true;
   }
   return (

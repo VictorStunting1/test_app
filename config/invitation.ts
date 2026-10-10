@@ -1,7 +1,12 @@
-import type { Activity, Choice, ResponseSelection } from "@/types/invitation";
+import type {
+  Activity,
+  Choice,
+  ResponseSelection,
+  SnailMood,
+} from "@/types/invitation";
 
-// Temps de lecture des réactions après un refus, en millisecondes.
-const refusalReadingMs = 7000;
+// Temps de lecture entre les réactions de verdict, en millisecondes.
+const verdictReadingMs = 3000;
 
 export const invitation = {
   recipientName: "Léa",
@@ -476,42 +481,65 @@ export const personal = {
   availabilityHint:
     "Choisis une période ou un jour précis, puis un moment. « Aucune préférence » compte aussi.",
   messageLabel: "TA RÉPONSE, TOUT SIMPLEMENT",
+  readingMs: verdictReadingMs,
+  verdictSnails: [
+    { decisionId: "yes", mood: "happy", label: "Le cagou est fou de joie." },
+    {
+      decisionId: "maybe",
+      mood: "skeptical",
+      label: "Le cagou reste dubitatif.",
+    },
+    {
+      decisionId: "lawyer",
+      mood: "hopeful",
+      label: "Le cagou attend le deuxième avis, les mains jointes.",
+    },
+    {
+      decisionId: "no",
+      mood: "sad",
+      label: "Le cagou est triste, mais accepte le refus.",
+    },
+  ] satisfies { decisionId: string; mood: SnailMood; label: string }[],
   yesSequence: [
     { at: 0, text: "Voilà.", detail: "" },
-    { at: 650, text: "Après tout ce site, heureusement.", detail: "" },
-    { at: 1400, text: "KA-CHOW.", detail: "", car: true },
     {
-      at: 2800,
+      at: verdictReadingMs,
+      text: "Après tout ce site, heureusement.",
+      detail: "",
+    },
+    { at: verdictReadingMs * 2, text: "KA-CHOW.", detail: "", car: true },
+    {
+      at: verdictReadingMs * 3,
       text: "Bon bah voilà. Maintenant t’as plus le choix.",
       detail: "",
     },
     {
-      at: 3400,
+      // On désamorce toujours cette vanne rapidement.
+      at: verdictReadingMs * 3 + 600,
       text: "Bon bah voilà. Maintenant t’as plus le choix.",
       detail: "Enfin si. Mais ça cassait ma vanne.",
     },
     {
-      at: 4600,
+      at: verdictReadingMs * 4 + 600,
       text: "Bon maintenant reste juste à faire le truc le plus compliqué :",
       detail: "trouver un créneau dans ton agenda.",
     },
   ],
-  // Chaque phrase, y compris la dernière, reste seule pendant sept secondes.
-  noReadingMs: refusalReadingMs,
+  // Le dernier message a aussi son temps de lecture avant le récapitulatif.
   noSequence: [
     { at: 0, text: "Ah.", detail: "" },
     {
-      at: refusalReadingMs,
+      at: verdictReadingMs,
       text: "Bon bah mon suivi de projet vient de prendre un coup.",
       detail: "",
     },
     {
-      at: refusalReadingMs * 2,
+      at: verdictReadingMs * 2,
       text: "Je vais faire comme si je n’avais pas développé un site entier.",
       detail: "",
     },
     {
-      at: refusalReadingMs * 3,
+      at: verdictReadingMs * 3,
       text: "Nan en vrai aucun souci :)",
       detail: "",
     },

@@ -39,7 +39,10 @@ export function FinalDecision({
       setDetail("");
       return;
     }
-    if (decisionId !== "yes" && decisionId !== "no") return;
+    if (decisionId !== "yes" && decisionId !== "no") {
+      const timer = setTimeout(() => complete.current(), personal.readingMs);
+      return () => clearTimeout(timer);
+    }
     const sequence: readonly {
       at: number;
       text: string;
@@ -57,8 +60,7 @@ export function FinalDecision({
     timers.push(
       setTimeout(
         () => complete.current(),
-        Math.max(0, ...sequence.map((frame) => frame.at)) +
-          (decisionId === "no" ? personal.noReadingMs : 600),
+        Math.max(0, ...sequence.map((frame) => frame.at)) + personal.readingMs,
       ),
     );
     return () => timers.forEach(clearTimeout);

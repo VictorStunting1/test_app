@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, Copy, ArrowLeft, MessageCircle, Share2 } from "lucide-react";
 import {
   invitation,
@@ -19,6 +19,10 @@ export function InvitationSummary({
   decisionId: string;
   onEdit: () => void;
 }) {
+  const reduced = useReducedMotion();
+  const snail = personal.verdictSnails.find(
+    (item) => item.decisionId === decisionId,
+  );
   const [shareStatus, setShareStatus] = useState("");
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -82,10 +86,23 @@ export function InvitationSummary({
               ? interactions.tentativeIntro
               : invitation.summaryIntro}
       </p>
-      {(decisionId === "yes" || decisionId === "no") && (
-        <span className="summary-snail" aria-hidden="true">
-          <SnailIllustration sad={decisionId === "no"} />
-        </span>
+      {snail && (
+        <motion.span
+          className="summary-snail"
+          role="img"
+          aria-label={snail.label}
+          data-mood={snail.mood}
+          animate={
+            !reduced && snail.mood === "happy"
+              ? { y: [0, -6, 0, -3, 0] }
+              : !reduced && snail.mood === "skeptical"
+                ? { rotate: [0, -5, 0] }
+                : { y: 0, rotate: 0 }
+          }
+          transition={{ duration: 0.7 }}
+        >
+          <SnailIllustration mood={snail.mood} size={72} />
+        </motion.span>
       )}
       {selection && (
         <dl>

@@ -38,3 +38,5 @@ export type ScienceResult = {
   answers: { question: string; answer: string }[];
   risk: string;
 };
+
+export type SnailMood = "neutral" | "happy" | "skeptical" | "hopeful" | "sad";
