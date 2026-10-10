@@ -345,3 +345,15 @@ export const interactions = {
   refusalIntro:
     "Aucune justification nécessaire. Merci d’avoir donné ton avis.",
 };
+
+export const mobilePlay = {
+  noLabel: "Non",
+  noHint:
+    "Le bouton Non a trois tentatives de mauvaise foi. Le vrai refus reste juste au-dessus.",
+  noReplies: ["Pardon ?", invitation.recipientName + ".", "Fais pas la cagou."],
+  noFinished: "Bon vas-y, j’arrête de tricher.",
+  birdLabel: "Toucher le cagou",
+  birdReply: "Le cagou a été consulté. Il n’a absolument aucune qualification.",
+  carLabel: "Faire passer la voiture rouge",
+  carReply: "Le comité arrive. Enfin, il cherche encore une place.",
+};

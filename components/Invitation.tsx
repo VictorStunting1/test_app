@@ -13,6 +13,7 @@ import {
 import { invitation as c, interactions as fun } from "@/config/invitation";
 import { ActivityCard } from "./ActivityCard";
 import { AvailabilitySelector } from "./AvailabilitySelector";
+import { MobileCompanions } from "./MobileCompanions";
 import { SeriousnessGauge } from "./SeriousnessGauge";
 import { CompatibilityTest } from "./CompatibilityTest";
 import { Reaction } from "./Reaction";
@@ -301,6 +302,7 @@ export function Invitation() {
             })}
           </div>
           <SeriousnessGauge />
+          <MobileCompanions />
         </Section>
         <section className="final-section">
           <span className="eyebrow">{c.finalEyebrow}</span>

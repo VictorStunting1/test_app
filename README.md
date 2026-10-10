@@ -58,3 +58,11 @@ Les variantes de réactions, questions, réponses, scores et easter eggs sont da
 La jauge choisit aléatoirement une autre répartition parmi `statsVariants` (conserver au moins deux variantes dont les proportions totalisent 100). Les informations classifiées se réinitialisent après 3,5 secondes sans clic ; le titre d’agenda revient après 4 secondes ; le bouton avocat revient après 6 secondes sans clic. La plaisanterie sur la confiance dure une seconde et ne désactive aucune carte. Les minuteries sont annulées lors d’un nouveau choix ou du démontage des composants.
 
 Les petits secrets sont le lien d’explication du hero, l’étoile du ticket, les informations classifiées et le texte de fabrication dans le footer. Tous sont accessibles au clavier. Les compteurs et mouvements respectent la réduction des animations du système ; il n’y a aucune animation permanente.
+
+## Téléphone et navigateur Instagram
+
+La version mobile empile les cartes et les réponses, avec des boutons de 48 px minimum, des textes lisibles et les safe areas iOS. Tous les secrets fonctionnent au tap et au clavier. Les illustrations du cagou et de la voiture sont des SVG légers sans téléchargement d’image. La voiture ne traverse que sa zone réservée, dont la largeur est mesurée, et les confettis sont limités à leur propre conteneur.
+
+Le bouton ludique **Non** esquive trois fois au doigt (Pointer Events) ou au survol de la souris, puis accepte le clic. Ses positions sont calculées dans une zone réservée et recalculées au redimensionnement. Au clavier, il accepte immédiatement le refus. Le vrai bouton **Je passe mon tour** reste toujours accessible et ne bouge jamais. Le cagou se calme pendant 1,4 seconde au tap, puis reprend un court mouvement. Les animations restent limitées et respectent la réduction des mouvements.
+
+Si Instagram ou Safari refuse l’accès au presse-papiers, le champ de texte permet de sélectionner et copier le verdict manuellement. Aucune réponse n’est envoyée automatiquement. Les tests mobiles utilisent des événements tactiles dans Chromium aux largeurs 320, 360, 375, 390 et 414 px ; cela ne remplace pas une vérification sur un téléphone réel dans Instagram et Safari.

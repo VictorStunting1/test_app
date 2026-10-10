@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { invitation, interactions } from "@/config/invitation";
 import { ArrowUpRight } from "lucide-react";
+import { PlayfulNo } from "./PlayfulNo";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
 export function FinalDecision({
@@ -59,6 +60,7 @@ export function FinalDecision({
           </button>
         ))}
       </div>
+      <PlayfulNo onRefuse={() => decide("no")} />
       <Reaction
         text={reaction}
         revision={revision}

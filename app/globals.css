@@ -1087,3 +1087,370 @@ footer p {
 .risk-detail:hover {
   background: #7454690c;
 }
+
+/* Mobile is the primary experience; movement stays inside reserved lanes. */
+button,
+.primary-button,
+.text-button {
+  min-height: 44px;
+  touch-action: manipulation;
+}
+.secret-star {
+  min-width: 44px;
+  min-height: 44px;
+}
+.playful-no {
+  max-width: 480px;
+  margin: 24px auto 0;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+}
+.play-hint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.no-playground {
+  position: relative;
+  height: 144px;
+  margin-top: 15px;
+}
+.playful-no-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 96px;
+  margin: 0;
+}
+.mobile-companions {
+  margin-top: 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.companion-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cagou-button {
+  display: grid;
+  place-items: center;
+  min-width: 56px;
+  min-height: 56px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  padding: 5px;
+}
+.car-trigger {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  text-align: left;
+}
+.car-lane {
+  position: relative;
+  overflow-x: hidden;
+  height: 48px;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+}
+.red-car {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 64px;
+}
+@media (max-width: 600px) {
+  .site {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+  .masthead {
+    padding-top: env(safe-area-inset-top);
+    min-height: 78px;
+    height: auto;
+    padding-bottom: 18px;
+    padding-top: max(18px, env(safe-area-inset-top));
+    gap: 12px;
+  }
+  .masthead .brand {
+    max-width: 65%;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .header-note {
+    font-size: 12px;
+    flex-shrink: 0;
+    gap: 4px;
+  }
+  .hero {
+    padding-top: 30px;
+    gap: 12px;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 10vw, 3.1rem);
+    line-height: 1.08;
+  }
+  .hero-intro {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-top: 18px;
+  }
+  .hero-cta {
+    width: 100%;
+    font-size: 15px;
+    margin-top: 22px;
+  }
+  .hero-note {
+    font-size: 12px;
+    align-items: flex-start;
+    line-height: 1.7;
+  }
+  .hero-note svg {
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .hero-art {
+    height: 200px;
+    transform: none;
+    margin: 0;
+  }
+  .hero-art .invitation-ticket {
+    transform: rotate(8deg) scale(0.65);
+  }
+  .hero-art .orbit {
+    width: 195px;
+    height: 195px;
+  }
+  .hero-art .orbit-two {
+    width: 150px;
+    height: 150px;
+  }
+  .art-caption {
+    font-size: 11px;
+    bottom: -8px;
+  }
+  .hero-art .secret-star {
+    min-width: 68px;
+    min-height: 68px;
+    right: 5px;
+    top: 0;
+  }
+  .star-reaction {
+    top: 100%;
+    font-size: 12px;
+  }
+  .activity-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .activity-card {
+    min-height: 0;
+  }
+  .activity-select {
+    padding: 22px 22px 0;
+  }
+  .card-top {
+    margin-bottom: 18px;
+  }
+  .card-tag,
+  .eyebrow {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .option-number {
+    font-size: 12px;
+  }
+  .activity-card h3 {
+    font-size: 20px;
+  }
+  .activity-card p {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .vote {
+    font-size: 14px;
+    padding: 18px 0;
+  }
+  .risk-indicator {
+    font-size: 12px;
+    padding: 14px 22px;
+    min-height: 52px;
+  }
+  button,
+  .primary-button,
+  .text-button {
+    min-height: 48px;
+  }
+  .text-button {
+    font-size: 14px;
+  }
+  .interactive-reaction,
+  .reaction p,
+  .section-heading p,
+  .parameter p,
+  .final-intro {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .section-heading h2 {
+    font-size: 30px;
+    overflow-wrap: break-word;
+  }
+  .section-number {
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+  }
+  .availability-panel,
+  .science-panel {
+    padding: 22px 18px;
+  }
+  .pills {
+    gap: 10px;
+  }
+  .pill,
+  .science-panel .pill {
+    font-size: 14px;
+    padding: 12px 15px;
+    line-height: 1.6;
+  }
+  .science-panel legend {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .science-panel > .eyebrow,
+  .question-index {
+    font-size: 11px;
+  }
+  .science-panel fieldset {
+    margin-bottom: 26px;
+  }
+  .science-score {
+    font-size: 16px;
+  }
+  .science-score p,
+  .stats-note {
+    font-size: 12px;
+  }
+  .parameter h3 {
+    font-size: 15px;
+  }
+  .stat-labels {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .funny-stat {
+    font-size: 13px;
+  }
+  .decision-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .decision-buttons button {
+    flex: auto;
+    width: 100%;
+    min-height: 52px;
+    font-size: 15px;
+    padding: 14px 18px;
+  }
+  .verdict-detail,
+  .refusal-note,
+  .form-error {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .summary {
+    padding: 24px 20px;
+  }
+  .summary dl div {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .summary dl div {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .summary dd {
+    max-width: none;
+    text-align: left;
+  }
+  .summary p,
+  .science-evidence p {
+    font-size: 14px;
+  }
+  .summary .primary-button {
+    width: 100%;
+    font-size: 15px;
+  }
+  .edit-button {
+    font-size: 14px;
+  }
+  .summary textarea {
+    font-size: 16px;
+  }
+  .footer-brand,
+  footer p,
+  .footer-secret,
+  .footer-note,
+  .footer-reaction {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  footer {
+    padding-bottom: max(30px, env(safe-area-inset-bottom));
+  }
+  .playful-no {
+    padding: 16px;
+  }
+  .play-hint {
+    font-size: 13px;
+  }
+  .red-car {
+    width: 54px;
+  }
+  .red-car svg {
+    width: 54px;
+  }
+  .car-trigger {
+    font-size: 14px;
+  }
+}
+@media (hover: none) {
+  .activity-card:hover {
+    border-color: var(--line);
+  }
+  .activity-card.selected:hover {
+    border-color: var(--accent);
+  }
+}
+/* Confetti must not enlarge the page, even after its particles become transparent. */
+.confetti {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+}
+.confetti span {
+  left: 50%;
+  top: 200px;
+}
+@media (max-width: 600px) {
+  .hero-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 230px;
+    margin-bottom: 40px;
+  }
+  .hero-art .art-caption {
+    display: none;
+  }
+  .hero-art .star-reaction {
+    top: 100%;
+  }
+}
