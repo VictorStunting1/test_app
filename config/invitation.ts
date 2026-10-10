@@ -13,7 +13,7 @@ export const invitation = {
   badge: "À l’attention de",
   title: "Une proposition extrêmement sérieuse vient de t’être transmise.",
   intro:
-    "Après une étude approfondie de la situation (environ 3 minutes), voici les différentes options retenues.",
+    "J’aurais pu envoyer « on se voit ? ».\nMais visiblement j’ai préféré développer un site.",
   artwork: {
     heading: "UNE BONNE IDÉE",
     lines: ["Toi.", "Moi."],
@@ -37,7 +37,8 @@ export const invitation = {
       label: "Un verre",
       description:
         "Un verre quelque part, discussion tranquille et probablement quelques conneries racontées.",
-      reaction: "Excellent. Le comité approuve ce grand classique.",
+      reaction: "Classique. Efficace. Le comité valide.",
+      risk: "Risque de catastrophe : 8 %",
     },
     {
       id: "food",
@@ -47,7 +48,9 @@ export const invitation = {
       label: "Un repas",
       description:
         "Avantage : si la conversation devient catastrophique, il reste toujours la nourriture.",
-      reaction: "Une décision de bon goût. Littéralement.",
+      reaction:
+        "Très bon choix. Difficile d’être de mauvaise humeur avec de la bouffe.",
+      risk: "Risque de voler une frite dans ton assiette : 73 %",
     },
     {
       id: "activity",
@@ -57,7 +60,9 @@ export const invitation = {
       label: "Bowling, billard ou arcade",
       description:
         "Bowling, billard, arcade… pour découvrir beaucoup trop rapidement notre esprit de compétition.",
-      reaction: "D’accord. Mais on reste amis après la partie.",
+      reaction:
+        "Ah. Donc on veut potentiellement découvrir qui est mauvais perdant.",
+      risk: "Risque de mauvaise foi : 91 %",
     },
     {
       id: "surprise",
@@ -67,7 +72,9 @@ export const invitation = {
       label: "Une surprise",
       description:
         "Tu me laisses choisir. Niveau de risque : raisonnablement douteux.",
-      reaction: "Cette confiance sera traitée avec un sérieux relatif.",
+      reaction: "Attends… tu me fais vraiment confiance là ?",
+      risk: "Informations classifiées.",
+      classified: true,
     },
   ] satisfies Activity[],
   availabilityHeading: "Et dans nos agendas ?",
@@ -134,19 +141,207 @@ export const invitation = {
     "Tout refus sera évidemment accepté, même si le comité sera profondément déçu pendant approximativement 12 secondes.",
   validationMessage:
     "Choisis une activité et une période pour que le comité puisse remplir son dossier.",
-  summaryTitle: "Mission potentiellement acceptée.",
+  summaryTitle: "Bon bah… on dirait qu’on va devoir se voir.",
   pendingTitle: "Dossier transmis à ton avocat.",
   refusedTitle: "Réponse reçue, sans rancune.",
   summaryIntro:
-    "Les grandes lignes sont posées. Il ne reste qu’à envoyer ta réponse.",
+    "Terrible nouvelle pour nos agendas, excellente nouvelle pour nous.",
   summaryLabels: ["Au programme", "Quand", "À quel moment"],
-  copyLabel: "Copier ma réponse",
+  copyLabel: "Copier mon verdict",
   copiedLabel: "Réponse copiée !",
   copyError:
     "Copie automatique indisponible : sélectionne le texte ci-dessous.",
   editLabel: "Modifier ma réponse",
-  footer: "Fait avec un peu de courage et beaucoup trop de réflexion.",
+  footer: "Fait avec beaucoup trop de réflexion.",
   footerNote: "Aucune réponse n’est envoyée automatiquement.",
   responseText: (selection: ResponseSelection) =>
-    `Bon, j’ai étudié ton dossier beaucoup trop sérieusement.\n${selection.decision}\nJe vote pour : ${selection.activity.label}\nPlutôt : ${selection.period} / ${selection.moment}\nÀ toi de jouer 🙂`,
+    `Bon, j’ai étudié ton dossier beaucoup trop sérieusement.\n${selection.decision}\nJe vote pour : ${selection.activity.label}\nPlutôt : ${selection.period} / ${selection.moment}\n${selection.science ? `Indice scientifique : ${selection.science.score} % compatible\nRisque identifié : ${selection.science.risk}\n${selection.science.answers.map((a) => `${a.question} ${a.answer}`).join("\n")}\n` : ""}À toi de jouer 🙂`,
+};
+
+// Tous les textes et variantes interactives restent personnalisables ici.
+export const interactions = {
+  whyLabel: "Pourquoi t’as fait tout ça ?",
+  whyAnswers: [
+    "Excellente question.",
+    "J’aurais aimé avoir une excellente réponse.",
+    "Disons que le « salut ça va ? » n’était pas assez ambitieux.",
+    "Maintenant que t’es là, autant continuer.",
+  ],
+  withdrawLabel: "Je retire ma confiance",
+  withdrawReplies: [
+    "Trop tard. Le contrat moral a été signé.",
+    "Bon ok, tu peux vraiment changer de choix.",
+  ],
+  riskReplies: {
+    drink: "Les 92 % restants sont assez optimistes.",
+    food: "Le comité décline toute responsabilité pour les frites disparues.",
+    activity: "La mauvaise foi n’est pas éliminée par un échauffement.",
+  } as Record<string, string>,
+  classifiedAnswers: [
+    "Non.",
+    "J’ai dit classifié.",
+    "Bon : probablement pas un enlèvement.",
+  ],
+  periodReactions: {
+    week: "Wow. Une personne organisée.",
+    weekend: "Choix raisonnable, étonnamment.",
+    next: "Nous avons donc affaire à quelqu’un qui anticipe.",
+    improvise: "Voilà. Enfin une méthode de planification que je comprends.",
+  } as Record<string, string>,
+  momentReactions: {
+    afternoon: "À la lumière du jour. Audacieux.",
+    evening: "La soirée est donc officiellement une piste.",
+    any: "Une flexibilité qui fera pleurer nos agendas.",
+  } as Record<string, string>,
+  improvisedHeading: "Bon bah visiblement, pas dans nos agendas.",
+  science: {
+    heading: "Test scientifique extrêmement fiable",
+    intro: "Avant de continuer, quelques vérifications essentielles.",
+    optional: "FACULTATIF · AUCUNE VALEUR SCIENTIFIQUE",
+    scoreLabel: "Compatibilité scientifique",
+    methodology: "Méthodologie : absolument douteuse.",
+    defaultRisk: "Confiance dans une méthodologie douteuse",
+    questions: [
+      {
+        id: "fries",
+        question: "Partager des frites ?",
+        answers: [
+          {
+            id: "yes",
+            label: "Évidemment",
+            reaction: "Green flag détecté.",
+            weight: 4,
+            risk: "Vol de frites potentiel",
+          },
+          {
+            id: "few",
+            label: "Une ou deux",
+            reaction: "Diplomatiquement acceptable.",
+            weight: 1,
+            risk: "Quota de frites à négocier",
+          },
+          {
+            id: "no",
+            label: "Touche à mes frites et ça part mal",
+            reaction: "Information transmise au service sécurité.",
+            weight: -2,
+            risk: "Frites sous haute surveillance",
+          },
+        ],
+      },
+      {
+        id: "directions",
+        question: "Si on se perd en allant quelque part ?",
+        answers: [
+          {
+            id: "improvise",
+            label: "On improvise",
+            reaction: "Se perdre ensemble : une activité presque gratuite.",
+            weight: 3,
+          },
+          {
+            id: "maps",
+            label: "Google Maps immédiatement",
+            reaction: "Le service orientation remercie cette personne.",
+            weight: 1,
+          },
+          {
+            id: "pretend",
+            label: "Je fais semblant de savoir où je vais",
+            reaction: "Technique ancestrale. Très populaire chez les hommes.",
+            weight: 2,
+            risk: "Confiance excessive dans le sens de l’orientation",
+          },
+        ],
+      },
+      {
+        id: "late",
+        question: "Retard acceptable ?",
+        answers: [
+          {
+            id: "zero",
+            label: "0 minute",
+            reaction: "Le comité vient de régler trois alarmes.",
+            weight: -1,
+          },
+          {
+            id: "ten",
+            label: "5-10 minutes",
+            reaction: "Une marge de négociation très européenne.",
+            weight: 1,
+          },
+          {
+            id: "warn",
+            label: "Tant que tu préviens",
+            reaction: "Communication saine. Nous sommes presque des adultes.",
+            weight: 3,
+          },
+          {
+            id: "me",
+            label: "Je suis probablement la personne en retard",
+            reaction: "Au moins nous avons une confession.",
+            weight: 2,
+            risk: "Arrivée théoriquement imminente",
+          },
+        ],
+      },
+    ] satisfies import("@/types/invitation").ScienceQuestion[],
+  },
+  statsVariants: [
+    invitation.stats,
+    [
+      { label: "organisation", value: 4 },
+      { label: "confiance injustifiée", value: 46 },
+      { label: "on verra", value: 50 },
+    ],
+    [
+      { label: "planification", value: 1 },
+      { label: "logique", value: 9 },
+      { label: "ça va le faire", value: 90 },
+    ],
+  ],
+  statsNote:
+    "Les statistiques peuvent légèrement varier selon l’humeur du comité.",
+  statsAction: "Recalculer le niveau de sérieux",
+  footerSecrets: [
+    "Tu cherches vraiment tous les secrets du site toi.",
+    "Y’en a peut-être un autre 👀",
+  ],
+  starLabel: "Examiner le petit détail",
+  starReply: "Bravo. Tu viens de gagner absolument rien.",
+  verdict: {
+    yes: [
+      "LE COMITÉ EST EN JOIE.",
+      "Enfin… de manière très professionnelle évidemment.",
+    ],
+    maybe:
+      "C’est suffisamment proche d’un oui pour que le comité soit content.",
+    lawyer: [
+      "Très bien.",
+      "Ton avocat a l’air chiant.",
+      "Deuxième avis : tu restes évidemment libre de décider.",
+    ],
+    lawyerButtons: [
+      "Mon avocat déconseille cette sortie",
+      "Demander un deuxième avis",
+    ],
+    no: [
+      "Compréhensible. Le comité accepte sa défaite avec une dignité remarquable.",
+      "Il va maintenant regarder par la fenêtre pendant environ 11 secondes.",
+    ],
+  },
+  summary: {
+    plan: "PLAN RETENU",
+    organisation: "ORGANISATION",
+    moment: "À QUEL MOMENT",
+    science: "INDICE SCIENTIFIQUE",
+    risk: "RISQUE IDENTIFIÉ",
+    answers: "PIÈCES SCIENTIFIQUES DU DOSSIER",
+    compatible: "compatible",
+    improvise: "Improvisation totale",
+  },
+  pendingIntro:
+    "Prends tout le temps qu’il te faut. Le dossier peut parfaitement rester sans suite.",
+  refusalIntro:
+    "Aucune justification nécessaire. Merci d’avoir donné ton avis.",
 };

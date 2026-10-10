@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Copy, ArrowLeft } from "lucide-react";
-import { invitation } from "@/config/invitation";
+import { invitation, interactions } from "@/config/invitation";
 import type { ResponseSelection } from "@/types/invitation";
 export function InvitationSummary({
   selection,
@@ -18,6 +18,10 @@ export function InvitationSummary({
   const text = selection
     ? invitation.responseText(selection)
     : invitation.decisions.find((d) => d.id === decisionId)!.response;
+  useEffect(() => {
+    setCopied(false);
+    setFailed(false);
+  }, [text]);
   async function copy() {
     try {
       await navigator.clipboard.writeText(text);
@@ -44,18 +48,62 @@ export function InvitationSummary({
             ? invitation.pendingTitle
             : invitation.summaryTitle}
       </h2>
-      <p>{invitation.summaryIntro}</p>
+      <p>
+        {decisionId === "no"
+          ? interactions.refusalIntro
+          : decisionId === "lawyer"
+            ? interactions.pendingIntro
+            : invitation.summaryIntro}
+      </p>
       {selection && (
         <dl>
-          {[selection.activity.label, selection.period, selection.moment].map(
-            (value, i) => (
-              <div key={i}>
-                <dt>{invitation.summaryLabels[i]}</dt>
-                <dd>{value}</dd>
+          {[
+            selection.activity.label,
+            selection.period ===
+            invitation.periods.find((p) => p.id === "improvise")?.label
+              ? interactions.summary.improvise
+              : selection.period,
+            selection.moment,
+          ].map((value, i) => (
+            <div key={i}>
+              <dt>
+                {
+                  [
+                    interactions.summary.plan,
+                    interactions.summary.organisation,
+                    interactions.summary.moment,
+                  ][i]
+                }
+              </dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+          {selection.science && (
+            <>
+              <div>
+                <dt>{interactions.summary.science}</dt>
+                <dd>
+                  {selection.science.score} % {interactions.summary.compatible}
+                </dd>
               </div>
-            ),
+              <div>
+                <dt>{interactions.summary.risk}</dt>
+                <dd>{selection.science.risk}</dd>
+              </div>
+            </>
           )}
         </dl>
+      )}
+      {selection?.science && (
+        <div className="science-evidence">
+          <h3 className="eyebrow">{interactions.summary.answers}</h3>
+          {selection.science.answers.map((a) => (
+            <p key={a.question}>
+              <span>{a.question}</span>
+              <strong>{a.answer}</strong>
+            </p>
+          ))}
+        </div>
       )}
       <button className="primary-button" onClick={copy}>
         <Copy size={17} />

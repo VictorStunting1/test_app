@@ -7,6 +7,8 @@ export type Activity = {
   icon: IconName;
   tag: string;
   reaction: string;
+  risk: string;
+  classified?: boolean;
 };
 export type Choice = { id: string; label: string };
 export type ResponseSelection = {
@@ -14,4 +16,23 @@ export type ResponseSelection = {
   period: string;
   moment: string;
   decision: string;
+  science?: ScienceResult;
+};
+
+export type ScienceAnswer = {
+  id: string;
+  label: string;
+  reaction: string;
+  weight: number;
+  risk?: string;
+};
+export type ScienceQuestion = {
+  id: string;
+  question: string;
+  answers: ScienceAnswer[];
+};
+export type ScienceResult = {
+  score: number;
+  answers: { question: string; answer: string }[];
+  risk: string;
 };
