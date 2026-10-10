@@ -1099,30 +1099,7 @@ button,
   min-width: 44px;
   min-height: 44px;
 }
-.playful-no {
-  max-width: 480px;
-  margin: 24px auto 0;
-  padding: 16px;
-  border: 1px dashed var(--line);
-  border-radius: 12px;
-}
-.play-hint {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-.no-playground {
-  position: relative;
-  height: 144px;
-  margin-top: 15px;
-}
-.playful-no-button {
-  position: absolute;
-  left: 0;
-  top: 0;
-  min-width: 96px;
-  margin: 0;
-}
+
 .mobile-companions {
   margin-top: 24px;
   padding: 16px 0;
@@ -1133,7 +1110,7 @@ button,
   align-items: center;
   gap: 16px;
 }
-.cagou-button {
+.snail-button {
   display: grid;
   place-items: center;
   min-width: 56px;
@@ -1143,12 +1120,7 @@ button,
   border-radius: 50%;
   padding: 5px;
 }
-.car-trigger {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-  text-align: left;
-}
+
 .car-lane {
   position: relative;
   overflow-x: hidden;
@@ -1403,20 +1375,12 @@ button,
   footer {
     padding-bottom: max(30px, env(safe-area-inset-bottom));
   }
-  .playful-no {
-    padding: 16px;
-  }
-  .play-hint {
-    font-size: 13px;
-  }
+
   .red-car {
     width: 54px;
   }
   .red-car svg {
     width: 54px;
-  }
-  .car-trigger {
-    font-size: 14px;
   }
 }
 @media (hover: none) {
@@ -1453,4 +1417,8 @@ button,
   .hero-art .star-reaction {
     top: 100%;
   }
+}
+
+.companion-controls {
+  justify-content: center;
 }

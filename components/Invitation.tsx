@@ -63,6 +63,7 @@ function Section({
   );
 }
 export function Invitation() {
+  const [carTrips, setCarTrips] = useState(0);
   const [activityId, setActivity] = useState("");
   const [period, setPeriod] = useState("");
   const [moment, setMoment] = useState(
@@ -88,6 +89,7 @@ export function Invitation() {
     activity && period
       ? {
           activity,
+          decisionId: decision,
           science,
           period: c.periods.find((p) => p.id === period)!.label,
           moment: c.moments.find((m) => m.id === moment)!.label,
@@ -95,7 +97,7 @@ export function Invitation() {
         }
       : null;
   function decide(id: string) {
-    if ((id === "yes" || id === "maybe") && !selection) {
+    if (id === "yes" && !selection) {
       setError(c.validationMessage);
       return false;
     }
@@ -217,6 +219,7 @@ export function Invitation() {
                   setActivityRevision((v) => v + 1);
                   setError("");
                   setActivity(a.id);
+                  if (a.id === "surprise") setCarTrips((v) => v + 1);
                   setDecision("");
                 }}
               />
@@ -244,6 +247,7 @@ export function Invitation() {
               </button>
             )}
           </div>
+          <MobileCompanions carTrips={carTrips} />
         </Section>
         <Section number="02" title={agendaTitle} intro={c.availabilityIntro}>
           <AvailabilitySelector
@@ -302,7 +306,6 @@ export function Invitation() {
             })}
           </div>
           <SeriousnessGauge />
-          <MobileCompanions />
         </Section>
         <section className="final-section">
           <span className="eyebrow">{c.finalEyebrow}</span>

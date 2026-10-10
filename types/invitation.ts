@@ -16,6 +16,7 @@ export type ResponseSelection = {
   period: string;
   moment: string;
   decision: string;
+  decisionId: string;
   science?: ScienceResult;
 };
 

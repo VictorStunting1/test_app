@@ -125,7 +125,12 @@ export const invitation = {
   finalIntro: "Le comité attend ton avis. Avec un calme presque crédible.",
   decisions: [
     { id: "yes", label: "Ça me chauffe", response: "Ça me chauffe 🙂" },
-    { id: "maybe", label: "Pourquoi pas 👀", response: "Pourquoi pas 👀" },
+    {
+      id: "maybe",
+      label: "Pourquoi pas 👀",
+      response:
+        "Pourquoi pas 👀 Ça me tente, mais je ne confirme rien pour l’instant. On en discute ?",
+    },
     {
       id: "lawyer",
       label: "Je demande à mon avocat",
@@ -133,7 +138,7 @@ export const invitation = {
     },
     {
       id: "no",
-      label: "Je passe mon tour",
+      label: "Non, je passe mon tour",
       response: "Merci pour la proposition, mais je passe mon tour.",
     },
   ],
@@ -154,8 +159,15 @@ export const invitation = {
   editLabel: "Modifier ma réponse",
   footer: "Fait avec beaucoup trop de réflexion.",
   footerNote: "Aucune réponse n’est envoyée automatiquement.",
-  responseText: (selection: ResponseSelection) =>
-    `Bon, j’ai étudié ton dossier beaucoup trop sérieusement.\n${selection.decision}\nJe vote pour : ${selection.activity.label}\nPlutôt : ${selection.period} / ${selection.moment}\n${selection.science ? `Indice scientifique : ${selection.science.score} % compatible\nRisque identifié : ${selection.science.risk}\n${selection.science.answers.map((a) => `${a.question} ${a.answer}`).join("\n")}\n` : ""}À toi de jouer 🙂`,
+  responseText: (selection: ResponseSelection) => {
+    const tentative = selection.decisionId === "maybe";
+    const science = selection.science
+      ? `\nIndice scientifique : ${selection.science.score} % compatible\nRisque identifié : ${selection.science.risk}\n${selection.science.answers.map((a) => `${a.question} ${a.answer}`).join("\n")}`
+      : "";
+    return tentative
+      ? `Pourquoi pas 👀 Ça me tente, mais rien n’est confirmé.\nLa piste qui me plaît : ${selection.activity.label}\nCréneau à discuter : ${selection.period} / ${selection.moment}${science}\nOn en parle avant de fixer le plan ?`
+      : `Bon, j’ai étudié ton dossier beaucoup trop sérieusement.\nÇa me chauffe 🙂\nJe vote pour : ${selection.activity.label}\nPlutôt : ${selection.period} / ${selection.moment}${science}\nÀ toi de jouer 🙂`;
+  },
 };
 
 // Tous les textes et variantes interactives restent personnalisables ici.
@@ -315,7 +327,7 @@ export const interactions = {
       "Enfin… de manière très professionnelle évidemment.",
     ],
     maybe:
-      "C’est suffisamment proche d’un oui pour que le comité soit content.",
+      "Le comité note un intérêt prudent. Il range les confettis et attend la suite.",
     lawyer: [
       "Très bien.",
       "Ton avocat a l’air chiant.",
@@ -340,6 +352,11 @@ export const interactions = {
     compatible: "compatible",
     improvise: "Improvisation totale",
   },
+  tentativeTitle: "Une piste, pas encore un oui.",
+  tentativeIntro:
+    "Ça te tente peut-être. Rien n’est fixé : on en discute tranquillement.",
+  tentativePlan: "PISTE ENVISAGÉE",
+  tentativeOrganisation: "CRÉNEAU À DISCUTER",
   pendingIntro:
     "Prends tout le temps qu’il te faut. Le dossier peut parfaitement rester sans suite.",
   refusalIntro:
@@ -347,13 +364,8 @@ export const interactions = {
 };
 
 export const mobilePlay = {
-  noLabel: "Non",
-  noHint:
-    "Le bouton Non a trois tentatives de mauvaise foi. Le vrai refus reste juste au-dessus.",
-  noReplies: ["Pardon ?", invitation.recipientName + ".", "Fais pas la cagou."],
-  noFinished: "Bon vas-y, j’arrête de tricher.",
-  birdLabel: "Toucher le cagou",
-  birdReply: "Le cagou a été consulté. Il n’a absolument aucune qualification.",
-  carLabel: "Faire passer la voiture rouge",
+  snailLabel: "Toucher le cagou escargot",
+  snailReply:
+    "Le cagou avance doucement. Comme les grandes décisions, mais avec une coquille.",
   carReply: "Le comité arrive. Enfin, il cherche encore une place.",
 };

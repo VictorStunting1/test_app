@@ -1,15 +1,13 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { CarFront } from "lucide-react";
 import { mobilePlay } from "@/config/invitation";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
 
-export function MobileCompanions() {
+export function MobileCompanions({ carTrips }: { carTrips: number }) {
   const [paused, setPaused] = useState(false);
-  const [birdClicks, setBirdClicks] = useState(0);
-  const [carTrips, setCarTrips] = useState(0);
+  const [snailClicks, setSnailClicks] = useState(0);
   const lane = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const reduced = useReducedMotion();
@@ -26,8 +24,8 @@ export function MobileCompanions() {
       <div className="companion-controls">
         <motion.button
           type="button"
-          aria-label={mobilePlay.birdLabel}
-          className="cagou-button"
+          aria-label={mobilePlay.snailLabel}
+          className="snail-button"
           animate={
             paused || reduced ? { x: 0, y: 0 } : { x: [0, 6, 0], y: [0, -2, 0] }
           }
@@ -37,7 +35,7 @@ export function MobileCompanions() {
           }}
           onClick={() => {
             setPaused(true);
-            setBirdClicks((v) => v + 1);
+            setSnailClicks((v) => v + 1);
             schedule(() => setPaused(false), 1400);
           }}
         >
@@ -49,38 +47,45 @@ export function MobileCompanions() {
             aria-hidden="true"
           >
             <path
-              d="M21 45C10 44 7 35 13 30L30 24C26 14 34 10 39 15L44 24L40 37C36 45 29 46 21 45Z"
-              fill="#e7e0d7"
-              stroke="#877880"
-              strokeWidth="1.5"
+              d="M8 49C17 43 31 45 41 42L44 30C46 26 52 27 53 32L54 44C61 44 61 51 55 52H12C7 52 5 51 8 49Z"
+              fill="#d6ddcb"
+              stroke="#7b806e"
+              strokeWidth="1.8"
+            />
+            <circle
+              cx="27"
+              cy="34"
+              r="17"
+              fill="#e6d8df"
+              stroke="#745469"
+              strokeWidth="1.8"
             />
             <path
-              d="M31 16L27 7M34 14L34 5M37 14L40 7M42 20L54 24L42 27"
-              stroke="#9d7763"
+              d="M31 45C17 48 13 33 22 25C31 18 42 28 36 37C32 44 21 39 24 32C27 26 33 31 30 34"
+              stroke="#927286"
               strokeWidth="2"
               strokeLinecap="round"
             />
-            <circle cx="37" cy="20" r="1.5" fill="#4e3b49" />
             <path
-              d="M24 45L22 55L17 56M33 44L36 54L42 55M17 34L30 30L27 40"
-              stroke="#9d7763"
-              strokeWidth="2"
+              d="M46 30L43 20M51 30L55 20"
+              stroke="#7b806e"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+            <circle cx="43" cy="19" r="2.2" fill="#4e3b49" />
+            <circle cx="55" cy="19" r="2.2" fill="#4e3b49" />
+            <path
+              d="M48 40Q50 42 52 40"
+              stroke="#7b806e"
+              strokeWidth="1.4"
               strokeLinecap="round"
             />
           </svg>
         </motion.button>
-        <button
-          type="button"
-          className="car-trigger text-button"
-          onClick={() => setCarTrips((v) => v + 1)}
-        >
-          <CarFront size={18} />
-          {mobilePlay.carLabel}
-        </button>
       </div>
       <Reaction
-        text={birdClicks ? mobilePlay.birdReply : ""}
-        revision={birdClicks}
+        text={snailClicks ? mobilePlay.snailReply : ""}
+        revision={snailClicks}
       />
       <div className="car-lane" ref={lane} aria-hidden="true">
         {carTrips > 0 && (

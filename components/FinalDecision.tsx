@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { invitation, interactions } from "@/config/invitation";
 import { ArrowUpRight } from "lucide-react";
-import { PlayfulNo } from "./PlayfulNo";
+import { motion } from "framer-motion";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
 export function FinalDecision({
@@ -47,7 +47,12 @@ export function FinalDecision({
     <>
       <div className="decision-buttons">
         {invitation.decisions.map((decision, index) => (
-          <button
+          <motion.button
+            whileTap={
+              decision.id === "no"
+                ? { rotate: -2, scale: 0.98 }
+                : { scale: 0.98 }
+            }
             type="button"
             key={decision.id}
             onClick={() => decide(decision.id)}
@@ -57,10 +62,9 @@ export function FinalDecision({
               ? interactions.verdict.lawyerButtons[lawyerStep - 1]
               : decision.label}
             {index === 0 && <ArrowUpRight size={18} />}
-          </button>
+          </motion.button>
         ))}
       </div>
-      <PlayfulNo onRefuse={() => decide("no")} />
       <Reaction
         text={reaction}
         revision={revision}

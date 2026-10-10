@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Copy, ArrowLeft } from "lucide-react";
+import { Check, Copy, ArrowLeft, MessageCircle } from "lucide-react";
 import { invitation, interactions } from "@/config/invitation";
 import type { ResponseSelection } from "@/types/invitation";
 export function InvitationSummary({
@@ -39,21 +39,25 @@ export function InvitationSummary({
       aria-live="polite"
     >
       <span className="summary-check">
-        <Check />
+        {decisionId === "maybe" ? <MessageCircle /> : <Check />}
       </span>
       <h2>
         {decisionId === "no"
           ? invitation.refusedTitle
           : decisionId === "lawyer"
             ? invitation.pendingTitle
-            : invitation.summaryTitle}
+            : decisionId === "maybe"
+              ? interactions.tentativeTitle
+              : invitation.summaryTitle}
       </h2>
       <p>
         {decisionId === "no"
           ? interactions.refusalIntro
           : decisionId === "lawyer"
             ? interactions.pendingIntro
-            : invitation.summaryIntro}
+            : decisionId === "maybe"
+              ? interactions.tentativeIntro
+              : invitation.summaryIntro}
       </p>
       {selection && (
         <dl>
@@ -69,8 +73,12 @@ export function InvitationSummary({
               <dt>
                 {
                   [
-                    interactions.summary.plan,
-                    interactions.summary.organisation,
+                    decisionId === "maybe"
+                      ? interactions.tentativePlan
+                      : interactions.summary.plan,
+                    decisionId === "maybe"
+                      ? interactions.tentativeOrganisation
+                      : interactions.summary.organisation,
                     interactions.summary.moment,
                   ][i]
                 }

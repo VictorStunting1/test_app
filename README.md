@@ -25,7 +25,7 @@ Arrêter le serveur de développement avant de lancer la compilation de producti
 
 Tout le contenu est dans `config/invitation.ts` : noms, titre, introduction, activités, réactions, disponibilités, paramètres, jauge, décisions, textes du récapitulatif et métadonnées de partage. `responseText` définit le message copié. Les icônes d’activité disponibles sont `glass`, `food`, `activity` et `surprise`. Garder des identifiants uniques et au moins une option de moment (l’option `any` est sélectionnée par défaut si présente, sinon la première). Les valeurs de la jauge sont des poids ; leur somme devrait être 100.
 
-Le choix d’une activité et d’une période est nécessaire pour accepter ou répondre « pourquoi pas ». Les réponses d’attente et de refus restent accessibles sans remplir le formulaire. Un refus n’affiche aucun confetti. La copie nécessite un contexte HTTPS ou localhost ; si le navigateur la bloque, un champ permet de copier manuellement. Rien n’est transmis à Victor : il faut lui envoyer le texte soi-même.
+Le choix d’une activité et d’une période est nécessaire pour accepter. « Pourquoi pas » reste disponible sans remplir le formulaire : c’est un intérêt prudent, sans confirmation. Les réponses d’attente et de refus restent accessibles sans remplir le formulaire. Un refus n’affiche aucun confetti. La copie nécessite un contexte HTTPS ou localhost ; si le navigateur la bloque, un champ permet de copier manuellement. Rien n’est transmis à Victor : il faut lui envoyer le texte soi-même.
 
 ## Structure
 
@@ -63,6 +63,8 @@ Les petits secrets sont le lien d’explication du hero, l’étoile du ticket, 
 
 La version mobile empile les cartes et les réponses, avec des boutons de 48 px minimum, des textes lisibles et les safe areas iOS. Tous les secrets fonctionnent au tap et au clavier. Les illustrations du cagou et de la voiture sont des SVG légers sans téléchargement d’image. La voiture ne traverse que sa zone réservée, dont la largeur est mesurée, et les confettis sont limités à leur propre conteneur.
 
-Le bouton ludique **Non** esquive trois fois au doigt (Pointer Events) ou au survol de la souris, puis accepte le clic. Ses positions sont calculées dans une zone réservée et recalculées au redimensionnement. Au clavier, il accepte immédiatement le refus. Le vrai bouton **Je passe mon tour** reste toujours accessible et ne bouge jamais. Le cagou se calme pendant 1,4 seconde au tap, puis reprend un court mouvement. Les animations restent limitées et respectent la réduction des mouvements.
+Un seul bouton **Non, je passe mon tour** refuse immédiatement, au tap ou au clavier, avec une petite animation discrète. Il ne se déplace pas et aucun deuxième bouton de refus n’est affiché. Le cagou est représenté par un escargot à coquille : au tap il se calme pendant 1,4 seconde, puis reprend un court mouvement. La voiture rouge se déclenche lorsque l’activité **Surprise** est sélectionnée ; elle n’a aucun bouton dédié. Les animations restent limitées et respectent la réduction des mouvements.
+
+**Ça me chauffe** confirme le plan et affiche les confettis. **Pourquoi pas** ouvre un dossier « Une piste, pas encore un oui », avec des créneaux à discuter et un texte copié exprimant clairement l’hésitation. Avec « Pourquoi pas », rien n’est considéré comme confirmé.
 
 Si Instagram ou Safari refuse l’accès au presse-papiers, le champ de texte permet de sélectionner et copier le verdict manuellement. Aucune réponse n’est envoyée automatiquement. Les tests mobiles utilisent des événements tactiles dans Chromium aux largeurs 320, 360, 375, 390 et 414 px ; cela ne remplace pas une vérification sur un téléphone réel dans Instagram et Safari.
