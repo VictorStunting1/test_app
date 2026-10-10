@@ -19,8 +19,6 @@ export function InvitationSummary({
   decisionId: string;
   onEdit: () => void;
 }) {
-  const [isIOS, setIsIOS] = useState(false);
-  useEffect(() => setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent)), []);
   const [shareStatus, setShareStatus] = useState("");
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -46,9 +44,8 @@ export function InvitationSummary({
         setShareStatus(journey.shareUnavailable);
     }
   }
-  const sms = `sms:${journey.contact.phone}${isIOS ? "&" : "?"}body=${encodeURIComponent(text)}`;
-  const email = `mailto:${journey.contact.email}?subject=${encodeURIComponent(journey.emailSubject)}&body=${encodeURIComponent(text)}`;
   async function copy() {
+    setShareStatus("");
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -156,12 +153,6 @@ export function InvitationSummary({
           <Copy size={17} />
           {copied ? invitation.copiedLabel : invitation.copyLabel}
         </button>
-        <a className="secondary-button" href={sms}>
-          {journey.smsLabel}
-        </a>
-        <a className="secondary-button" href={email}>
-          {journey.emailLabel}
-        </a>
       </div>
       <p className="copy-status" role="status">
         {failed ? invitation.copyError : copied ? invitation.copiedLabel : ""}

@@ -7,6 +7,9 @@ import { Reaction } from "./Reaction";
 export function ActivityPrelude() {
   const [glass, setGlass] = useState(0);
   const [bourbier, setBourbier] = useState(0);
+  const [activeReply, setActiveReply] = useState<"glass" | "bourbier" | null>(
+    null,
+  );
   return (
     <div className="personal-prelude">
       <p className="personal-greeting">{personal.arrival[0]}</p>
@@ -15,35 +18,44 @@ export function ActivityPrelude() {
         <button
           type="button"
           className="personal-badge"
-          onClick={() => setGlass((v) => v + 1)}
+          aria-pressed={activeReply === "glass"}
+          onClick={() => {
+            setActiveReply("glass");
+            setGlass((v) => v + 1);
+          }}
         >
-          {personal.glassLabel}
+          <span className="badge-visual" aria-hidden="true">
+            {personal.glassEmoji}
+          </span>
+          <span>{personal.glassLabel}</span>
         </button>
         <button
           type="button"
           className="personal-badge"
-          onClick={() => setBourbier((v) => v + 1)}
+          aria-pressed={activeReply === "bourbier"}
+          onClick={() => {
+            setActiveReply("bourbier");
+            setBourbier((v) => v + 1);
+          }}
         >
-          {personal.bourbierLabel}
+          <span className="badge-visual" aria-hidden="true">
+            {personal.bourbierEmoji}
+          </span>
+          <span>{personal.bourbierLabel}</span>
         </button>
       </div>
       <Reaction
+        immediate
         text={
-          glass
+          activeReply === "glass"
             ? personal.glassReplies[(glass - 1) % personal.glassReplies.length]
-            : ""
+            : activeReply === "bourbier"
+              ? personal.bourbierReplies[
+                  (bourbier - 1) % personal.bourbierReplies.length
+                ]
+              : ""
         }
-        revision={glass}
-      />
-      <Reaction
-        text={
-          bourbier
-            ? personal.bourbierReplies[
-                (bourbier - 1) % personal.bourbierReplies.length
-              ]
-            : ""
-        }
-        revision={bourbier}
+        revision={glass + bourbier}
       />
     </div>
   );

@@ -27,7 +27,7 @@ Tout le contenu est dans `config/invitation.ts` : noms, titre, introduction, act
 
 Le parcours demande une activité, puis une période **ou un jour précis**, et un moment explicitement choisi : journée, début de soirée, soirée ou aucune préférence. Le bouton suivant reste désactivé avec une explication tant que ces choix ne sont pas faits. « Pourquoi pas » reste un intérêt prudent, sans confirmation. Le quiz se trouve dans un accordéon à la troisième étape et reste facultatif ; ses résultats restent dans le récapitulatif, sans alourdir le message envoyé.
 
-La réponse à envoyer est une phrase courte. **Envoyer ma réponse** ouvre le partage natif lorsqu’il est disponible (HTTPS et navigateur compatible). Les applications proposées dépendent du téléphone : Instagram peut ne pas accepter un partage de texte. Les alternatives **Copier**, **Par SMS** et **Par mail** restent disponibles ; elles ne nécessitent pas de backend. Le destinataire SMS/mail peut être prérempli via `journey.contact` dans `config/invitation.ts`, sinon il est choisi dans l’application de messagerie. Aucune coordonnée n’est inventée et aucun message n’est envoyé automatiquement. Si la copie est bloquée, un champ permet de copier manuellement.
+La réponse à envoyer est une phrase courte. **Envoyer ma réponse** ouvre le partage natif lorsqu’il est disponible (HTTPS et navigateur compatible), et **Copier mon verdict** permet de coller la réponse dans la conversation Instagram. Le navigateur choisit les applications proposées : il ne permet ni de filtrer la liste sur Instagram, ni de présélectionner un compte destinataire. Instagram peut ne pas accepter un partage de texte. Il n’y a pas de boutons SMS/mail et aucun message n’est envoyé automatiquement. Si la copie est bloquée, un champ permet de copier manuellement.
 
 ## Structure
 
@@ -77,9 +77,9 @@ Si Instagram ou Safari refuse l’accès au presse-papiers, le champ de texte pe
 
 Les textes contextuels, les réactions de créneaux et les private jokes restent dans `config/invitation.ts` (`personal`, `interactions`, `journey`). Les illustrations légères du petit démon, de l’escargot et de la voiture sont des SVG dans les composants.
 
-- Au début : le verre proposé par Léa, les rumeurs sur « ce fameux verre » et le badge de plan bourbier, avec plusieurs réponses au tap.
+- Au début : le verre proposé par Léa, les rumeurs sur « ce fameux verre » et le badge de plan bourbier, avec plusieurs réponses au tap. Deux petits emojis (🍸 et 🧭) les illustrent ; une seule réaction est affichée à la fois, même en alternant rapidement entre les badges. Les compteurs de chaque secret sont conservés.
 - Dans l’agenda : le faux bilan 12 % / 104 %, la flexibilité de Victor dès vendredi soir et l’analyse qui se révèle au clic.
 - Dans les secrets : le petit démon a quatre réactions ; le calcul douteux se déplie, puis avoue sa méthodologie ; l’archive de Lyon reste cachée avant le premier tap.
-- Après un oui : une courte séquence déclenche la voiture rouge, puis « Maintenant t’as plus le choix » est désamorcé **600 ms** après par « Enfin si. Mais ça cassait ma vanne. ». Le récapitulatif arrive ensuite. Un non a sa propre courte séquence, finit sur « Nan en vrai aucun souci :) » et affiche un escargot triste. Les temporisations sont annulées quand on quitte l’étape ou modifie la réponse.
+- Après un oui : une courte séquence déclenche la voiture rouge, puis « Maintenant t’as plus le choix » est désamorcé **600 ms** après par « Enfin si. Mais ça cassait ma vanne. ». Le récapitulatif arrive ensuite. Après un non, chaque phrase reste seule pendant **7 secondes**, y compris « Nan en vrai aucun souci :) » avant l’apparition de l’escargot et du récapitulatif. Le temps de lecture se règle avec `refusalReadingMs` en haut du fichier de configuration (7000 ms par défaut). Les temporisations sont annulées quand on quitte l’étape ou modifie la réponse.
 
 Le texte à copier reste une seule phrase utile, sans les private jokes ni le détail du quiz. Le partage et la copie restent des actions explicites.

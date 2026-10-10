@@ -57,7 +57,8 @@ export function FinalDecision({
     timers.push(
       setTimeout(
         () => complete.current(),
-        Math.max(0, ...sequence.map((frame) => frame.at)) + 600,
+        Math.max(0, ...sequence.map((frame) => frame.at)) +
+          (decisionId === "no" ? personal.noReadingMs : 600),
       ),
     );
     return () => timers.forEach(clearTimeout);

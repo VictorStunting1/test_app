@@ -1,5 +1,8 @@
 import type { Activity, Choice, ResponseSelection } from "@/types/invitation";
 
+// Temps de lecture des réactions après un refus, en millisecondes.
+const refusalReadingMs = 7000;
+
 export const invitation = {
   recipientName: "Léa",
   senderName: "Victor",
@@ -402,15 +405,10 @@ export const journey = {
   noInitial: "Le comité prépare sa petite esquive…",
   shareLabel: "Envoyer ma réponse",
   shareHint:
-    "Choisis une application, puis ton destinataire. Tu confirmes l’envoi dans l’application.",
+    "Choisis Instagram si proposé, puis notre conversation. Sinon, copie ton verdict et colle-le dans notre échange.",
   shareUnavailable:
-    "Le partage direct n’est pas disponible ici. Tu peux copier la réponse ou ouvrir SMS / mail.",
-  sharedLabel: "Réponse partagée.",
-  smsLabel: "Par SMS",
-  emailLabel: "Par mail",
-  // Facultatif : renseigner les coordonnées de Victor pour préremplir le destinataire.
-  contact: { phone: "", email: "" },
-  emailSubject: "Mon verdict très officiel",
+    "Le partage n’est pas disponible ici. Copie ton verdict pour notre conversation Instagram.",
+  sharedLabel: "Réponse transmise à l’application choisie.",
 };
 
 // Les private jokes sont révélées dans leur contexte, jamais toutes ensemble.
@@ -420,12 +418,14 @@ export const personal = {
     "J’ai justement développé un site beaucoup trop élaboré pour te prendre environ 30 secondes.",
   ],
   glassLabel: "ce fameux verre",
+  glassEmoji: "🍸",
   glassReplies: [
     "Des rumeurs circulent.",
     "Il existerait réellement.",
     "Reste encore à l’observer dans son habitat naturel.",
   ],
   bourbierLabel: "Plan certifié raisonnablement bancal",
+  bourbierEmoji: "🧭",
   bourbierReplies: [
     "J’essaye vraiment de faire un plan normal pour une fois.",
     "Ne rigole pas.",
@@ -496,18 +496,24 @@ export const personal = {
       detail: "trouver un créneau dans ton agenda.",
     },
   ],
+  // Chaque phrase, y compris la dernière, reste seule pendant sept secondes.
+  noReadingMs: refusalReadingMs,
   noSequence: [
     { at: 0, text: "Ah.", detail: "" },
     {
-      at: 650,
+      at: refusalReadingMs,
       text: "Bon bah mon suivi de projet vient de prendre un coup.",
       detail: "",
     },
     {
-      at: 1300,
+      at: refusalReadingMs * 2,
       text: "Je vais faire comme si je n’avais pas développé un site entier.",
       detail: "",
     },
-    { at: 2100, text: "Nan en vrai aucun souci :)", detail: "" },
+    {
+      at: refusalReadingMs * 3,
+      text: "Nan en vrai aucun souci :)",
+      detail: "",
+    },
   ],
 };
