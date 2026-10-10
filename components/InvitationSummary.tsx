@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Copy, ArrowLeft, MessageCircle } from "lucide-react";
-import { invitation, interactions } from "@/config/invitation";
+import { Check, Copy, ArrowLeft, MessageCircle, Share2 } from "lucide-react";
+import { invitation, interactions, journey } from "@/config/invitation";
 import type { ResponseSelection } from "@/types/invitation";
 export function InvitationSummary({
   selection,
@@ -13,15 +13,35 @@ export function InvitationSummary({
   decisionId: string;
   onEdit: () => void;
 }) {
+  const [isIOS, setIsIOS] = useState(false);
+  useEffect(() => setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent)), []);
+  const [shareStatus, setShareStatus] = useState("");
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
   const text = selection
     ? invitation.responseText(selection)
     : invitation.decisions.find((d) => d.id === decisionId)!.response;
   useEffect(() => {
+    setShareStatus("");
     setCopied(false);
     setFailed(false);
   }, [text]);
+  async function share() {
+    setShareStatus("");
+    if (!navigator.share) {
+      setShareStatus(journey.shareUnavailable);
+      return;
+    }
+    try {
+      await navigator.share({ text });
+      setShareStatus(journey.sharedLabel);
+    } catch (error) {
+      if (!(error instanceof Error && error.name === "AbortError"))
+        setShareStatus(journey.shareUnavailable);
+    }
+  }
+  const sms = `sms:${journey.contact.phone}${isIOS ? "&" : "?"}body=${encodeURIComponent(text)}`;
+  const email = `mailto:${journey.contact.email}?subject=${encodeURIComponent(journey.emailSubject)}&body=${encodeURIComponent(text)}`;
   async function copy() {
     try {
       await navigator.clipboard.writeText(text);
@@ -63,10 +83,16 @@ export function InvitationSummary({
         <dl>
           {[
             selection.activity.label,
-            selection.period ===
-            invitation.periods.find((p) => p.id === "improvise")?.label
-              ? interactions.summary.improvise
-              : selection.period,
+            selection.date
+              ? new Intl.DateTimeFormat("fr-FR", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                }).format(new Date(`${selection.date}T12:00:00`))
+              : selection.period ===
+                  invitation.periods.find((p) => p.id === "improvise")?.label
+                ? interactions.summary.improvise
+                : selection.period,
             selection.moment,
           ].map((value, i) => (
             <div key={i}>
@@ -102,21 +128,30 @@ export function InvitationSummary({
           )}
         </dl>
       )}
-      {selection?.science && (
-        <div className="science-evidence">
-          <h3 className="eyebrow">{interactions.summary.answers}</h3>
-          {selection.science.answers.map((a) => (
-            <p key={a.question}>
-              <span>{a.question}</span>
-              <strong>{a.answer}</strong>
-            </p>
-          ))}
-        </div>
-      )}
-      <button className="primary-button" onClick={copy}>
-        <Copy size={17} />
-        {copied ? invitation.copiedLabel : invitation.copyLabel}
+      <div className="outgoing-message">
+        <span className="eyebrow">TA RÉPONSE, TOUT SIMPLEMENT</span>
+        <p>{text}</p>
+      </div>
+      <button type="button" className="primary-button" onClick={share}>
+        <Share2 size={17} />
+        {journey.shareLabel}
       </button>
+      <p className="share-hint">{journey.shareHint}</p>
+      <p role="status" className="share-status">
+        {shareStatus}
+      </p>
+      <div className="delivery-options">
+        <button type="button" className="secondary-button" onClick={copy}>
+          <Copy size={17} />
+          {copied ? invitation.copiedLabel : invitation.copyLabel}
+        </button>
+        <a className="secondary-button" href={sms}>
+          {journey.smsLabel}
+        </a>
+        <a className="secondary-button" href={email}>
+          {journey.emailLabel}
+        </a>
+      </div>
       <p className="copy-status" role="status">
         {failed ? invitation.copyError : copied ? invitation.copiedLabel : ""}
       </p>

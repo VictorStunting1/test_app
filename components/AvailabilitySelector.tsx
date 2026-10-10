@@ -1,15 +1,19 @@
 "use client";
 import { useState } from "react";
 import { Reaction } from "./Reaction";
-import { invitation, interactions } from "@/config/invitation";
+import { invitation, interactions, journey } from "@/config/invitation";
 export function AvailabilitySelector({
   period,
   moment,
+  date,
+  onDate,
   onPeriod,
   onMoment,
 }: {
   period: string;
   moment: string;
+  date: string;
+  onDate: (value: string) => void;
   onPeriod: (id: string) => void;
   onMoment: (id: string) => void;
 }) {
@@ -57,6 +61,24 @@ export function AvailabilitySelector({
           ))}
         </div>
       </fieldset>
+      <div className="specific-date">
+        <label htmlFor="invitation-date">{journey.dateLabel}</label>
+        <p>{journey.dateHint}</p>
+        <input
+          id="invitation-date"
+          type="date"
+          value={date}
+          onChange={(event) => onDate(event.target.value)}
+        />
+        <button
+          type="button"
+          className="text-button"
+          onClick={() => onDate("")}
+          aria-pressed={!date}
+        >
+          {journey.dateClear}
+        </button>
+      </div>
       <Reaction text={reaction} revision={revision} />
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowDown,
@@ -10,7 +10,11 @@ import {
   Clock3,
   Heart,
 } from "lucide-react";
-import { invitation as c, interactions as fun } from "@/config/invitation";
+import {
+  invitation as c,
+  interactions as fun,
+  journey,
+} from "@/config/invitation";
 import { ActivityCard } from "./ActivityCard";
 import { AvailabilitySelector } from "./AvailabilitySelector";
 import { MobileCompanions } from "./MobileCompanions";
@@ -63,6 +67,9 @@ function Section({
   );
 }
 export function Invitation() {
+  const [step, setStep] = useState(0);
+  const [date, setDate] = useState("");
+  const journeyRef = useRef<HTMLDivElement>(null);
   const [carTrips, setCarTrips] = useState(0);
   const [activityId, setActivity] = useState("");
   const [period, setPeriod] = useState("");
@@ -86,16 +93,26 @@ export function Invitation() {
   const reduceMotion = useReducedMotion();
   const activity = c.activities.find((a) => a.id === activityId);
   const selection: ResponseSelection | null =
-    activity && period
+    activity && (period || date)
       ? {
           activity,
           decisionId: decision,
           science,
-          period: c.periods.find((p) => p.id === period)!.label,
+          date,
+          period:
+            c.periods.find((p) => p.id === period)?.label ?? journey.dateClear,
           moment: c.moments.find((m) => m.id === moment)!.label,
           decision: c.decisions.find((d) => d.id === decision)?.response ?? "",
         }
       : null;
+  useEffect(() => {
+    if (!step) return;
+    journeyRef.current?.scrollIntoView({
+      behavior: reduceMotion ? "instant" : "smooth",
+      block: "start",
+    });
+    journeyRef.current?.focus({ preventScroll: true });
+  }, [step, reduceMotion]);
   function decide(id: string) {
     if (id === "yes" && !selection) {
       setError(c.validationMessage);
@@ -128,231 +145,305 @@ export function Invitation() {
         </span>
       </header>
       <main>
-        <section className="hero">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <div className="dossier">
-              <span className="live-dot" />
-              {c.dossier}
-              <span className="dossier-line" />
-            </div>
-            <p className="recipient">
-              {c.badge} <span>{c.recipientName}</span>
-            </p>
-            <h1>{c.title}</h1>
-            <p className="hero-intro">{c.intro}</p>
-            <a className="primary-button hero-cta" href="#activities">
-              {c.heroCta}
-              <ArrowDown size={17} />
-            </a>
-            <button
-              type="button"
-              className="text-button why-button"
-              onClick={() => setWhyClicks((v) => v + 1)}
+        {step === 0 && (
+          <section className="hero">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
             >
-              {fun.whyLabel}
-            </button>
-            <Reaction
-              text={
-                whyClicks
-                  ? fun.whyAnswers[(whyClicks - 1) % fun.whyAnswers.length]
-                  : ""
-              }
-              revision={whyClicks}
-            />
-            <p className="hero-note">
-              <Heart size={13} />
-              {c.heroNote}
-            </p>
-          </motion.div>
-          <div className="hero-art">
-            <div className="orbit orbit-one" aria-hidden="true" />
-            <div className="orbit orbit-two" aria-hidden="true" />
-            <div className="invitation-ticket">
+              <div className="dossier">
+                <span className="live-dot" />
+                {c.dossier}
+                <span className="dossier-line" />
+              </div>
+              <p className="recipient">
+                {c.badge} <span>{c.recipientName}</span>
+              </p>
+              <h1>{c.title}</h1>
+              <p className="hero-intro">{c.intro}</p>
               <button
                 type="button"
-                aria-label={fun.starLabel}
-                className="ticket-star secret-star"
-                onClick={() => setStarClicks((v) => v + 1)}
+                className="primary-button hero-cta"
+                onClick={() => setStep(1)}
               >
-                <Sparkles size={32} strokeWidth={1.2} />
+                {c.heroCta}
+                <ArrowDown size={17} />
               </button>
-              <span className="ticket-small">{c.artwork.heading}</span>
-              <span className="ticket-title">
-                {c.artwork.lines[0]}
-                <br />
-                {c.artwork.lines[1]}
-                <br />
-                <i>{c.artwork.question}</i>
-              </span>
-              <span className="ticket-bottom">
-                {c.artwork.ticket} <ArrowUpRight size={18} />
-              </span>
-            </div>
-            <Reaction
-              text={starClicks ? fun.starReply : ""}
-              revision={starClicks}
-              className="star-reaction"
-            />
-            <span className="art-caption">{c.artwork.caption}</span>
-          </div>
-        </section>
-        <Section
-          number="01"
-          title={c.activityHeading}
-          intro={c.activityIntro}
-          id="activities"
-        >
-          <div className="activity-grid">
-            {c.activities.map((a, i) => (
-              <ActivityCard
-                key={a.id}
-                activity={a}
-                index={i}
-                selected={a.id === activityId}
-                onSelect={() => {
-                  withdrawalTimer.cancel();
-                  setWithdrawReply("");
-                  setActivityRevision((v) => v + 1);
-                  setError("");
-                  setActivity(a.id);
-                  if (a.id === "surprise") setCarTrips((v) => v + 1);
-                  setDecision("");
-                }}
+              <button
+                type="button"
+                className="text-button why-button"
+                onClick={() => setWhyClicks((v) => v + 1)}
+              >
+                {fun.whyLabel}
+              </button>
+              <Reaction
+                text={
+                  whyClicks
+                    ? fun.whyAnswers[(whyClicks - 1) % fun.whyAnswers.length]
+                    : ""
+                }
+                revision={whyClicks}
               />
-            ))}
-          </div>
-          <div className="activity-comment">
-            <Reaction
-              text={withdrawReply || activity?.reaction || ""}
-              revision={activityRevision}
-            />
-            {activity?.id === "surprise" && (
+              <p className="hero-note">
+                <Heart size={13} />
+                {c.heroNote}
+              </p>
+            </motion.div>
+            <div className="hero-art">
+              <div className="orbit orbit-one" aria-hidden="true" />
+              <div className="orbit orbit-two" aria-hidden="true" />
+              <div className="invitation-ticket">
+                <button
+                  type="button"
+                  aria-label={fun.starLabel}
+                  className="ticket-star secret-star"
+                  onClick={() => setStarClicks((v) => v + 1)}
+                >
+                  <Sparkles size={32} strokeWidth={1.2} />
+                </button>
+                <span className="ticket-small">{c.artwork.heading}</span>
+                <span className="ticket-title">
+                  {c.artwork.lines[0]}
+                  <br />
+                  {c.artwork.lines[1]}
+                  <br />
+                  <i>{c.artwork.question}</i>
+                </span>
+                <span className="ticket-bottom">
+                  {c.artwork.ticket} <ArrowUpRight size={18} />
+                </span>
+              </div>
+              <Reaction
+                text={starClicks ? fun.starReply : ""}
+                revision={starClicks}
+                className="star-reaction"
+              />
+              <span className="art-caption">{c.artwork.caption}</span>
+            </div>
+          </section>
+        )}
+        {step > 0 && (
+          <>
+            <div ref={journeyRef} tabIndex={-1} className="journey-header">
+              <span className="eyebrow">
+                {step} / 4 · {journey.steps[step - 1]}
+              </span>
+              <div
+                className="journey-progress"
+                aria-label={`Étape ${step} sur 4`}
+              >
+                {journey.steps.map((label, i) => (
+                  <span key={label} className={i < step ? "complete" : ""} />
+                ))}
+              </div>
+            </div>
+            <div className="journey-panel" hidden={step !== 1}>
+              <Section
+                number="01"
+                title={c.activityHeading}
+                intro={c.activityIntro}
+                id="activities"
+              >
+                <div className="activity-grid">
+                  {c.activities.map((a, i) => (
+                    <ActivityCard
+                      key={a.id}
+                      activity={a}
+                      index={i}
+                      selected={a.id === activityId}
+                      onSelect={() => {
+                        withdrawalTimer.cancel();
+                        setWithdrawReply("");
+                        setActivityRevision((v) => v + 1);
+                        setError("");
+                        setActivity(a.id);
+                        if (a.id === "surprise") setCarTrips((v) => v + 1);
+                        setDecision("");
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="activity-comment">
+                  <Reaction
+                    text={withdrawReply || activity?.reaction || ""}
+                    revision={activityRevision}
+                  />
+                  {activity?.id === "surprise" && (
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() => {
+                        setWithdrawReply(fun.withdrawReplies[0]);
+                        setActivityRevision((v) => v + 1);
+                        withdrawalTimer.schedule(
+                          () => setWithdrawReply(fun.withdrawReplies[1]),
+                          1000,
+                        );
+                      }}
+                    >
+                      {fun.withdrawLabel}
+                    </button>
+                  )}
+                </div>
+                <MobileCompanions carTrips={carTrips} />
+              </Section>
+            </div>
+            <div className="journey-panel" hidden={step !== 2}>
+              <Section
+                number="02"
+                title={agendaTitle}
+                intro={c.availabilityIntro}
+              >
+                <AvailabilitySelector
+                  date={date}
+                  onDate={(value) => {
+                    setDate(value);
+                    setError("");
+                    setDecision("");
+                  }}
+                  period={period}
+                  moment={moment}
+                  onPeriod={(id) => {
+                    setPeriod(id);
+                    setError("");
+                    agendaTimer.cancel();
+                    setAgendaTitle(
+                      id === "improvise"
+                        ? fun.improvisedHeading
+                        : c.availabilityHeading,
+                    );
+                    if (id === "improvise")
+                      agendaTimer.schedule(
+                        () => setAgendaTitle(c.availabilityHeading),
+                        4000,
+                      );
+                    setDecision("");
+                  }}
+                  onMoment={(id) => {
+                    setMoment(id);
+                    setError("");
+                    setDecision("");
+                  }}
+                />
+              </Section>
+            </div>
+            <div className="journey-panel" hidden={step !== 3}>
+              <Section
+                number="03"
+                title={fun.science.heading}
+                intro={fun.science.intro}
+              >
+                <p className="optional-quiz">{journey.optionalQuiz}</p>
+                <CompatibilityTest onResult={setScience} />
+              </Section>
+              <details className="fine-print">
+                <summary>{journey.detailsLabel}</summary>
+                <Section
+                  number="04"
+                  title={c.parametersHeading}
+                  intro={c.parametersIntro}
+                >
+                  <div className="parameter-grid">
+                    {c.parameters.map((p) => {
+                      const Icon =
+                        (
+                          {
+                            shirt: Shirt,
+                            wallet: Wallet,
+                            clock: Clock3,
+                          } as Record<string, typeof Shirt>
+                        )[p.icon] ?? Sparkles;
+                      return (
+                        <div className="parameter" key={p.title}>
+                          <Icon size={20} strokeWidth={1.5} />
+                          <h3>{p.title}</h3>
+                          <p>{p.text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <SeriousnessGauge />
+                </Section>
+              </details>
+            </div>
+            <div className="journey-panel" hidden={step !== 4}>
+              <section className="final-section">
+                <span className="eyebrow">{c.finalEyebrow}</span>
+                <h2>{c.finalHeading}</h2>
+                <p className="final-intro">{c.finalIntro}</p>
+                <FinalDecision
+                  key="verdict"
+                  resolved={Boolean(decision && decision !== "lawyer")}
+                  onDecision={decide}
+                  error={error}
+                />
+                <div ref={resultRef}>
+                  <AnimatePresence>
+                    {decision && (
+                      <InvitationSummary
+                        key={`${decision}-${decisionRevision}`}
+                        selection={
+                          decision === "no" || decision === "lawyer"
+                            ? null
+                            : selection
+                        }
+                        decisionId={decision}
+                        onEdit={() => setDecision("")}
+                      />
+                    )}
+                  </AnimatePresence>
+                </div>
+                {decision === "yes" && !reduceMotion && (
+                  <div
+                    className="confetti"
+                    key={decisionRevision}
+                    aria-hidden="true"
+                  >
+                    {Array.from({ length: 18 }, (_, i) => (
+                      <motion.span
+                        key={i}
+                        initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
+                        animate={{
+                          x: (i - 8.5) * 28,
+                          y: -160 - (i % 4) * 35,
+                          opacity: 0,
+                          rotate: i * 45,
+                        }}
+                        transition={{ duration: 1.5, delay: (i % 3) * 0.05 }}
+                        style={{
+                          background: ["#745469", "#bc9b68", "#a8b49a"][i % 3],
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </section>
+            </div>
+            <div className="journey-navigation">
               <button
                 type="button"
                 className="text-button"
                 onClick={() => {
-                  setWithdrawReply(fun.withdrawReplies[0]);
-                  setActivityRevision((v) => v + 1);
-                  withdrawalTimer.schedule(
-                    () => setWithdrawReply(fun.withdrawReplies[1]),
-                    1000,
-                  );
+                  setDecision("");
+                  setStep((value) => value - 1);
                 }}
               >
-                {fun.withdrawLabel}
+                {journey.backLabel}
               </button>
-            )}
-          </div>
-          <MobileCompanions carTrips={carTrips} />
-        </Section>
-        <Section number="02" title={agendaTitle} intro={c.availabilityIntro}>
-          <AvailabilitySelector
-            period={period}
-            moment={moment}
-            onPeriod={(id) => {
-              setPeriod(id);
-              setError("");
-              agendaTimer.cancel();
-              setAgendaTitle(
-                id === "improvise"
-                  ? fun.improvisedHeading
-                  : c.availabilityHeading,
-              );
-              if (id === "improvise")
-                agendaTimer.schedule(
-                  () => setAgendaTitle(c.availabilityHeading),
-                  4000,
-                );
-              setDecision("");
-            }}
-            onMoment={(id) => {
-              setMoment(id);
-              setDecision("");
-            }}
-          />
-        </Section>
-        <Section
-          number="03"
-          title={fun.science.heading}
-          intro={fun.science.intro}
-        >
-          <CompatibilityTest onResult={setScience} />
-        </Section>
-        <Section
-          number="04"
-          title={c.parametersHeading}
-          intro={c.parametersIntro}
-        >
-          <div className="parameter-grid">
-            {c.parameters.map((p) => {
-              const Icon =
-                (
-                  { shirt: Shirt, wallet: Wallet, clock: Clock3 } as Record<
-                    string,
-                    typeof Shirt
-                  >
-                )[p.icon] ?? Sparkles;
-              return (
-                <div className="parameter" key={p.title}>
-                  <Icon size={20} strokeWidth={1.5} />
-                  <h3>{p.title}</h3>
-                  <p>{p.text}</p>
-                </div>
-              );
-            })}
-          </div>
-          <SeriousnessGauge />
-        </Section>
-        <section className="final-section">
-          <span className="eyebrow">{c.finalEyebrow}</span>
-          <h2>{c.finalHeading}</h2>
-          <p className="final-intro">{c.finalIntro}</p>
-          <FinalDecision
-            key={`${activityId}-${period}-${moment}`}
-            onDecision={decide}
-            error={error}
-          />
-          <div ref={resultRef}>
-            <AnimatePresence>
-              {decision && (
-                <InvitationSummary
-                  key={`${decision}-${decisionRevision}`}
-                  selection={
-                    decision === "no" || decision === "lawyer"
-                      ? null
-                      : selection
-                  }
-                  decisionId={decision}
-                  onEdit={() => setDecision("")}
-                />
+              {step < 4 && (
+                <button
+                  type="button"
+                  className="primary-button"
+                  onClick={() => setStep((value) => value + 1)}
+                >
+                  {journey.continueLabels[step - 1]}
+                  <ArrowUpRight size={17} />
+                </button>
               )}
-            </AnimatePresence>
-          </div>
-          {decision === "yes" && !reduceMotion && (
-            <div className="confetti" key={decisionRevision} aria-hidden="true">
-              {Array.from({ length: 18 }, (_, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
-                  animate={{
-                    x: (i - 8.5) * 28,
-                    y: -160 - (i % 4) * 35,
-                    opacity: 0,
-                    rotate: i * 45,
-                  }}
-                  transition={{ duration: 1.5, delay: (i % 3) * 0.05 }}
-                  style={{
-                    background: ["#745469", "#bc9b68", "#a8b49a"][i % 3],
-                  }}
-                />
-              ))}
             </div>
-          )}
-        </section>
+          </>
+        )}
       </main>
       <footer>
         <span className="brand footer-brand">

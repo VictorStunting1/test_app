@@ -15,6 +15,7 @@ export type ResponseSelection = {
   activity: Activity;
   period: string;
   moment: string;
+  date?: string;
   decision: string;
   decisionId: string;
   science?: ScienceResult;

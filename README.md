@@ -25,7 +25,9 @@ Arrêter le serveur de développement avant de lancer la compilation de producti
 
 Tout le contenu est dans `config/invitation.ts` : noms, titre, introduction, activités, réactions, disponibilités, paramètres, jauge, décisions, textes du récapitulatif et métadonnées de partage. `responseText` définit le message copié. Les icônes d’activité disponibles sont `glass`, `food`, `activity` et `surprise`. Garder des identifiants uniques et au moins une option de moment (l’option `any` est sélectionnée par défaut si présente, sinon la première). Les valeurs de la jauge sont des poids ; leur somme devrait être 100.
 
-Le choix d’une activité et d’une période est nécessaire pour accepter. « Pourquoi pas » reste disponible sans remplir le formulaire : c’est un intérêt prudent, sans confirmation. Les réponses d’attente et de refus restent accessibles sans remplir le formulaire. Un refus n’affiche aucun confetti. La copie nécessite un contexte HTTPS ou localhost ; si le navigateur la bloque, un champ permet de copier manuellement. Rien n’est transmis à Victor : il faut lui envoyer le texte soi-même.
+Le choix d’une activité et d’une période **ou d’un jour précis** est nécessaire pour accepter. Le moment est au choix : journée, soirée, aucune préférence. « Pourquoi pas » reste un intérêt prudent, sans confirmation. Le quiz n’apparaît qu’à la troisième étape et reste facultatif ; ses résultats restent dans le récapitulatif, sans alourdir le message envoyé.
+
+La réponse à envoyer est une phrase courte. **Envoyer ma réponse** ouvre le partage natif lorsqu’il est disponible (HTTPS et navigateur compatible). Les applications proposées dépendent du téléphone : Instagram peut ne pas accepter un partage de texte. Les alternatives **Copier**, **Par SMS** et **Par mail** restent disponibles ; elles ne nécessitent pas de backend. Le destinataire SMS/mail peut être prérempli via `journey.contact` dans `config/invitation.ts`, sinon il est choisi dans l’application de messagerie. Aucune coordonnée n’est inventée et aucun message n’est envoyé automatiquement. Si la copie est bloquée, un champ permet de copier manuellement.
 
 ## Structure
 
@@ -53,7 +55,7 @@ Pour publier cette version : importer `VictorStunting1/test_app` depuis GitHub d
 
 ## Interactions et humour
 
-Les variantes de réactions, questions, réponses, scores et easter eggs sont dans `interactions`, exporté depuis `config/invitation.ts`. Chaque réponse scientifique possède un poids : le score est 80 + la somme des poids choisis. Ce quiz est facultatif et ne bloque jamais une réponse. Le récapitulatif et le texte copié incluent le score et les réponses uniquement lorsque les trois questions sont remplies.
+Les variantes de réactions, questions, réponses, scores et easter eggs sont dans `interactions`, exporté depuis `config/invitation.ts`. Chaque réponse scientifique possède un poids : le score est 80 + la somme des poids choisis. Ce quiz est facultatif et ne bloque jamais une réponse. Le récapitulatif inclut le score uniquement lorsque les trois questions sont remplies. La réponse à partager reste courte, sans les détails du quiz.
 
 La jauge choisit aléatoirement une autre répartition parmi `statsVariants` (conserver au moins deux variantes dont les proportions totalisent 100). Les informations classifiées se réinitialisent après 3,5 secondes sans clic ; le titre d’agenda revient après 4 secondes ; le bouton avocat revient après 6 secondes sans clic. La plaisanterie sur la confiance dure une seconde et ne désactive aucune carte. Les minuteries sont annulées lors d’un nouveau choix ou du démontage des composants.
 
@@ -63,7 +65,9 @@ Les petits secrets sont le lien d’explication du hero, l’étoile du ticket, 
 
 La version mobile empile les cartes et les réponses, avec des boutons de 48 px minimum, des textes lisibles et les safe areas iOS. Tous les secrets fonctionnent au tap et au clavier. Les illustrations du cagou et de la voiture sont des SVG légers sans téléchargement d’image. La voiture ne traverse que sa zone réservée, dont la largeur est mesurée, et les confettis sont limités à leur propre conteneur.
 
-Un seul bouton **Non, je passe mon tour** refuse immédiatement, au tap ou au clavier, avec une petite animation discrète. Il ne se déplace pas et aucun deuxième bouton de refus n’est affiché. Le cagou est représenté par un escargot à coquille : au tap il se calme pendant 1,4 seconde, puis reprend un court mouvement. La voiture rouge se déclenche lorsque l’activité **Surprise** est sélectionnée ; elle n’a aucun bouton dédié. Les animations restent limitées et respectent la réduction des mouvements.
+Le parcours révèle une seule étape à la fois : activité → disponibilité → petits secrets facultatifs → verdict. Le retour en arrière conserve les choix et les réponses au quiz. Les petits caractères sont repliés dans un accordéon.
+
+Un seul bouton **Non, je passe mon tour** esquive trois fois, au tap ou au survol de la souris, dans son emplacement réservé au milieu des réponses. Ses petites phrases sont affichées sur le bouton. Il accepte ensuite normalement le refus ; au clavier il accepte immédiatement. Les déplacements tiennent compte de l’espace disponible et ne réinitialisent pas en revenant à une étape précédente. Le cagou est un escargot à coquille ; la voiture se déclenche en choisissant **Surprise**. Les animations respectent la réduction des mouvements.
 
 **Ça me chauffe** confirme le plan et affiche les confettis. **Pourquoi pas** ouvre un dossier « Une piste, pas encore un oui », avec des créneaux à discuter et un texte copié exprimant clairement l’hésitation. Avec « Pourquoi pas », rien n’est considéré comme confirmé.
 

@@ -3,12 +3,15 @@ import { useState } from "react";
 import { invitation, interactions } from "@/config/invitation";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { PlayfulNo } from "./PlayfulNo";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
 export function FinalDecision({
+  resolved,
   onDecision,
   error,
 }: {
+  resolved: boolean;
   onDecision: (id: string) => boolean;
   error: string;
 }) {
@@ -45,25 +48,25 @@ export function FinalDecision({
   }
   return (
     <>
-      <div className="decision-buttons">
-        {invitation.decisions.map((decision, index) => (
-          <motion.button
-            whileTap={
-              decision.id === "no"
-                ? { rotate: -2, scale: 0.98 }
-                : { scale: 0.98 }
-            }
-            type="button"
-            key={decision.id}
-            onClick={() => decide(decision.id)}
-            className={index === 0 ? "primary-button" : "secondary-button"}
-          >
-            {decision.id === "lawyer" && lawyerStep
-              ? interactions.verdict.lawyerButtons[lawyerStep - 1]
-              : decision.label}
-            {index === 0 && <ArrowUpRight size={18} />}
-          </motion.button>
-        ))}
+      <div className="decision-buttons" hidden={resolved}>
+        {invitation.decisions.map((decision, index) =>
+          decision.id === "no" ? (
+            <PlayfulNo key={decision.id} onRefuse={() => decide("no")} />
+          ) : (
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              type="button"
+              key={decision.id}
+              onClick={() => decide(decision.id)}
+              className={index === 0 ? "primary-button" : "secondary-button"}
+            >
+              {decision.id === "lawyer" && lawyerStep
+                ? interactions.verdict.lawyerButtons[lawyerStep - 1]
+                : decision.label}
+              {index === 0 && <ArrowUpRight size={18} />}
+            </motion.button>
+          ),
+        )}
       </div>
       <Reaction
         text={reaction}

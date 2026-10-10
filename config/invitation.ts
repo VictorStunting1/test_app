@@ -92,7 +92,7 @@ export const invitation = {
     },
   ] satisfies Choice[],
   moments: [
-    { id: "afternoon", label: "Après-midi" },
+    { id: "afternoon", label: "En journée" },
     { id: "evening", label: "Soirée" },
     { id: "any", label: "Aucune préférence" },
   ] satisfies Choice[],
@@ -145,7 +145,7 @@ export const invitation = {
   refusalNote:
     "Tout refus sera évidemment accepté, même si le comité sera profondément déçu pendant approximativement 12 secondes.",
   validationMessage:
-    "Choisis une activité et une période pour que le comité puisse remplir son dossier.",
+    "Choisis une activité et une période ou un jour précis pour confirmer le plan.",
   summaryTitle: "Bon bah… on dirait qu’on va devoir se voir.",
   pendingTitle: "Dossier transmis à ton avocat.",
   refusedTitle: "Réponse reçue, sans rancune.",
@@ -160,13 +160,19 @@ export const invitation = {
   footer: "Fait avec beaucoup trop de réflexion.",
   footerNote: "Aucune réponse n’est envoyée automatiquement.",
   responseText: (selection: ResponseSelection) => {
-    const tentative = selection.decisionId === "maybe";
-    const science = selection.science
-      ? `\nIndice scientifique : ${selection.science.score} % compatible\nRisque identifié : ${selection.science.risk}\n${selection.science.answers.map((a) => `${a.question} ${a.answer}`).join("\n")}`
-      : "";
-    return tentative
-      ? `Pourquoi pas 👀 Ça me tente, mais rien n’est confirmé.\nLa piste qui me plaît : ${selection.activity.label}\nCréneau à discuter : ${selection.period} / ${selection.moment}${science}\nOn en parle avant de fixer le plan ?`
-      : `Bon, j’ai étudié ton dossier beaucoup trop sérieusement.\nÇa me chauffe 🙂\nJe vote pour : ${selection.activity.label}\nPlutôt : ${selection.period} / ${selection.moment}${science}\nÀ toi de jouer 🙂`;
+    const when = [
+      selection.date
+        ? new Intl.DateTimeFormat("fr-FR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          }).format(new Date(`${selection.date}T12:00:00`))
+        : selection.period,
+      selection.moment,
+    ].join(" · ");
+    return selection.decisionId === "maybe"
+      ? `Pourquoi pas 👀 ${selection.activity.label}, ${when} ? Rien de confirmé, on en parle 🙂`
+      : `Ça me chauffe 🙂 ${selection.activity.label}, ${when}. À toi de jouer !`;
   },
 };
 
@@ -368,4 +374,32 @@ export const mobilePlay = {
   snailReply:
     "Le cagou avance doucement. Comme les grandes décisions, mais avec une coquille.",
   carReply: "Le comité arrive. Enfin, il cherche encore une place.",
+};
+
+export const journey = {
+  steps: ["Une idée", "Un créneau", "Les petits secrets", "Ton verdict"],
+  continueLabels: [
+    "Et côté agenda ?",
+    "Découvrir la suite",
+    "Donner mon verdict",
+  ],
+  backLabel: "Revenir en arrière",
+  optionalQuiz: "Tu peux répondre au test ou passer directement au verdict.",
+  dateLabel: "Un jour précis ?",
+  dateHint: "Facultatif. La période reste une bonne approximation.",
+  dateClear: "Peu importe le jour",
+  detailsLabel: "Les petits caractères (promis, rien de louche)",
+  noTeases: ["Pardon ?", "Léa, t’es sûre ?", "Fais pas la cagou."],
+  noFinished: "Bon, j’arrête de tricher.",
+  shareLabel: "Envoyer ma réponse",
+  shareHint:
+    "Choisis une application, puis ton destinataire. Tu confirmes l’envoi dans l’application.",
+  shareUnavailable:
+    "Le partage direct n’est pas disponible ici. Tu peux copier la réponse ou ouvrir SMS / mail.",
+  sharedLabel: "Réponse partagée.",
+  smsLabel: "Par SMS",
+  emailLabel: "Par mail",
+  // Facultatif : renseigner les coordonnées de Victor pour préremplir le destinataire.
+  contact: { phone: "", email: "" },
+  emailSubject: "Mon verdict très officiel",
 };
