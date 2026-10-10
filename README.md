@@ -23,9 +23,9 @@ Arrêter le serveur de développement avant de lancer la compilation de producti
 
 ## Personnaliser
 
-Tout le contenu est dans `config/invitation.ts` : noms, titre, introduction, activités, réactions, disponibilités, paramètres, jauge, décisions, textes du récapitulatif et métadonnées de partage. `responseText` définit le message copié. Les icônes d’activité disponibles sont `glass`, `food`, `activity` et `surprise`. Garder des identifiants uniques et au moins une option de moment (l’option `any` est sélectionnée par défaut si présente, sinon la première). Les valeurs de la jauge sont des poids ; leur somme devrait être 100.
+Tout le contenu est dans `config/invitation.ts` : noms, titre, introduction, activités, réactions, disponibilités, paramètres, jauge, décisions, textes du récapitulatif et métadonnées de partage. `responseText` définit le message copié. Les icônes d’activité disponibles sont `glass`, `food`, `activity` et `surprise`. Garder des identifiants uniques et au moins une option de moment. Aucun moment n’est présélectionné : « Aucune préférence » est un vrai choix. Les valeurs de la jauge sont des poids ; leur somme devrait être 100.
 
-Le choix d’une activité et d’une période **ou d’un jour précis** est nécessaire pour accepter. Le moment est au choix : journée, soirée, aucune préférence. « Pourquoi pas » reste un intérêt prudent, sans confirmation. Le quiz n’apparaît qu’à la troisième étape et reste facultatif ; ses résultats restent dans le récapitulatif, sans alourdir le message envoyé.
+Le parcours demande une activité, puis une période **ou un jour précis**, et un moment explicitement choisi : journée, début de soirée, soirée ou aucune préférence. Le bouton suivant reste désactivé avec une explication tant que ces choix ne sont pas faits. « Pourquoi pas » reste un intérêt prudent, sans confirmation. Le quiz se trouve dans un accordéon à la troisième étape et reste facultatif ; ses résultats restent dans le récapitulatif, sans alourdir le message envoyé.
 
 La réponse à envoyer est une phrase courte. **Envoyer ma réponse** ouvre le partage natif lorsqu’il est disponible (HTTPS et navigateur compatible). Les applications proposées dépendent du téléphone : Instagram peut ne pas accepter un partage de texte. Les alternatives **Copier**, **Par SMS** et **Par mail** restent disponibles ; elles ne nécessitent pas de backend. Le destinataire SMS/mail peut être prérempli via `journey.contact` dans `config/invitation.ts`, sinon il est choisi dans l’application de messagerie. Aucune coordonnée n’est inventée et aucun message n’est envoyé automatiquement. Si la copie est bloquée, un champ permet de copier manuellement.
 
@@ -65,10 +65,21 @@ Les petits secrets sont le lien d’explication du hero, l’étoile du ticket, 
 
 La version mobile empile les cartes et les réponses, avec des boutons de 48 px minimum, des textes lisibles et les safe areas iOS. Tous les secrets fonctionnent au tap et au clavier. Les illustrations du cagou et de la voiture sont des SVG légers sans téléchargement d’image. La voiture ne traverse que sa zone réservée, dont la largeur est mesurée, et les confettis sont limités à leur propre conteneur.
 
-Le parcours révèle une seule étape à la fois : activité → disponibilité → petits secrets facultatifs → verdict. Le retour en arrière conserve les choix et les réponses au quiz. Les petits caractères sont repliés dans un accordéon.
+Le parcours révèle une seule étape à la fois : activité → disponibilité → petits secrets facultatifs → verdict. Les étapes futures ne sont pas montées avant leur déverrouillage ; les étapes déjà visitées sont masquées avec `hidden` lors du retour. Elles ne prennent aucune place dans le scroll et leurs contrôles sont exclus du clavier et de l’arbre d’accessibilité. Le retour conserve les choix, les secrets et les réponses au quiz. Le footer apparaît seulement au verdict. Les petits caractères et le quiz sont repliés dans des accordéons.
 
 Un seul bouton **Non, je passe mon tour** esquive trois fois, au tap ou au survol de la souris, dans son emplacement réservé au milieu des réponses. Ses petites phrases sont affichées sur le bouton. Il accepte ensuite normalement le refus ; au clavier il accepte immédiatement. Les déplacements tiennent compte de l’espace disponible et ne réinitialisent pas en revenant à une étape précédente. Le cagou est un escargot à coquille ; la voiture se déclenche en choisissant **Surprise**. Les animations respectent la réduction des mouvements.
 
-**Ça me chauffe** confirme le plan et affiche les confettis. **Pourquoi pas** ouvre un dossier « Une piste, pas encore un oui », avec des créneaux à discuter et un texte copié exprimant clairement l’hésitation. Avec « Pourquoi pas », rien n’est considéré comme confirmé.
+**Allez, let’s go** confirme le plan et affiche les confettis. **Pourquoi pas** ouvre un dossier « Une piste, pas encore un oui », avec des créneaux à discuter et un texte copié exprimant clairement l’hésitation. Avec « Pourquoi pas », rien n’est considéré comme confirmé.
 
 Si Instagram ou Safari refuse l’accès au presse-papiers, le champ de texte permet de sélectionner et copier le verdict manuellement. Aucune réponse n’est envoyée automatiquement. Les tests mobiles utilisent des événements tactiles dans Chromium aux largeurs 320, 360, 375, 390 et 414 px ; cela ne remplace pas une vérification sur un téléphone réel dans Instagram et Safari.
+
+## Les références personnelles
+
+Les textes contextuels, les réactions de créneaux et les private jokes restent dans `config/invitation.ts` (`personal`, `interactions`, `journey`). Les illustrations légères du petit démon, de l’escargot et de la voiture sont des SVG dans les composants.
+
+- Au début : le verre proposé par Léa, les rumeurs sur « ce fameux verre » et le badge de plan bourbier, avec plusieurs réponses au tap.
+- Dans l’agenda : le faux bilan 12 % / 104 %, la flexibilité de Victor dès vendredi soir et l’analyse qui se révèle au clic.
+- Dans les secrets : le petit démon a quatre réactions ; le calcul douteux se déplie, puis avoue sa méthodologie ; l’archive de Lyon reste cachée avant le premier tap.
+- Après un oui : une courte séquence déclenche la voiture rouge, puis « Maintenant t’as plus le choix » est désamorcé **600 ms** après par « Enfin si. Mais ça cassait ma vanne. ». Le récapitulatif arrive ensuite. Un non a sa propre courte séquence, finit sur « Nan en vrai aucun souci :) » et affiche un escargot triste. Les temporisations sont annulées quand on quitte l’étape ou modifie la réponse.
+
+Le texte à copier reste une seule phrase utile, sans les private jokes ni le détail du quiz. Le partage et la copie restent des actions explicites.

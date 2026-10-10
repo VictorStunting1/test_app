@@ -14,9 +14,15 @@ import {
   invitation as c,
   interactions as fun,
   journey,
+  personal,
 } from "@/config/invitation";
 import { ActivityCard } from "./ActivityCard";
 import { AvailabilitySelector } from "./AvailabilitySelector";
+import {
+  ActivityPrelude,
+  AvailabilityBalance,
+  PersonalSecrets,
+} from "./PersonalSecrets";
 import { MobileCompanions } from "./MobileCompanions";
 import { SeriousnessGauge } from "./SeriousnessGauge";
 import { CompatibilityTest } from "./CompatibilityTest";
@@ -68,14 +74,14 @@ function Section({
 }
 export function Invitation() {
   const [step, setStep] = useState(0);
+  const [unlocked, setUnlocked] = useState(1);
+  const [summaryReady, setSummaryReady] = useState(false);
   const [date, setDate] = useState("");
   const journeyRef = useRef<HTMLDivElement>(null);
   const [carTrips, setCarTrips] = useState(0);
   const [activityId, setActivity] = useState("");
   const [period, setPeriod] = useState("");
-  const [moment, setMoment] = useState(
-    c.moments.find((item) => item.id === "any")?.id ?? c.moments[0]?.id ?? "",
-  );
+  const [moment, setMoment] = useState("");
   const [decision, setDecision] = useState("");
   const [error, setError] = useState("");
   const [whyClicks, setWhyClicks] = useState(0);
@@ -93,7 +99,7 @@ export function Invitation() {
   const reduceMotion = useReducedMotion();
   const activity = c.activities.find((a) => a.id === activityId);
   const selection: ResponseSelection | null =
-    activity && (period || date)
+    activity && (period || date) && moment
       ? {
           activity,
           decisionId: decision,
@@ -113,6 +119,25 @@ export function Invitation() {
     });
     journeyRef.current?.focus({ preventScroll: true });
   }, [step, reduceMotion]);
+  const canContinue =
+    step === 1
+      ? Boolean(activity)
+      : step === 2
+        ? Boolean((period || date) && moment)
+        : true;
+  const nextHint =
+    step === 1 ? personal.activityHint : personal.availabilityHint;
+  function showSummary() {
+    setSummaryReady(true);
+    scrollTimer.schedule(
+      () =>
+        resultRef.current?.scrollIntoView({
+          behavior: reduceMotion ? "instant" : "smooth",
+          block: "start",
+        }),
+      100,
+    );
+  }
   function decide(id: string) {
     if (id === "yes" && !selection) {
       setError(c.validationMessage);
@@ -121,14 +146,9 @@ export function Invitation() {
     setError("");
     setDecision(id);
     setDecisionRevision((v) => v + 1);
-    scrollTimer.schedule(
-      () =>
-        resultRef.current?.scrollIntoView({
-          behavior: reduceMotion ? "instant" : "smooth",
-          block: "center",
-        }),
-      100,
-    );
+    scrollTimer.cancel();
+    setSummaryReady(false);
+    if (id !== "yes" && id !== "no") showSummary();
     return true;
   }
   return (
@@ -239,6 +259,7 @@ export function Invitation() {
               </div>
             </div>
             <div className="journey-panel" hidden={step !== 1}>
+              <ActivityPrelude />
               <Section
                 number="01"
                 title={c.activityHeading}
@@ -289,185 +310,226 @@ export function Invitation() {
                 <MobileCompanions carTrips={carTrips} />
               </Section>
             </div>
-            <div className="journey-panel" hidden={step !== 2}>
-              <Section
-                number="02"
-                title={agendaTitle}
-                intro={c.availabilityIntro}
-              >
-                <AvailabilitySelector
-                  date={date}
-                  onDate={(value) => {
-                    setDate(value);
-                    setError("");
-                    setDecision("");
-                  }}
-                  period={period}
-                  moment={moment}
-                  onPeriod={(id) => {
-                    setPeriod(id);
-                    setError("");
-                    agendaTimer.cancel();
-                    setAgendaTitle(
-                      id === "improvise"
-                        ? fun.improvisedHeading
-                        : c.availabilityHeading,
-                    );
-                    if (id === "improvise")
-                      agendaTimer.schedule(
-                        () => setAgendaTitle(c.availabilityHeading),
-                        4000,
-                      );
-                    setDecision("");
-                  }}
-                  onMoment={(id) => {
-                    setMoment(id);
-                    setError("");
-                    setDecision("");
-                  }}
-                />
-              </Section>
-            </div>
-            <div className="journey-panel" hidden={step !== 3}>
-              <Section
-                number="03"
-                title={fun.science.heading}
-                intro={fun.science.intro}
-              >
-                <p className="optional-quiz">{journey.optionalQuiz}</p>
-                <CompatibilityTest onResult={setScience} />
-              </Section>
-              <details className="fine-print">
-                <summary>{journey.detailsLabel}</summary>
+            {unlocked >= 2 && (
+              <div className="journey-panel" hidden={step !== 2}>
                 <Section
-                  number="04"
-                  title={c.parametersHeading}
-                  intro={c.parametersIntro}
+                  number="02"
+                  title={agendaTitle}
+                  intro={c.availabilityIntro}
                 >
-                  <div className="parameter-grid">
-                    {c.parameters.map((p) => {
-                      const Icon =
-                        (
-                          {
-                            shirt: Shirt,
-                            wallet: Wallet,
-                            clock: Clock3,
-                          } as Record<string, typeof Shirt>
-                        )[p.icon] ?? Sparkles;
-                      return (
-                        <div className="parameter" key={p.title}>
-                          <Icon size={20} strokeWidth={1.5} />
-                          <h3>{p.title}</h3>
-                          <p>{p.text}</p>
-                        </div>
+                  <AvailabilityBalance />
+                  <AvailabilitySelector
+                    date={date}
+                    onDate={(value) => {
+                      setDate(value);
+                      setError("");
+                      setDecision("");
+                    }}
+                    period={period}
+                    moment={moment}
+                    onPeriod={(id) => {
+                      setPeriod(id);
+                      setError("");
+                      agendaTimer.cancel();
+                      setAgendaTitle(
+                        id === "improvise"
+                          ? fun.improvisedHeading
+                          : c.availabilityHeading,
                       );
-                    })}
-                  </div>
-                  <SeriousnessGauge />
+                      if (id === "improvise")
+                        agendaTimer.schedule(
+                          () => setAgendaTitle(c.availabilityHeading),
+                          4000,
+                        );
+                      setDecision("");
+                    }}
+                    onMoment={(id) => {
+                      setMoment(id);
+                      setError("");
+                      setDecision("");
+                    }}
+                  />
                 </Section>
-              </details>
-            </div>
-            <div className="journey-panel" hidden={step !== 4}>
-              <section className="final-section">
-                <span className="eyebrow">{c.finalEyebrow}</span>
-                <h2>{c.finalHeading}</h2>
-                <p className="final-intro">{c.finalIntro}</p>
-                <FinalDecision
-                  key="verdict"
-                  resolved={Boolean(decision && decision !== "lawyer")}
-                  onDecision={decide}
-                  error={error}
-                />
-                <div ref={resultRef}>
-                  <AnimatePresence>
-                    {decision && (
-                      <InvitationSummary
-                        key={`${decision}-${decisionRevision}`}
-                        selection={
-                          decision === "no" || decision === "lawyer"
-                            ? null
-                            : selection
-                        }
-                        decisionId={decision}
-                        onEdit={() => setDecision("")}
-                      />
-                    )}
-                  </AnimatePresence>
-                </div>
-                {decision === "yes" && !reduceMotion && (
-                  <div
-                    className="confetti"
-                    key={decisionRevision}
-                    aria-hidden="true"
+              </div>
+            )}
+            {unlocked >= 3 && (
+              <div className="journey-panel" hidden={step !== 3}>
+                <Section
+                  number="03"
+                  title={personal.heading}
+                  intro={personal.intro}
+                >
+                  <PersonalSecrets />
+                  <details className="fine-print optional-science">
+                    <summary>{personal.quizLabel}</summary>
+                    <p className="optional-quiz">{journey.optionalQuiz}</p>
+                    <CompatibilityTest onResult={setScience} />
+                  </details>
+                </Section>
+                <details className="fine-print">
+                  <summary>{journey.detailsLabel}</summary>
+                  <Section
+                    number="04"
+                    title={c.parametersHeading}
+                    intro={c.parametersIntro}
                   >
-                    {Array.from({ length: 18 }, (_, i) => (
-                      <motion.span
-                        key={i}
-                        initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
-                        animate={{
-                          x: (i - 8.5) * 28,
-                          y: -160 - (i % 4) * 35,
-                          opacity: 0,
-                          rotate: i * 45,
-                        }}
-                        transition={{ duration: 1.5, delay: (i % 3) * 0.05 }}
-                        style={{
-                          background: ["#745469", "#bc9b68", "#a8b49a"][i % 3],
-                        }}
-                      />
-                    ))}
+                    <div className="parameter-grid">
+                      {c.parameters.map((p) => {
+                        const Icon =
+                          (
+                            {
+                              shirt: Shirt,
+                              wallet: Wallet,
+                              clock: Clock3,
+                            } as Record<string, typeof Shirt>
+                          )[p.icon] ?? Sparkles;
+                        return (
+                          <div className="parameter" key={p.title}>
+                            <Icon size={20} strokeWidth={1.5} />
+                            <h3>{p.title}</h3>
+                            <p>{p.text}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <SeriousnessGauge />
+                  </Section>
+                </details>
+              </div>
+            )}
+            {unlocked >= 4 && (
+              <div className="journey-panel" hidden={step !== 4}>
+                <section className="final-section">
+                  <span className="eyebrow">{c.finalEyebrow}</span>
+                  <h2>{c.finalHeading}</h2>
+                  <p className="final-intro">{c.finalIntro}</p>
+                  <FinalDecision
+                    key="verdict"
+                    decisionId={decision}
+                    active={step === 4}
+                    onSequenceComplete={showSummary}
+                    resolved={Boolean(decision && decision !== "lawyer")}
+                    onDecision={decide}
+                    error={error}
+                  />
+                  <div ref={resultRef}>
+                    <AnimatePresence>
+                      {decision && summaryReady && (
+                        <InvitationSummary
+                          key={`${decision}-${decisionRevision}`}
+                          selection={
+                            decision === "no" || decision === "lawyer"
+                              ? null
+                              : selection
+                          }
+                          decisionId={decision}
+                          onEdit={() => {
+                            setDecision("");
+                            setSummaryReady(false);
+                          }}
+                        />
+                      )}
+                    </AnimatePresence>
                   </div>
-                )}
-              </section>
-            </div>
+                  {decision === "yes" && !reduceMotion && (
+                    <div
+                      className="confetti"
+                      key={decisionRevision}
+                      aria-hidden="true"
+                    >
+                      {Array.from({ length: 18 }, (_, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
+                          animate={{
+                            x: (i - 8.5) * 28,
+                            y: -160 - (i % 4) * 35,
+                            opacity: 0,
+                            rotate: i * 45,
+                          }}
+                          transition={{ duration: 1.5, delay: (i % 3) * 0.05 }}
+                          style={{
+                            background: ["#745469", "#bc9b68", "#a8b49a"][
+                              i % 3
+                            ],
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </section>
+              </div>
+            )}
             <div className="journey-navigation">
               <button
                 type="button"
                 className="text-button"
                 onClick={() => {
                   setDecision("");
+                  setSummaryReady(false);
+                  scrollTimer.cancel();
+                  setError("");
                   setStep((value) => value - 1);
                 }}
               >
                 {journey.backLabel}
               </button>
               {step < 4 && (
-                <button
-                  type="button"
-                  className="primary-button"
-                  onClick={() => setStep((value) => value + 1)}
-                >
-                  {journey.continueLabels[step - 1]}
-                  <ArrowUpRight size={17} />
-                </button>
+                <div className="journey-next">
+                  <button
+                    type="button"
+                    className="primary-button"
+                    disabled={!canContinue}
+                    aria-describedby={
+                      !canContinue ? "next-step-hint" : undefined
+                    }
+                    onClick={() => {
+                      if (!canContinue) return;
+                      setUnlocked((value) => Math.max(value, step + 1));
+                      setStep((value) => value + 1);
+                    }}
+                  >
+                    {journey.continueLabels[step - 1]}
+                    <ArrowUpRight size={17} />
+                  </button>
+                  {!canContinue && (
+                    <p id="next-step-hint" className="progress-hint">
+                      {nextHint}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </>
         )}
       </main>
-      <footer>
-        <span className="brand footer-brand">
-          <Sparkles size={14} />
-          {c.brand}
-        </span>
-        <button
-          type="button"
-          className="footer-secret"
-          onClick={() => setFooterClicks((v) => v + 1)}
-        >
-          {c.footer}
-        </button>
-        <Reaction
-          text={
-            footerClicks >= 3
-              ? fun.footerSecrets[footerClicks === 3 ? 0 : 1]
-              : ""
-          }
-          revision={footerClicks}
-          className="footer-reaction"
-        />
-        <p className="footer-note">{c.footerNote}</p>
-      </footer>
+      {step === 4 && (
+        <footer>
+          <span className="brand footer-brand">
+            <Sparkles size={14} />
+            {c.brand}
+          </span>
+          <button
+            type="button"
+            className="footer-secret"
+            onClick={() => setFooterClicks((v) => v + 1)}
+          >
+            {c.footer}
+          </button>
+          <Reaction
+            text={
+              footerClicks
+                ? fun.footerSecrets[
+                    (footerClicks - 1) % fun.footerSecrets.length
+                  ]
+                : ""
+            }
+            revision={footerClicks}
+            className="footer-reaction"
+          />
+          <p className="footer-note">{c.footerNote}</p>
+        </footer>
+      )}
     </div>
   );
 }

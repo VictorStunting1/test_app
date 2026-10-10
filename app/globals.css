@@ -1640,3 +1640,211 @@ button,
   justify-content: center;
   gap: 9px;
 }
+
+/* Personal jokes open only when their part of the conversation is reached. */
+.personal-prelude {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin: 6px 0 24px;
+  background: var(--paper);
+}
+.personal-prelude p,
+.agenda-balance p,
+.secret-card p,
+.lyon-archive p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.personal-prelude .personal-greeting {
+  color: var(--ink);
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+.personal-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.personal-badge {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 10px 14px;
+  color: var(--accent);
+  min-height: 44px;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.personal-badge:hover {
+  background: #ede6eb;
+}
+.personal-prelude .interactive-reaction:empty,
+.secret-card .interactive-reaction:empty,
+.lyon-archive .interactive-reaction:empty {
+  min-height: 0;
+  margin: 0;
+}
+.agenda-balance {
+  background: #f1edf0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.agenda-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 18px 0;
+}
+.agenda-comparison > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.agenda-comparison > div + div {
+  border-left: 1px solid var(--line);
+  padding-left: 18px;
+}
+.agenda-comparison strong {
+  font-weight: 500;
+  font-size: 15px;
+}
+.agenda-comparison span {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.agenda-comparison b {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--accent);
+}
+.agenda-balance .text-button {
+  margin-top: 6px;
+}
+.secret-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.secret-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+.demon-button {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 10px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #f1edf0;
+}
+.secret-card small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.math-card .text-button {
+  display: block;
+  text-align: left;
+  margin-top: 10px;
+}
+.dubious-equation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.dubious-equation i {
+  font-style: normal;
+  color: var(--accent);
+}
+.dubious-equation strong {
+  font-weight: 500;
+  color: var(--accent);
+}
+.lyon-archive {
+  margin: 20px 0;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+.lyon-archive > p {
+  margin-top: 12px;
+}
+.journey-next {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-width: 440px;
+}
+.journey-next .primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.progress-hint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  text-align: right;
+  margin-top: 10px;
+}
+.summary-snail {
+  display: inline-block;
+  margin: 12px 0 0;
+}
+.verdict-detail {
+  white-space: pre-line;
+}
+@media (max-width: 600px) {
+  .personal-prelude,
+  .agenda-balance,
+  .secret-card {
+    padding: 20px;
+  }
+  .personal-prelude .personal-greeting {
+    font-size: 16px;
+  }
+  .personal-prelude p,
+  .agenda-balance p,
+  .secret-card p,
+  .lyon-archive p {
+    font-size: 14px;
+  }
+  .personal-badge {
+    min-height: 48px;
+    font-size: 12px;
+    text-align: left;
+  }
+  .secret-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .agenda-comparison {
+    gap: 12px;
+  }
+  .agenda-comparison > div + div {
+    padding-left: 12px;
+  }
+  .journey-next {
+    width: 100%;
+    align-items: stretch;
+    max-width: none;
+  }
+  .progress-hint {
+    text-align: center;
+    font-size: 13px;
+  }
+}

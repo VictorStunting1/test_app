@@ -2,7 +2,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Copy, ArrowLeft, MessageCircle, Share2 } from "lucide-react";
-import { invitation, interactions, journey } from "@/config/invitation";
+import {
+  invitation,
+  interactions,
+  journey,
+  personal,
+} from "@/config/invitation";
+import { SnailIllustration } from "./SnailIllustration";
 import type { ResponseSelection } from "@/types/invitation";
 export function InvitationSummary({
   selection,
@@ -79,6 +85,11 @@ export function InvitationSummary({
               ? interactions.tentativeIntro
               : invitation.summaryIntro}
       </p>
+      {(decisionId === "yes" || decisionId === "no") && (
+        <span className="summary-snail" aria-hidden="true">
+          <SnailIllustration sad={decisionId === "no"} />
+        </span>
+      )}
       {selection && (
         <dl>
           {[
@@ -129,7 +140,7 @@ export function InvitationSummary({
         </dl>
       )}
       <div className="outgoing-message">
-        <span className="eyebrow">TA RÉPONSE, TOUT SIMPLEMENT</span>
+        <span className="eyebrow">{personal.messageLabel}</span>
         <p>{text}</p>
       </div>
       <button type="button" className="primary-button" onClick={share}>

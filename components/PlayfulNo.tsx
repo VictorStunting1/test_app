@@ -92,7 +92,7 @@ export function PlayfulNo({ onRefuse }: { onRefuse: () => void }) {
             ? journey.noFinished
             : attempts
               ? journey.noTeases[attempts - 1]
-              : "Le comité prépare sa petite esquive…"}
+              : journey.noInitial}
         </small>
       </motion.button>
     </div>

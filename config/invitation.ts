@@ -13,11 +13,11 @@ export const invitation = {
   badge: "À l’attention de",
   title: "Une proposition extrêmement sérieuse vient de t’être transmise.",
   intro:
-    "J’aurais pu envoyer « on se voit ? ».\nMais visiblement j’ai préféré développer un site.",
+    "Bon allez, on arrête de parler de ce verre comme d’un projet prévu pour 2028.\nC’était ton idée à la base. Je ne fais qu’assurer un suivi de projet extrêmement rigoureux.",
   artwork: {
     heading: "UNE BONNE IDÉE",
     lines: ["Toi.", "Moi."],
-    question: "On voit ?",
+    question: "Ce fameux verre ?",
     ticket: "ENTRÉE POUR DEUX",
     caption: "probabilité de passer un bon moment : élevée",
   },
@@ -25,7 +25,8 @@ export const invitation = {
   heroNote: "Pas de pression. Juste une bonne excuse pour se voir.",
   heroCta: "Étudier la proposition",
   activityHeading: "On fait quoi ?",
-  activityIntro: "Quatre pistes. Aucun mauvais choix. Enfin, normalement.",
+  activityIntro:
+    "Ce verre commence à devenir une légende urbaine. On garde l’idée ou on bifurque ?",
   voteLabel: "Je vote pour ça",
   selectedLabel: "Mon vote est posé",
   activities: [
@@ -37,8 +38,9 @@ export const invitation = {
       label: "Un verre",
       description:
         "Un verre quelque part, discussion tranquille et probablement quelques conneries racontées.",
-      reaction: "Classique. Efficace. Le comité valide.",
-      risk: "Risque de catastrophe : 8 %",
+      reaction:
+        "Retour à ton idée de départ. Des témoins affirment que ce verre pourrait réellement avoir lieu.",
+      risk: "Risque de bourbier : modéré",
     },
     {
       id: "food",
@@ -49,7 +51,7 @@ export const invitation = {
       description:
         "Avantage : si la conversation devient catastrophique, il reste toujours la nourriture.",
       reaction:
-        "Très bon choix. Difficile d’être de mauvaise humeur avec de la bouffe.",
+        "Un détour par la bouffe. Un plan bourbier avec des frites reste un plan acceptable.",
       risk: "Risque de voler une frite dans ton assiette : 73 %",
     },
     {
@@ -61,7 +63,7 @@ export const invitation = {
       description:
         "Bowling, billard, arcade… pour découvrir beaucoup trop rapidement notre esprit de compétition.",
       reaction:
-        "Ah. Donc on veut potentiellement découvrir qui est mauvais perdant.",
+        "Deux experts en galères, maintenant en compétition. Qu’est-ce qui pourrait mal se passer ?",
       risk: "Risque de mauvaise foi : 91 %",
     },
     {
@@ -72,14 +74,15 @@ export const invitation = {
       label: "Une surprise",
       description:
         "Tu me laisses choisir. Niveau de risque : raisonnablement douteux.",
-      reaction: "Attends… tu me fais vraiment confiance là ?",
+      reaction:
+        "Évidemment. Deux experts du plan bourbier ne pouvaient pas choisir autre chose.",
       risk: "Informations classifiées.",
       classified: true,
     },
   ] satisfies Activity[],
   availabilityHeading: "Et dans nos agendas ?",
   availabilityIntro:
-    "Une vague idée suffit. On n’organise pas un sommet international.",
+    "Vu que dès vendredi soir mon agenda devient étonnamment vide, je peux légèrement m’adapter au tien.",
   periodLabel: "LE BON CRÉNEAU",
   momentLabel: "PLUTÔT…",
   periods: [
@@ -93,6 +96,7 @@ export const invitation = {
   ] satisfies Choice[],
   moments: [
     { id: "afternoon", label: "En journée" },
+    { id: "early", label: "Début de soirée" },
     { id: "evening", label: "Soirée" },
     { id: "any", label: "Aucune préférence" },
   ] satisfies Choice[],
@@ -124,7 +128,7 @@ export const invitation = {
   finalHeading: "Alors, verdict ?",
   finalIntro: "Le comité attend ton avis. Avec un calme presque crédible.",
   decisions: [
-    { id: "yes", label: "Ça me chauffe", response: "Ça me chauffe 🙂" },
+    { id: "yes", label: "Allez, let’s go", response: "Allez, let’s go 🙂" },
     {
       id: "maybe",
       label: "Pourquoi pas 👀",
@@ -145,19 +149,19 @@ export const invitation = {
   refusalNote:
     "Tout refus sera évidemment accepté, même si le comité sera profondément déçu pendant approximativement 12 secondes.",
   validationMessage:
-    "Choisis une activité et une période ou un jour précis pour confirmer le plan.",
+    "Une activité, une période ou un jour précis, puis un moment : le dossier est prêt.",
   summaryTitle: "Bon bah… on dirait qu’on va devoir se voir.",
   pendingTitle: "Dossier transmis à ton avocat.",
   refusedTitle: "Réponse reçue, sans rancune.",
   summaryIntro:
-    "Terrible nouvelle pour nos agendas, excellente nouvelle pour nous.",
+    "Ce fameux verre se rapproche dangereusement de la réalité. On ajuste le créneau ensemble.",
   summaryLabels: ["Au programme", "Quand", "À quel moment"],
   copyLabel: "Copier mon verdict",
   copiedLabel: "Réponse copiée !",
   copyError:
     "Copie automatique indisponible : sélectionne le texte ci-dessous.",
   editLabel: "Modifier ma réponse",
-  footer: "Fait avec beaucoup trop de réflexion.",
+  footer: "Ce site aurait pu être un message de 8 mots.",
   footerNote: "Aucune réponse n’est envoyée automatiquement.",
   responseText: (selection: ResponseSelection) => {
     const when = [
@@ -172,7 +176,7 @@ export const invitation = {
     ].join(" · ");
     return selection.decisionId === "maybe"
       ? `Pourquoi pas 👀 ${selection.activity.label}, ${when} ? Rien de confirmé, on en parle 🙂`
-      : `Ça me chauffe 🙂 ${selection.activity.label}, ${when}. À toi de jouer !`;
+      : `Allez, let’s go 🙂 ${selection.activity.label}, ${when}. À toi de jouer !`;
   },
 };
 
@@ -180,10 +184,9 @@ export const invitation = {
 export const interactions = {
   whyLabel: "Pourquoi t’as fait tout ça ?",
   whyAnswers: [
-    "Excellente question.",
-    "J’aurais aimé avoir une excellente réponse.",
-    "Disons que le « salut ça va ? » n’était pas assez ambitieux.",
-    "Maintenant que t’es là, autant continuer.",
+    "Rappel historique : cette idée venait quand même de toi.",
+    "Je ne fais donc qu’assurer un suivi de projet extrêmement rigoureux.",
+    "Avec des moyens parfaitement disproportionnés, oui.",
   ],
   withdrawLabel: "Je retire ma confiance",
   withdrawReplies: [
@@ -201,15 +204,16 @@ export const interactions = {
     "Bon : probablement pas un enlèvement.",
   ],
   periodReactions: {
-    week: "Wow. Une personne organisée.",
-    weekend: "Choix raisonnable, étonnamment.",
-    next: "Nous avons donc affaire à quelqu’un qui anticipe.",
-    improvise: "Voilà. Enfin une méthode de planification que je comprends.",
+    week: "Ah ouais, efficacité maximale.",
+    weekend: "Très raisonnable. Presque inquiétant venant de nous.",
+    next: "On anticipe carrément maintenant ?",
+    improvise: "Voilà. Je nous reconnais mieux.",
   } as Record<string, string>,
   momentReactions: {
-    afternoon: "À la lumière du jour. Audacieux.",
-    evening: "La soirée est donc officiellement une piste.",
-    any: "Une flexibilité qui fera pleurer nos agendas.",
+    afternoon: "Version sage du projet.",
+    early: "Très bon compromis entre organisation et potentiel de connerie.",
+    evening: "Là ça commence à ressembler au fameux verre.",
+    any: "Traduction : trouvons juste un trou dans ton agenda.",
   } as Record<string, string>,
   improvisedHeading: "Bon bah visiblement, pas dans nos agendas.",
   science: {
@@ -227,7 +231,8 @@ export const interactions = {
           {
             id: "yes",
             label: "Évidemment",
-            reaction: "Green flag détecté.",
+            reaction:
+              "Le plan bourbier inclut donc un partage de frites. Ça se précise.",
             weight: 4,
             risk: "Vol de frites potentiel",
           },
@@ -266,7 +271,8 @@ export const interactions = {
           {
             id: "pretend",
             label: "Je fais semblant de savoir où je vais",
-            reaction: "Technique ancestrale. Très populaire chez les hommes.",
+            reaction:
+              "Notre talent commun pour les plans bourbiers vient de refaire surface.",
             weight: 2,
             risk: "Confiance excessive dans le sens de l’orientation",
           },
@@ -322,8 +328,9 @@ export const interactions = {
     "Les statistiques peuvent légèrement varier selon l’humeur du comité.",
   statsAction: "Recalculer le niveau de sérieux",
   footerSecrets: [
-    "Tu cherches vraiment tous les secrets du site toi.",
-    "Y’en a peut-être un autre 👀",
+    "Mais ça aurait été beaucoup moins drôle.",
+    "Et tu me connais.",
+    "Voilà.",
   ],
   starLabel: "Examiner le petit détail",
   starReply: "Bravo. Tu viens de gagner absolument rien.",
@@ -373,7 +380,7 @@ export const mobilePlay = {
   snailLabel: "Toucher le cagou escargot",
   snailReply:
     "Le cagou avance doucement. Comme les grandes décisions, mais avec une coquille.",
-  carReply: "Le comité arrive. Enfin, il cherche encore une place.",
+  carReply: "KA-CHOW. Départ vers un plan raisonnablement bancal.",
 };
 
 export const journey = {
@@ -384,13 +391,15 @@ export const journey = {
     "Donner mon verdict",
   ],
   backLabel: "Revenir en arrière",
-  optionalQuiz: "Tu peux répondre au test ou passer directement au verdict.",
+  optionalQuiz:
+    "Encore un test beaucoup trop élaboré. Tu peux parfaitement le passer.",
   dateLabel: "Un jour précis ?",
   dateHint: "Facultatif. La période reste une bonne approximation.",
   dateClear: "Peu importe le jour",
   detailsLabel: "Les petits caractères (promis, rien de louche)",
-  noTeases: ["Pardon ?", "Léa, t’es sûre ?", "Fais pas la cagou."],
-  noFinished: "Bon, j’arrête de tricher.",
+  noTeases: ["Ahhh non.", "Léa.", "Fais pas la cagou."],
+  noFinished: "Bon ok j’arrête de tricher.",
+  noInitial: "Le comité prépare sa petite esquive…",
   shareLabel: "Envoyer ma réponse",
   shareHint:
     "Choisis une application, puis ton destinataire. Tu confirmes l’envoi dans l’application.",
@@ -402,4 +411,103 @@ export const journey = {
   // Facultatif : renseigner les coordonnées de Victor pour préremplir le destinataire.
   contact: { phone: "", email: "" },
   emailSubject: "Mon verdict très officiel",
+};
+
+// Les private jokes sont révélées dans leur contexte, jamais toutes ensemble.
+export const personal = {
+  arrival: [
+    "Ahhh t’as 5 minutes ? Ça tombe bien :)",
+    "J’ai justement développé un site beaucoup trop élaboré pour te prendre environ 30 secondes.",
+  ],
+  glassLabel: "ce fameux verre",
+  glassReplies: [
+    "Des rumeurs circulent.",
+    "Il existerait réellement.",
+    "Reste encore à l’observer dans son habitat naturel.",
+  ],
+  bourbierLabel: "Plan certifié raisonnablement bancal",
+  bourbierReplies: [
+    "J’essaye vraiment de faire un plan normal pour une fois.",
+    "Ne rigole pas.",
+  ],
+  agenda: {
+    heading: "ÉTAT ACTUEL DES DISPONIBILITÉS",
+    recipient: "agenda de ministre",
+    recipientValue: "12 %",
+    sender: "dès vendredi soir · flexibilité premium",
+    senderValue: "104 %",
+    note: "Avantage du chômage temporaire : j’ai officiellement beaucoup trop de temps.",
+    analysisLabel: "Voir l’analyse scientifique",
+    analysis: "On devrait statistiquement réussir à trouver 1 heure.",
+    aside:
+      "Le principal obstacle logistique vient d’être identifié. Je ne citerai personne.",
+  },
+  heading: "Deux experts. Un plan normal.",
+  intro:
+    "Vu nos talents respectifs, le défi n’est pas de boire un verre. C’est d’y arriver sans transformer ça en plan bourbier.",
+  demonLabel: "Toucher le petit démon de Léa",
+  demonCaption: "Petit démon : non convié.",
+  demonReplies: [
+    "Ah lui.",
+    "Il te lâche vraiment jamais.",
+    "Pour une fois tu peux le laisser à la maison.",
+    "Le verre est garanti sans emmerdes.*",
+  ],
+  demonFootnote: "*garantie absolument non contractuelle.",
+  mathLabel: "Les maths sont formelles.",
+  mathHeading: "CALCUL SCIENTIFIQUE",
+  mathTerms: [
+    "Ton talent pour les galères",
+    "mon talent pour les plans bourbiers",
+    "un verre",
+  ],
+  mathResult: "soirée statistiquement intéressante",
+  mathReply: "Je n’ai absolument pas vérifié les maths.",
+  lyonLabel: "Ouvrir une archive du comité",
+  lyonIntro:
+    "Promis, cette fois l’objectif n’est pas de finir à errer dans Lyon à une heure douteuse.",
+  lyonReplies: [
+    "Je maintiens que j’avais la situation sous contrôle.",
+    "Plus ou moins.",
+    "Bon changeons de sujet.",
+  ],
+  quizLabel: "Passer le contrôle scientifique (facultatif)",
+  activityHint: "Choisis une piste pour ouvrir l’agenda.",
+  availabilityHint:
+    "Choisis une période ou un jour précis, puis un moment. « Aucune préférence » compte aussi.",
+  messageLabel: "TA RÉPONSE, TOUT SIMPLEMENT",
+  yesSequence: [
+    { at: 0, text: "Voilà.", detail: "" },
+    { at: 650, text: "Après tout ce site, heureusement.", detail: "" },
+    { at: 1400, text: "KA-CHOW.", detail: "", car: true },
+    {
+      at: 2800,
+      text: "Bon bah voilà. Maintenant t’as plus le choix.",
+      detail: "",
+    },
+    {
+      at: 3400,
+      text: "Bon bah voilà. Maintenant t’as plus le choix.",
+      detail: "Enfin si. Mais ça cassait ma vanne.",
+    },
+    {
+      at: 4600,
+      text: "Bon maintenant reste juste à faire le truc le plus compliqué :",
+      detail: "trouver un créneau dans ton agenda.",
+    },
+  ],
+  noSequence: [
+    { at: 0, text: "Ah.", detail: "" },
+    {
+      at: 650,
+      text: "Bon bah mon suivi de projet vient de prendre un coup.",
+      detail: "",
+    },
+    {
+      at: 1300,
+      text: "Je vais faire comme si je n’avais pas développé un site entier.",
+      detail: "",
+    },
+    { at: 2100, text: "Nan en vrai aucun souci :)", detail: "" },
+  ],
 };

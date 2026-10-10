@@ -1,17 +1,24 @@
 "use client";
-import { useState } from "react";
-import { invitation, interactions } from "@/config/invitation";
+import { useEffect, useRef, useState } from "react";
+import { invitation, interactions, personal } from "@/config/invitation";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { PlayfulNo } from "./PlayfulNo";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
+import { CarPass } from "./CarPass";
 export function FinalDecision({
   resolved,
+  decisionId,
+  active,
+  onSequenceComplete,
   onDecision,
   error,
 }: {
   resolved: boolean;
+  decisionId: string;
+  active: boolean;
+  onSequenceComplete: () => void;
   onDecision: (id: string) => boolean;
   error: string;
 }) {
@@ -19,7 +26,42 @@ export function FinalDecision({
   const [reaction, setReaction] = useState("");
   const [detail, setDetail] = useState("");
   const [revision, setRevision] = useState(0);
+  const [car, setCar] = useState(false);
+  const complete = useRef(onSequenceComplete);
+  complete.current = onSequenceComplete;
   const { schedule, cancel } = useDelayedAction();
+  useEffect(() => {
+    setCar(false);
+    if (!active || !decisionId) {
+      cancel();
+      setLawyerStep(0);
+      setReaction("");
+      setDetail("");
+      return;
+    }
+    if (decisionId !== "yes" && decisionId !== "no") return;
+    const sequence: readonly {
+      at: number;
+      text: string;
+      detail: string;
+      car?: boolean;
+    }[] = decisionId === "yes" ? personal.yesSequence : personal.noSequence;
+    const timers = sequence.map((frame) =>
+      setTimeout(() => {
+        setReaction(frame.text);
+        setDetail(frame.detail);
+        // Keep the car mounted until the sequence ends, so it finishes crossing.
+        if (frame.car) setCar(true);
+      }, frame.at),
+    );
+    timers.push(
+      setTimeout(
+        () => complete.current(),
+        Math.max(0, ...sequence.map((frame) => frame.at)) + 600,
+      ),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [decisionId, active, revision, cancel]);
   function decide(id: string) {
     if (!onDecision(id)) {
       cancel();
@@ -31,15 +73,7 @@ export function FinalDecision({
     setRevision((v) => v + 1);
     setDetail("");
     if (id !== "lawyer") setLawyerStep(0);
-    if (id === "yes") {
-      setReaction(interactions.verdict.yes[0]);
-      schedule(() => setDetail(interactions.verdict.yes[1]), 450);
-    }
     if (id === "maybe") setReaction(interactions.verdict.maybe);
-    if (id === "no") {
-      setReaction(interactions.verdict.no[0]);
-      setDetail(interactions.verdict.no[1]);
-    }
     if (id === "lawyer") {
       setReaction(interactions.verdict.lawyer[lawyerStep]);
       setLawyerStep((step) => (step + 1) % 3);
@@ -69,6 +103,7 @@ export function FinalDecision({
         )}
       </div>
       <Reaction
+        immediate
         text={reaction}
         revision={revision}
         className="verdict-reaction"
@@ -78,6 +113,7 @@ export function FinalDecision({
           {detail}
         </p>
       )}
+      {car && <CarPass trips={revision} />}
       {error && (
         <p role="alert" className="form-error">
           {error}
