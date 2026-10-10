@@ -1,7 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Check, Copy, ArrowLeft, MessageCircle, Share2 } from "lucide-react";
+import {
+  Check,
+  Copy,
+  ArrowLeft,
+  MessageCircle,
+  Share2,
+  Hourglass,
+} from "lucide-react";
 import {
   invitation,
   interactions,
@@ -66,7 +73,13 @@ export function InvitationSummary({
       aria-live="polite"
     >
       <span className="summary-check">
-        {decisionId === "maybe" ? <MessageCircle /> : <Check />}
+        {decisionId === "maybe" ? (
+          <MessageCircle />
+        ) : decisionId === "lawyer" ? (
+          <Hourglass />
+        ) : (
+          <Check />
+        )}
       </span>
       <h2>
         {decisionId === "no"

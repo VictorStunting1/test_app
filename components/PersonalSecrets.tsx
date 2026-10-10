@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Compass, Wine } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { invitation, personal } from "@/config/invitation";
 import { Reaction } from "./Reaction";
@@ -25,7 +26,7 @@ export function ActivityPrelude() {
           }}
         >
           <span className="badge-visual" aria-hidden="true">
-            {personal.glassEmoji}
+            <Wine size={18} />
           </span>
           <span>{personal.glassLabel}</span>
         </button>
@@ -39,7 +40,7 @@ export function ActivityPrelude() {
           }}
         >
           <span className="badge-visual" aria-hidden="true">
-            {personal.bourbierEmoji}
+            <Compass size={18} />
           </span>
           <span>{personal.bourbierLabel}</span>
         </button>

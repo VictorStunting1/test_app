@@ -3,6 +3,7 @@ import type {
   Choice,
   ResponseSelection,
   SnailMood,
+  VerdictFrame,
 } from "@/types/invitation";
 
 // Temps de lecture entre les réactions de verdict, en millisecondes.
@@ -12,12 +13,12 @@ export const invitation = {
   recipientName: "Léa",
   senderName: "Victor",
   metadata: {
-    title: "Une proposition · Victor → Léa",
+    title: "Le fameux verre",
     description:
-      "Une invitation très sérieusement pas sérieuse. À toi de choisir la suite.",
+      "Une méthode beaucoup trop élaborée pour réussir à boire ce fameux verre.",
   },
-  brand: "le comité des bonnes idées",
-  dossier: "INVITATION N° 001",
+  brand: "le bureau du fameux verre",
+  dossier: "MISSION : TROUVER UN CRÉNEAU",
   badge: "À l’attention de",
   title: "Une proposition extrêmement sérieuse vient de t’être transmise.",
   intro:
@@ -136,7 +137,7 @@ export const invitation = {
   finalHeading: "Alors, verdict ?",
   finalIntro: "Le comité attend ton avis. Avec un calme presque crédible.",
   decisions: [
-    { id: "yes", label: "Allez, let’s go", response: "Allez, let’s go 🙂" },
+    { id: "yes", label: "Allez, vas-y", response: "Allez, vas-y 😄" },
     {
       id: "maybe",
       label: "Pourquoi pas 👀",
@@ -145,12 +146,12 @@ export const invitation = {
     },
     {
       id: "lawyer",
-      label: "Je demande à mon avocat",
-      response: "Je demande à mon avocat avant de me prononcer.",
+      label: "Laisse-moi réfléchir 3 minutes",
+      response: "Je prends un peu de temps pour réfléchir, je te redis.",
     },
     {
       id: "no",
-      label: "Non, je passe mon tour",
+      label: "Non (si j’y arrive)",
       response: "Merci pour la proposition, mais je passe mon tour.",
     },
   ],
@@ -159,7 +160,7 @@ export const invitation = {
   validationMessage:
     "Une activité, une période ou un jour précis, puis un moment : le dossier est prêt.",
   summaryTitle: "Bon bah… on dirait qu’on va devoir se voir.",
-  pendingTitle: "Dossier transmis à ton avocat.",
+  pendingTitle: "Dossier en réflexion.",
   refusedTitle: "Réponse reçue, sans rancune.",
   summaryIntro:
     "Ce fameux verre se rapproche dangereusement de la réalité. On ajuste le créneau ensemble.",
@@ -183,8 +184,8 @@ export const invitation = {
       selection.moment,
     ].join(" · ");
     return selection.decisionId === "maybe"
-      ? `Pourquoi pas 👀 ${selection.activity.label}, ${when} ? Rien de confirmé, on en parle 🙂`
-      : `Allez, let’s go 🙂 ${selection.activity.label}, ${when}. À toi de jouer !`;
+      ? `Pourquoi pas 👀 ${selection.activity.label}, ${when} ? Rien de confirmé, on en parle.`
+      : `Allez, vas-y 😄 ${selection.activity.label}, ${when}. À toi de jouer !`;
   },
 };
 
@@ -342,27 +343,6 @@ export const interactions = {
   ],
   starLabel: "Examiner le petit détail",
   starReply: "Bravo. Tu viens de gagner absolument rien.",
-  verdict: {
-    yes: [
-      "LE COMITÉ EST EN JOIE.",
-      "Enfin… de manière très professionnelle évidemment.",
-    ],
-    maybe:
-      "Le comité note un intérêt prudent. Il range les confettis et attend la suite.",
-    lawyer: [
-      "Très bien.",
-      "Ton avocat a l’air chiant.",
-      "Deuxième avis : tu restes évidemment libre de décider.",
-    ],
-    lawyerButtons: [
-      "Mon avocat déconseille cette sortie",
-      "Demander un deuxième avis",
-    ],
-    no: [
-      "Compréhensible. Le comité accepte sa défaite avec une dignité remarquable.",
-      "Il va maintenant regarder par la fenêtre pendant environ 11 secondes.",
-    ],
-  },
   summary: {
     plan: "PLAN RETENU",
     organisation: "ORGANISATION",
@@ -405,8 +385,8 @@ export const journey = {
   dateHint: "Facultatif. La période reste une bonne approximation.",
   dateClear: "Peu importe le jour",
   detailsLabel: "Les petits caractères (promis, rien de louche)",
-  noTeases: ["Ahhh non.", "Léa.", "Fais pas la cagou."],
-  noFinished: "Bon ok j’arrête de tricher.",
+  noTeases: ["Ahhh non 😂", "Léa.", "Fais pas la cagou 🤣"],
+  noFinished: "Bon ok, j’arrête de tricher 🙃",
   noInitial: "Le comité prépare sa petite esquive…",
   shareLabel: "Envoyer ma réponse",
   shareHint:
@@ -423,16 +403,14 @@ export const personal = {
     "J’ai justement développé un site beaucoup trop élaboré pour te prendre environ 30 secondes.",
   ],
   glassLabel: "ce fameux verre",
-  glassEmoji: "🍸",
   glassReplies: [
     "Des rumeurs circulent.",
-    "Il existerait réellement.",
+    "Cette légende urbaine pourrait vraiment devenir réelle 😄",
     "Reste encore à l’observer dans son habitat naturel.",
   ],
   bourbierLabel: "Plan certifié raisonnablement bancal",
-  bourbierEmoji: "🧭",
   bourbierReplies: [
-    "J’essaye vraiment de faire un plan normal pour une fois.",
+    "Deux experts du plan bourbier. Qu’est-ce qui pourrait mal se passer ? 🙃",
     "Ne rigole pas.",
   ],
   agenda: {
@@ -451,7 +429,7 @@ export const personal = {
   intro:
     "Vu nos talents respectifs, le défi n’est pas de boire un verre. C’est d’y arriver sans transformer ça en plan bourbier.",
   demonLabel: "Toucher le petit démon de Léa",
-  demonCaption: "Petit démon : non convié.",
+  demonCaption: "Ton petit démon n’est pas convié aujourd’hui.",
   demonReplies: [
     "Ah lui.",
     "Il te lâche vraiment jamais.",
@@ -472,7 +450,7 @@ export const personal = {
   lyonIntro:
     "Promis, cette fois l’objectif n’est pas de finir à errer dans Lyon à une heure douteuse.",
   lyonReplies: [
-    "Je maintiens que j’avais la situation sous contrôle.",
+    "Je maintiens que Lyon était sous contrôle 😂",
     "Plus ou moins.",
     "Bon changeons de sujet.",
   ],
@@ -492,7 +470,7 @@ export const personal = {
     {
       decisionId: "lawyer",
       mood: "hopeful",
-      label: "Le cagou attend le deuxième avis, les mains jointes.",
+      label: "Le cagou réfléchit, les mains jointes.",
     },
     {
       decisionId: "no",
@@ -500,37 +478,58 @@ export const personal = {
       label: "Le cagou est triste, mais accepte le refus.",
     },
   ] satisfies { decisionId: string; mood: SnailMood; label: string }[],
+  thinkingTimerLabel: "Chrono mental · parfaitement fictif",
+  thinkingTimerDisplay: "03:00",
   yesSequence: [
-    { at: 0, text: "Voilà.", detail: "" },
+    { at: 0, text: "Voilà 😂", detail: "" },
     {
       at: verdictReadingMs,
-      text: "Après tout ce site, heureusement.",
+      text: "C’était quand même l’objectif de tout ce site.",
       detail: "",
-    },
-    { at: verdictReadingMs * 2, text: "KA-CHOW.", detail: "", car: true },
-    {
-      at: verdictReadingMs * 3,
-      text: "Bon bah voilà. Maintenant t’as plus le choix.",
-      detail: "",
+      car: true,
     },
     {
-      // On désamorce toujours cette vanne rapidement.
+      at: verdictReadingMs * 2,
+      text: "Maintenant t’as plus le choix.",
+      detail: "",
+    },
+    {
+      // On désamorce cette vanne rapidement, puis on laisse le temps de lire.
+      at: verdictReadingMs * 2 + 600,
+      text: "Maintenant t’as plus le choix.",
+      detail: "Enfin si 🙃",
+    },
+    {
       at: verdictReadingMs * 3 + 600,
-      text: "Bon bah voilà. Maintenant t’as plus le choix.",
-      detail: "Enfin si. Mais ça cassait ma vanne.",
+      text: "Mais laisse-moi ma vanne.",
+      detail: "",
     },
+  ] satisfies VerdictFrame[],
+  maybeSequence: [
+    { at: 0, text: "Hmm 👀", detail: "" },
+    { at: verdictReadingMs, text: "Je note un intérêt prudent.", detail: "" },
     {
-      at: verdictReadingMs * 4 + 600,
-      text: "Bon maintenant reste juste à faire le truc le plus compliqué :",
-      detail: "trouver un créneau dans ton agenda.",
+      at: verdictReadingMs * 2,
+      text: "C’est suffisamment proche d’un oui pour que je sois content 😄",
+      detail: "",
     },
-  ],
+  ] satisfies VerdictFrame[],
+  thinkingSequence: [
+    { at: 0, text: "3 minutes ?", detail: "" },
+    { at: verdictReadingMs, text: "Très précis.", detail: "" },
+    {
+      at: verdictReadingMs * 2,
+      text: "Je lance le chrono mentalement 😂",
+      detail: "",
+      thinkingTimer: true,
+    },
+  ] satisfies VerdictFrame[],
   // Le dernier message a aussi son temps de lecture avant le récapitulatif.
   noSequence: [
     { at: 0, text: "Ah.", detail: "" },
     {
       at: verdictReadingMs,
-      text: "Bon bah mon suivi de projet vient de prendre un coup.",
+      text: "Bon bah mon suivi de projet vient de prendre un coup 😞",
       detail: "",
     },
     {
@@ -543,5 +542,5 @@ export const personal = {
       text: "Nan en vrai aucun souci :)",
       detail: "",
     },
-  ],
+  ] satisfies VerdictFrame[],
 };

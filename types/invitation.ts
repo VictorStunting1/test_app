@@ -40,3 +40,11 @@ export type ScienceResult = {
 };
 
 export type SnailMood = "neutral" | "happy" | "skeptical" | "hopeful" | "sad";
+
+export type VerdictFrame = {
+  at: number;
+  text: string;
+  detail: string;
+  car?: boolean;
+  thinkingTimer?: boolean;
+};

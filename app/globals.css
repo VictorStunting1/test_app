@@ -1863,3 +1863,19 @@ button,
   line-height: 1;
   flex-shrink: 0;
 }
+.thinking-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px auto;
+  color: var(--accent);
+  font-size: 12px;
+}
+.thinking-timer > span:first-child {
+  display: inline-flex;
+}
+.thinking-timer strong {
+  font-variant-numeric: tabular-nums;
+}
