@@ -13,9 +13,8 @@ export type Activity = {
 export type Choice = { id: string; label: string };
 export type ResponseSelection = {
   activity: Activity;
-  period: string;
   moment: string;
-  date?: string;
+  date: string;
   decision: string;
   decisionId: string;
   science?: ScienceResult;
@@ -52,7 +51,6 @@ export type VerdictFrame = {
 export type ScienceChoices = Record<string, string>;
 export type SeriousnessChoices = {
   activityId: string;
-  periodId: string;
   momentId: string;
   date: string;
   scienceAnswers: ScienceChoices;
@@ -71,7 +69,6 @@ export type SeriousnessRules = {
   base: SeriousnessWeights;
   preciseDate: Partial<SeriousnessWeights>;
   activities: Record<string, Partial<SeriousnessWeights>>;
-  periods: Record<string, Partial<SeriousnessWeights>>;
   moments: Record<string, Partial<SeriousnessWeights>>;
   science: Record<string, Record<string, Partial<SeriousnessWeights>>>;
   prudentAnswers: { questionId: string; answerId: string }[];

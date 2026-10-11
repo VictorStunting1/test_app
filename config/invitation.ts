@@ -93,16 +93,7 @@ export const invitation = {
   availabilityHeading: "Et dans nos agendas ?",
   availabilityIntro:
     "Disponible à partir du vendredi 16 octobre au soir. Après ça, mon agenda devient étonnamment flexible.",
-  periodLabel: "LE BON CRÉNEAU",
   momentLabel: "PLUTÔT…",
-  periods: [
-    { id: "weekend", label: "Ce week-end" },
-    { id: "next", label: "Semaine prochaine" },
-    {
-      id: "improvise",
-      label: "On improvisera comme des adultes pas organisés",
-    },
-  ] satisfies Choice[],
   moments: [
     { id: "afternoon", label: "En journée" },
     { id: "early", label: "Début de soirée" },
@@ -145,10 +136,8 @@ export const invitation = {
       response: "Merci pour la proposition, mais je passe mon tour.",
     },
   ],
-  refusalNote:
-    "Tout refus sera évidemment accepté, même si le comité sera profondément déçu pendant approximativement 12 secondes.",
   validationMessage:
-    "Une activité, une période ou un jour précis, puis un moment : le dossier est prêt.",
+    "Une activité, un jour précis, puis un moment : le dossier est prêt.",
   summaryTitle: "Bon bah… on dirait qu’on va devoir se voir.",
   pendingTitle: "Dossier en réflexion.",
   refusedTitle: "Réponse reçue, sans rancune.",
@@ -164,13 +153,11 @@ export const invitation = {
   footerNote: "Aucune réponse n’est envoyée automatiquement.",
   responseText: (selection: ResponseSelection) => {
     const when = [
-      selection.date
-        ? new Intl.DateTimeFormat("fr-FR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-          }).format(new Date(`${selection.date}T12:00:00`))
-        : selection.period,
+      new Intl.DateTimeFormat("fr-FR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      }).format(new Date(`${selection.date}T12:00:00`)),
       selection.moment,
     ].join(" · ");
     return selection.decisionId === "maybe"
@@ -206,18 +193,12 @@ export const interactions = {
     "J’ai dit classifié.",
     "Bon : probablement pas un enlèvement.",
   ],
-  periodReactions: {
-    weekend: "Très raisonnable. Presque inquiétant venant de nous.",
-    next: "On anticipe carrément maintenant ?",
-    improvise: "Voilà. Je nous reconnais mieux.",
-  } as Record<string, string>,
   momentReactions: {
     afternoon: "Version sage du projet.",
     early: "Très bon compromis entre organisation et potentiel de connerie.",
     evening: "Là ça commence à ressembler au fameux verre.",
     any: "Traduction : trouvons juste un trou dans ton agenda.",
   } as Record<string, string>,
-  improvisedHeading: "Bon bah visiblement, pas dans nos agendas.",
   science: {
     heading: "Test scientifique extrêmement fiable",
     intro: "Avant de continuer, quelques vérifications essentielles.",
@@ -377,7 +358,6 @@ export const interactions = {
     risk: "RISQUE IDENTIFIÉ",
     answers: "PIÈCES SCIENTIFIQUES DU DOSSIER",
     compatible: "compatible",
-    improvise: "Improvisation totale",
   },
   tentativeTitle: "Une piste, pas encore un oui.",
   tentativeIntro:
@@ -408,8 +388,7 @@ export const journey = {
   optionalQuiz:
     "Encore un test beaucoup trop élaboré. Tu peux parfaitement le passer.",
   dateLabel: "Un jour précis ?",
-  dateHint: "Une date précise ou un créneau large : comme tu préfères.",
-  dateClear: "Franchement, peu importe 😂",
+  dateHint: "Choisis un jour dans le calendrier, puis le moment qui t’arrange.",
   detailsLabel: "Deux trois précisions",
   noTeases: ["Ahhh non 😂", "Léa.", "Fais pas la cagou 🤣"],
   noFinished: "Bon ok, j’arrête de tricher 🙃",
@@ -483,7 +462,7 @@ export const personal = {
   quizLabel: "Passer le contrôle scientifique (facultatif)",
   activityHint: "Choisis une piste pour ouvrir l’agenda.",
   availabilityHint:
-    "Choisis une période ou un jour précis, puis un moment. « Aucune préférence » compte aussi.",
+    "Choisis un jour dans le calendrier, puis un moment. « Aucune préférence » compte aussi.",
   messageLabel: "TA RÉPONSE, TOUT SIMPLEMENT",
   readingMs: verdictReadingMs,
   verdictSnails: [
@@ -580,10 +559,6 @@ export const availability = {
   earliestHint:
     "Le vendredi 16 : soirée uniquement. Les autres jours, tu choisis.",
   dateReaction: "Un vrai jour dans le calendrier. Le cagou se tient prêt 😄",
-  flexibleId: "anyday",
-  flexibleSummary: "Un jour à caler ensemble",
-  flexibleReaction: "Très bien. Trouvons juste un trou dans ton agenda 😂",
-  flexibleAside: "Organisation : 0. Confiance : 100 % 🙃",
   calendarLabel: "Choisir un jour",
   previousMonth: "Mois précédent",
   nextMonth: "Mois suivant",
@@ -611,12 +586,6 @@ export const seriousnessRules: SeriousnessRules = {
     food: { organisation: 5, idea: 10 },
     activity: { idea: 12, improvisation: 6 },
     surprise: { idea: 8, improvisation: 24 },
-  },
-  periods: {
-    weekend: { organisation: 12, idea: 6 },
-    next: { organisation: 18, idea: 4 },
-    improvise: { idea: 8, improvisation: 22 },
-    [availability.flexibleId]: { idea: 5, improvisation: 18 },
   },
   moments: {
     afternoon: { organisation: 8, idea: 6 },

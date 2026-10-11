@@ -121,16 +121,11 @@ export function InvitationSummary({
         <dl>
           {[
             selection.activity.label,
-            selection.date
-              ? new Intl.DateTimeFormat("fr-FR", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                }).format(new Date(`${selection.date}T12:00:00`))
-              : selection.period ===
-                  invitation.periods.find((p) => p.id === "improvise")?.label
-                ? interactions.summary.improvise
-                : selection.period,
+            new Intl.DateTimeFormat("fr-FR", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+            }).format(new Date(`${selection.date}T12:00:00`)),
             selection.moment,
           ].map((value, i) => (
             <div key={i}>

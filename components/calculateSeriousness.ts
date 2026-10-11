@@ -1,4 +1,4 @@
-import { availability, seriousnessRules as rules } from "@/config/invitation";
+import { seriousnessRules as rules } from "@/config/invitation";
 import type {
   SeriousnessChoices,
   SeriousnessPercentages,
@@ -35,10 +35,8 @@ export function calculateSeriousness(choices: SeriousnessChoices) {
     points.improvisation += weights.improvisation ?? 0;
   }
   add(rules.activities[choices.activityId]);
-  // A precise date replaces the period, as in the availability selector.
   const preciseDate = isAvailableDate(choices.date);
   if (preciseDate) add(rules.preciseDate);
-  else add(rules.periods[choices.periodId]);
   add(rules.moments[choices.momentId]);
   for (const [questionId, answerId] of Object.entries(choices.scienceAnswers)) {
     add(rules.science[questionId]?.[answerId]);
@@ -49,21 +47,18 @@ export function calculateSeriousness(choices: SeriousnessChoices) {
     points.improvisation,
   ]);
   const [organisation, , improvisation] = values;
-  const flexible = !preciseDate && choices.periodId === availability.flexibleId;
-  const loosePeriod =
-    !preciseDate && (flexible || choices.periodId === "improvise");
   const surprise = choices.activityId === "surprise";
   const prudentCount = rules.prudentAnswers.filter(
     (answer) => choices.scienceAnswers[answer.questionId] === answer.answerId,
   ).length;
   const profile =
-    surprise && loosePeriod && improvisation >= rules.thresholds.improvisation
+    surprise && improvisation >= rules.thresholds.improvisation
       ? rules.profiles.bourbier
       : organisation >= rules.thresholds.organisation
         ? prudentCount >= rules.thresholds.prudentAnswers
           ? rules.profiles.prudent
           : rules.profiles.organised
-        : surprise || flexible
+        : surprise
           ? rules.profiles.confident
           : improvisation >= rules.thresholds.improvisation
             ? rules.profiles.improvised

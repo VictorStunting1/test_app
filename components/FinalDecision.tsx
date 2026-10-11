@@ -115,7 +115,6 @@ export function FinalDecision({
           {error}
         </p>
       )}
-      <p className="refusal-note">{invitation.refusalNote}</p>
     </>
   );
 }

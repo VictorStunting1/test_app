@@ -87,27 +87,22 @@ export function Invitation() {
   const journeyRef = useRef<HTMLDivElement>(null);
   const [carTrips, setCarTrips] = useState(0);
   const [activityId, setActivity] = useState("");
-  const [period, setPeriod] = useState("");
   const [moment, setMoment] = useState("");
   const [decision, setDecision] = useState("");
   const [error, setError] = useState("");
   const [withdrawReply, setWithdrawReply] = useState("");
   const [activityRevision, setActivityRevision] = useState(0);
-  const [agendaTitle, setAgendaTitle] = useState(c.availabilityHeading);
   const [science, setScience] = useState<ScienceResult>();
   const [scienceAnswers, setScienceAnswers] = useState<ScienceChoices>({});
   const [footerClicks, setFooterClicks] = useState(0);
   const [decisionRevision, setDecisionRevision] = useState(0);
   const withdrawalTimer = useDelayedAction();
-  const agendaTimer = useDelayedAction();
   const scrollTimer = useDelayedAction();
   const resultRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const activity = c.activities.find((a) => a.id === activityId);
   const hasSchedule = Boolean(
-    (period || isAvailableDate(date)) &&
-    moment &&
-    isAvailableMoment(date, moment),
+    isAvailableDate(date) && moment && isAvailableMoment(date, moment),
   );
   const selection: ResponseSelection | null =
     activity && hasSchedule
@@ -116,9 +111,6 @@ export function Invitation() {
           decisionId: decision,
           science,
           date,
-          period:
-            c.periods.find((p) => p.id === period)?.label ??
-            availability.flexibleSummary,
           moment: c.moments.find((m) => m.id === moment)!.label,
           decision: c.decisions.find((d) => d.id === decision)?.response ?? "",
         }
@@ -277,7 +269,7 @@ export function Invitation() {
               <div className="journey-panel" hidden={step !== 2}>
                 <Section
                   number="02"
-                  title={agendaTitle}
+                  title={c.availabilityHeading}
                   intro={c.availabilityIntro}
                 >
                   <AvailabilityBalance />
@@ -286,33 +278,12 @@ export function Invitation() {
                     onDate={(value) => {
                       if (value && !isAvailableDate(value)) return;
                       setDate(value);
-                      if (value) setPeriod("");
                       if (value === availability.earliestDate)
                         setMoment(availability.earliestMoment);
-                      agendaTimer.cancel();
-                      setAgendaTitle(c.availabilityHeading);
                       setError("");
                       setDecision("");
                     }}
-                    period={period}
                     moment={moment}
-                    onPeriod={(id) => {
-                      setPeriod(id);
-                      setDate("");
-                      setError("");
-                      agendaTimer.cancel();
-                      setAgendaTitle(
-                        id === "improvise"
-                          ? fun.improvisedHeading
-                          : c.availabilityHeading,
-                      );
-                      if (id === "improvise")
-                        agendaTimer.schedule(
-                          () => setAgendaTitle(c.availabilityHeading),
-                          4000,
-                        );
-                      setDecision("");
-                    }}
                     onMoment={(id) => {
                       if (!isAvailableMoment(date, id)) return;
                       setMoment(id);
@@ -368,7 +339,6 @@ export function Invitation() {
                     <SeriousnessGauge
                       choices={{
                         activityId,
-                        periodId: period,
                         momentId: moment,
                         date,
                         scienceAnswers,
