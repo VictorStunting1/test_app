@@ -140,11 +140,10 @@ export const invitation = {
   ],
   validationMessage:
     "Une activité, un jour précis, puis un moment : le dossier est prêt.",
-  summaryTitle: "Bon bah… on dirait qu’on va devoir se voir.",
+  summaryTitle: "Bon bah… on dirait qu’on va devoir se voir 😂",
   pendingTitle: "Dossier en réflexion.",
   refusedTitle: "Réponse reçue, sans rancune.",
-  summaryIntro:
-    "Ce fameux verre se rapproche dangereusement de la réalité. On ajuste le créneau ensemble.",
+  summaryIntro: "Cagou tout conteeent 😄",
   summaryLabels: ["Au programme", "Quand", "À quel moment"],
   copyLabel: "Copier mon verdict",
   copiedLabel: "Réponse copiée !",
@@ -364,14 +363,11 @@ export const interactions = {
     compatible: "compatible",
   },
   tentativeTitle: "Une piste, pas encore un oui.",
-  tentativeIntro:
-    "Ça te tente peut-être. Rien n’est fixé : on en discute tranquillement.",
+  tentativeIntro: "Et bah top, je fais comment moi maintenant 😂",
   tentativePlan: "PISTE ENVISAGÉE",
   tentativeOrganisation: "CRÉNEAU À DISCUTER",
-  pendingIntro:
-    "Prends tout le temps qu’il te faut. Le dossier peut parfaitement rester sans suite.",
-  refusalIntro:
-    "Aucune justification nécessaire. Merci d’avoir donné ton avis.",
+  pendingIntro: "Prend le temps qu’il te faut (mais pas trop hein 🤣)",
+  refusalIntro: "Alalala, bon une prochaine fois alors 😉",
 };
 
 export const mobilePlay = {
