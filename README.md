@@ -1,4 +1,4 @@
-# Le fameux verre
+# Plan Galère
 
 Une invitation interactive en français, mobile-first, construite avec Next.js (App Router), TypeScript, Tailwind CSS 4 et Framer Motion. Personnalisée pour Léa, de la part de Victor. Sans backend, compte ni collecte de données. Les choix restent en mémoire dans le navigateur et sont réinitialisés au rechargement.
 
@@ -98,3 +98,13 @@ Le ticket d’accueil affiche « Bon. On le cale quand ce verre ? », avec un ti
 Les exceptions du calendrier se règlent dans `availability.dateExceptions`. Les **19 et 22 octobre 2026** sont « À confirmer » : leurs cases restent sélectionnables et leurs notes apparaissent juste sous le calendrier lors du choix. Le **24 octobre 2026** est « Indisponible » : sa case est désactivée et son motif reste visible sous le calendrier d’octobre, sans tooltip ni besoin de cliquer un bouton désactivé. Les flèches du clavier sautent ce jour bloqué. Les mêmes règles protègent aussi le passage à l’étape suivante. Les autres jours à partir du 16 restent disponibles, avec la restriction de soirée du 16 inchangée.
 
 Le footer cache trois réponses derrière « Tout ça pour éviter d’écrire simplement ‘t’es dispo quand ?’. ». Les textes et remarques contextuelles restent modifiables dans la configuration ; aucun lieu ni horaire précis n’est demandé, ces détails se règlent ensuite sur Instagram.
+
+## Audio local
+
+Les extraits fournis sont servis depuis `public/assets/audio/` : `why-not.mp3` (Mystery Quirky, 8 s), `three-minutes.mp3` (Elevator Music on Hold, 12 s), `nope.mp3` (Wah Wah Sad Trombone, effet complet) et `success.mp3` (Victory, 8 s). Aucun service externe n’est utilisé. Les chemins, volumes, limites et boucles se règlent dans `config/audio.ts` ; remplacer un MP3 à cet emplacement suffit pour changer la piste.
+
+`InvitationAudio`, dans `lib/invitationAudio.ts`, précharge les fichiers en JavaScript sans les jouer. Son `playSound(name)` débloque Web Audio directement depuis le clic/tap, puis démarre une source neuve à zéro. Cette solution permet de synchroniser Victory avec le récapitulatif positif, après les réactions existantes, sans déclencher un nouvel autoplay différé. Les promesses de reprise du contexte, téléchargement et décodage sont gérées : une erreur audio ne bloque jamais le parcours.
+
+Le peut-être joue un court extrait à volume modéré ; la réflexion joue la musique d’ascenseur jusqu’à la fin de sa séquence ; le refus effectif joue le trombone une fois, après les trois esquives. Une seule source reste active : un nouveau verdict annule aussi les démarrages en attente. Le retour, la modification de réponse, la mise en arrière-plan et le démontage arrêtent le son. Les extraits non bouclés se terminent avec une courte baisse du volume.
+
+Le titre d’onglet est **Plan Galère**. Les fichiers `app/favicon.ico`, `app/icon.png` et `app/apple-icon.png` sont des formats légers de l’icône démon préparée à partir de l’image fournie ; ils servent uniquement à l’onglet et à l’icône mobile.

@@ -15,7 +15,7 @@ export const invitation = {
   recipientName: "Léa",
   senderName: "Victor",
   metadata: {
-    title: "Le fameux verre",
+    title: "Plan Galère",
     description:
       "Une méthode beaucoup trop élaborée pour réussir à boire ce fameux verre.",
   },

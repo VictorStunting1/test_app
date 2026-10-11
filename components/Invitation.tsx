@@ -31,6 +31,8 @@ import { SeriousnessGauge } from "./SeriousnessGauge";
 import { CompatibilityTest } from "./CompatibilityTest";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
+import { useInvitationAudio } from "./useInvitationAudio";
+import { decisionSounds } from "@/config/audio";
 import { FinalDecision } from "./FinalDecision";
 import { InvitationSummary } from "./InvitationSummary";
 import type {
@@ -81,6 +83,7 @@ function Section({
 }
 export function Invitation() {
   const [step, setStep] = useState(0);
+  const { playSound, stopSound } = useInvitationAudio(step === 4);
   const [unlocked, setUnlocked] = useState(1);
   const [summaryReady, setSummaryReady] = useState(false);
   const [date, setDate] = useState("");
@@ -132,6 +135,7 @@ export function Invitation() {
   const nextHint =
     step === 1 ? personal.activityHint : personal.availabilityHint;
   function showSummary() {
+    if (decision === "lawyer") stopSound();
     setSummaryReady(true);
     scrollTimer.schedule(
       () =>
@@ -146,6 +150,16 @@ export function Invitation() {
     if (id === "yes" && !selection) {
       setError(c.validationMessage);
       return false;
+    }
+    const sound = decisionSounds[id];
+    if (sound) {
+      playSound(sound, {
+        delayMs:
+          id === "yes"
+            ? Math.max(...personal.yesSequence.map((frame) => frame.at)) +
+              personal.readingMs
+            : 0,
+      });
     }
     setError("");
     setDecision(id);
@@ -405,7 +419,9 @@ export function Invitation() {
                     <span className="eyebrow">{c.finalEyebrow}</span>
                   )}
                   <h2>{c.finalHeading}</h2>
-                  {c.finalIntro && <p className="final-intro">{c.finalIntro}</p>}
+                  {c.finalIntro && (
+                    <p className="final-intro">{c.finalIntro}</p>
+                  )}
                   <FinalDecision
                     key="verdict"
                     decisionId={decision}
@@ -427,6 +443,7 @@ export function Invitation() {
                           }
                           decisionId={decision}
                           onEdit={() => {
+                            stopSound();
                             setDecision("");
                             setSummaryReady(false);
                           }}
@@ -468,6 +485,7 @@ export function Invitation() {
                 type="button"
                 className="text-button"
                 onClick={() => {
+                  stopSound();
                   setDecision("");
                   setSummaryReady(false);
                   scrollTimer.cancel();
