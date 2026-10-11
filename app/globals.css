@@ -143,6 +143,15 @@ h2,
     height: 280px;
     margin-bottom: 16px;
   }
+  .hero-ticket-first .hero-actions {
+    padding-top: clamp(24px, 7svh, 64px);
+  }
+  .hero-ticket-first .why-gimmick {
+    margin-top: 22px;
+  }
+  .hero-ticket-first .hero-note {
+    margin-top: 24px;
+  }
 }
 .dossier {
   display: flex;
