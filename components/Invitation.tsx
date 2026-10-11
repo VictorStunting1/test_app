@@ -92,6 +92,10 @@ export function Invitation() {
   const [error, setError] = useState("");
   const [withdrawReply, setWithdrawReply] = useState("");
   const [activityRevision, setActivityRevision] = useState(0);
+  const [activityReply, setActivityReply] = useState("");
+  const [activitySource, setActivitySource] = useState<"pill" | "card">("card");
+  const [activityChanges, setActivityChanges] = useState(0);
+  const [agendaActive, setAgendaActive] = useState(false);
   const [science, setScience] = useState<ScienceResult>();
   const [scienceAnswers, setScienceAnswers] = useState<ScienceChoices>({});
   const [footerClicks, setFooterClicks] = useState(0);
@@ -149,6 +153,33 @@ export function Invitation() {
     scrollTimer.cancel();
     setSummaryReady(false);
     return true;
+  }
+  function selectActivity(id: string, source: "pill" | "card") {
+    const chosen = c.activities.find((option) => option.id === id);
+    if (!chosen) return;
+    const changes = activityChanges + (activityId && activityId !== id ? 1 : 0);
+    withdrawalTimer.cancel();
+    setWithdrawReply("");
+    setActivityChanges(changes);
+    setActivityRevision((value) => value + 1);
+    setActivitySource(source);
+    setActivityReply(
+      source === "pill"
+        ? id === "drink"
+          ? personal.glassReply
+          : personal.bourbierReply
+        : activityId !== id && changes >= 4
+          ? personal.judgements.restless
+          : activityId !== id && changes >= 2
+            ? personal.judgements.revised
+            : id === "surprise"
+              ? personal.judgements.bancal
+              : chosen.reaction,
+    );
+    setActivity(id);
+    if (id === "surprise") setCarTrips((value) => value + 1);
+    setError("");
+    setDecision("");
   }
   return (
     <div className="site">
@@ -214,7 +245,16 @@ export function Invitation() {
               </div>
             </div>
             <div className="journey-panel" hidden={step !== 1}>
-              <ActivityPrelude />
+              <ActivityPrelude
+                activityId={activityId}
+                onSelect={(id) => selectActivity(id, "pill")}
+                reply={
+                  activitySource === "pill" && !withdrawReply
+                    ? activityReply
+                    : ""
+                }
+                revision={activityRevision}
+              />
               <Section
                 number="01"
                 title={c.activityHeading}
@@ -228,21 +268,22 @@ export function Invitation() {
                       activity={a}
                       index={i}
                       selected={a.id === activityId}
-                      onSelect={() => {
-                        withdrawalTimer.cancel();
-                        setWithdrawReply("");
-                        setActivityRevision((v) => v + 1);
-                        setError("");
-                        setActivity(a.id);
-                        if (a.id === "surprise") setCarTrips((v) => v + 1);
-                        setDecision("");
-                      }}
+                      highlightRevision={
+                        a.id === activityId && activitySource === "pill"
+                          ? activityRevision
+                          : 0
+                      }
+                      onSelect={() => selectActivity(a.id, "card")}
                     />
                   ))}
                 </div>
                 <div className="activity-comment">
                   <Reaction
-                    text={withdrawReply || activity?.reaction || ""}
+                    immediate
+                    text={
+                      withdrawReply ||
+                      (activitySource === "card" ? activityReply : "")
+                    }
                     revision={activityRevision}
                   />
                   {activity?.id === "surprise" && (
@@ -262,7 +303,7 @@ export function Invitation() {
                     </button>
                   )}
                 </div>
-                <MobileCompanions carTrips={carTrips} />
+                <MobileCompanions carTrips={carTrips} activityId={activityId} />
               </Section>
             </div>
             {unlocked >= 2 && (
@@ -272,12 +313,18 @@ export function Invitation() {
                   title={c.availabilityHeading}
                   intro={c.availabilityIntro}
                 >
-                  <AvailabilityBalance />
+                  <AvailabilityBalance
+                    active={agendaActive}
+                    onInspect={() => setAgendaActive(true)}
+                  />
                   <AvailabilitySelector
+                    activityId={activityId}
+                    showFeedback={!agendaActive}
                     date={date}
                     onDate={(value) => {
                       if (value && !isAvailableDate(value)) return;
                       setDate(value);
+                      setAgendaActive(false);
                       if (value === availability.earliestDate)
                         setMoment(availability.earliestMoment);
                       setError("");
@@ -287,6 +334,7 @@ export function Invitation() {
                     onMoment={(id) => {
                       if (!isAvailableMoment(date, id)) return;
                       setMoment(id);
+                      setAgendaActive(false);
                       setError("");
                       setDecision("");
                     }}
@@ -301,7 +349,9 @@ export function Invitation() {
                   title={personal.heading}
                   intro={personal.intro}
                 >
-                  <PersonalSecrets />
+                  <PersonalSecrets
+                    showLyon={activityId === "surprise" || moment === "evening"}
+                  />
                   <details className="fine-print optional-science">
                     <summary>{personal.quizLabel}</summary>
                     <p className="optional-quiz">{journey.optionalQuiz}</p>

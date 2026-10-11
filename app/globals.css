@@ -283,6 +283,7 @@ h2 {
   gap: 14px;
 }
 .activity-card {
+  position: relative;
   padding: 23px 20px 0;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -300,6 +301,18 @@ h2 {
   border-color: var(--accent);
   background: #f3edf1;
   box-shadow: 0 0 0 1px var(--accent);
+}
+.activity-flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #7454690b;
+  box-shadow: 0 0 0 4px #7454691a;
+  pointer-events: none;
+}
+.personal-badge[aria-pressed="true"] {
+  background: #ede6eb;
+  border-color: #b69daa;
 }
 .card-top {
   display: flex;
@@ -709,7 +722,7 @@ footer p {
     font-size: 9px;
   }
   .section {
-    padding: 30px 0;
+    padding: 26px 0;
   }
   .section-heading {
     gap: 10px;
@@ -944,6 +957,10 @@ footer p {
   margin: 0 0 24px;
   min-width: 0;
 }
+.science-reaction:empty {
+  min-height: 0;
+  margin: 0;
+}
 .science-panel legend {
   font-size: 13px;
   font-weight: 500;
@@ -1158,17 +1175,17 @@ button,
     gap: 4px;
   }
   .hero {
-    padding-top: 30px;
+    padding-top: 24px;
     gap: 12px;
   }
   .hero h1 {
-    font-size: clamp(2.4rem, 10vw, 3.1rem);
+    font-size: clamp(2.1rem, 8.7vw, 2.7rem);
     line-height: 1.08;
   }
   .hero-intro {
     font-size: 15px;
-    line-height: 1.7;
-    margin-top: 18px;
+    line-height: 1.65;
+    margin-top: 16px;
   }
   .hero-cta {
     width: 100%;
@@ -1216,16 +1233,16 @@ button,
   }
   .activity-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
   .activity-card {
     min-height: 0;
   }
   .activity-select {
-    padding: 22px 22px 0;
+    padding: 18px 18px 0;
   }
   .card-top {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
   .card-tag,
   .eyebrow {
@@ -1240,16 +1257,16 @@ button,
   }
   .activity-card p {
     font-size: 14px;
-    line-height: 1.75;
+    line-height: 1.65;
   }
   .vote {
     font-size: 14px;
-    padding: 18px 0;
+    padding: 14px 0;
   }
   .risk-indicator {
     font-size: 12px;
-    padding: 14px 22px;
-    min-height: 52px;
+    padding: 12px 18px;
+    min-height: 48px;
   }
   button,
   .primary-button,
@@ -1268,7 +1285,7 @@ button,
     line-height: 1.7;
   }
   .section-heading h2 {
-    font-size: 30px;
+    font-size: 28px;
     overflow-wrap: break-word;
   }
   .section-number {
@@ -1278,7 +1295,7 @@ button,
   }
   .availability-panel,
   .science-panel {
-    padding: 22px 18px;
+    padding: 20px 18px;
   }
   .pills {
     gap: 10px;
@@ -1298,7 +1315,7 @@ button,
     font-size: 11px;
   }
   .science-panel fieldset {
-    margin-bottom: 26px;
+    margin-bottom: 22px;
   }
   .science-score {
     font-size: 16px;
@@ -1568,7 +1585,7 @@ button,
 }
 @media (max-width: 600px) {
   .journey-header {
-    padding-top: 28px;
+    padding-top: 24px;
   }
   .journey-navigation {
     flex-direction: column-reverse;
@@ -1737,6 +1754,26 @@ button,
   border-radius: 16px;
   background: var(--paper);
 }
+.demon-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.demon-card .demon-caption {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 30ch;
+}
+.demon-card .demon-intro {
+  margin-top: 8px;
+  max-width: 36ch;
+}
+.demon-card .interactive-reaction {
+  width: 100%;
+}
 .demon-button {
   display: grid;
   place-items: center;
@@ -1783,6 +1820,11 @@ button,
 .lyon-archive > p {
   margin-top: 12px;
 }
+.lyon-context {
+  text-align: left;
+  font-weight: 400;
+  line-height: 1.7;
+}
 .journey-next {
   display: flex;
   flex-direction: column;
@@ -1812,7 +1854,7 @@ button,
   .personal-prelude,
   .agenda-balance,
   .secret-card {
-    padding: 20px;
+    padding: 18px;
   }
   .personal-prelude .personal-greeting {
     font-size: 16px;
@@ -2173,16 +2215,16 @@ button,
 }
 @media (max-width: 600px) {
   .hero-art {
-    height: 300px;
-    margin: 20px 0 36px;
+    height: 280px;
+    margin: 16px 0 32px;
   }
   .ticket-float {
     --ticket-tilt: 4deg;
   }
   .hero-art .invitation-ticket {
     width: min(260px, calc(100vw - 70px));
-    min-height: 244px;
-    padding: 22px 20px;
+    min-height: 232px;
+    padding: 18px 20px;
   }
   .hero-art .ticket-title {
     font-size: clamp(25px, 7.1vw, 28px);

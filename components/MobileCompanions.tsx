@@ -7,9 +7,16 @@ import { SnailIllustration } from "./SnailIllustration";
 import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
 
-export function MobileCompanions({ carTrips }: { carTrips: number }) {
+export function MobileCompanions({
+  carTrips,
+  activityId,
+}: {
+  carTrips: number;
+  activityId: string;
+}) {
   const [paused, setPaused] = useState(false);
   const [snailClicks, setSnailClicks] = useState(0);
+  const [snailTrip, setSnailTrip] = useState(-1);
   const reduced = useReducedMotion();
   const { schedule } = useDelayedAction();
   return (
@@ -29,6 +36,7 @@ export function MobileCompanions({ carTrips }: { carTrips: number }) {
           onClick={() => {
             setPaused(true);
             setSnailClicks((v) => v + 1);
+            setSnailTrip(carTrips);
             schedule(() => setPaused(false), 1400);
           }}
         >
@@ -36,14 +44,17 @@ export function MobileCompanions({ carTrips }: { carTrips: number }) {
         </motion.button>
       </div>
       <Reaction
-        text={snailClicks ? mobilePlay.snailReply : ""}
-        revision={snailClicks}
+        immediate
+        text={
+          snailClicks && snailTrip === carTrips
+            ? mobilePlay.snailReply
+            : activityId === "surprise" && carTrips
+              ? mobilePlay.carReply
+              : ""
+        }
+        revision={snailClicks + carTrips}
       />
       {carTrips > 0 && <CarPass trips={carTrips} />}
-      <Reaction
-        text={carTrips ? mobilePlay.carReply : ""}
-        revision={carTrips}
-      />
     </div>
   );
 }

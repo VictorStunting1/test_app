@@ -23,11 +23,13 @@ export function ActivityCard({
   activity,
   index,
   selected,
+  highlightRevision = 0,
   onSelect,
 }: {
   activity: Activity;
   index: number;
   selected: boolean;
+  highlightRevision?: number;
   onSelect: () => void;
 }) {
   const Icon = icons[activity.icon];
@@ -47,6 +49,16 @@ export function ActivityCard({
       transition={{ type: "spring", stiffness: 220, damping: 24 }}
       className={`activity-card ${selected ? "selected" : ""}`}
     >
+      {highlightRevision > 0 && !reduced && (
+        <motion.span
+          key={highlightRevision}
+          aria-hidden="true"
+          className="activity-flash"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 1.1 }}
+        />
+      )}
       <motion.button
         type="button"
         aria-pressed={selected}

@@ -15,9 +15,11 @@ export function CompatibilityTest({
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [revisions, setRevisions] = useState<Record<string, number>>({});
+  const [activeQuestion, setActiveQuestion] = useState("");
   const reduced = useReducedMotion();
   function choose(questionId: string, answerId: string) {
     const next = { ...answers, [questionId]: answerId };
+    setActiveQuestion(questionId);
     setAnswers(next);
     onAnswersChange(next);
     setRevisions((current) => ({
@@ -76,7 +78,13 @@ export function CompatibilityTest({
           </div>
           <Reaction
             immediate
-            text={q.answers.find((a) => a.id === answers[q.id])?.reaction ?? ""}
+            className="science-reaction"
+            text={
+              activeQuestion === q.id
+                ? (q.answers.find((a) => a.id === answers[q.id])?.reaction ??
+                  "")
+                : ""
+            }
             revision={revisions[q.id] ?? 0}
           />
         </fieldset>

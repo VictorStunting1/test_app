@@ -134,7 +134,8 @@ export const invitation = {
     {
       id: "no",
       label: "Non (si j’y arrive)",
-      response: "Merci pour la proposition, mais je passe mon tour.",
+      response:
+        "Je décline, mais je reconnais l’effort franchement disproportionné 😂",
     },
   ],
   validationMessage:
@@ -150,7 +151,7 @@ export const invitation = {
   copyError:
     "Copie automatique indisponible : sélectionne le texte ci-dessous.",
   editLabel: "Modifier ma réponse",
-  footer: "Ce site aurait pu être un message de 8 mots.",
+  footer: "Tout ça pour éviter d’écrire simplement ‘t’es dispo quand ?’.",
   footerNote: "Aucune réponse n’est envoyée automatiquement.",
   responseText: (selection: ResponseSelection) => {
     const when = [
@@ -195,8 +196,9 @@ export const interactions = {
     "Bon : probablement pas un enlèvement.",
   ],
   momentReactions: {
-    afternoon: "Version sage du projet.",
-    early: "Très bon compromis entre organisation et potentiel de connerie.",
+    afternoon: "Ah ouais, réponse étonnamment mature 😄",
+    early:
+      "Décision raisonnable. Ça change un peu de nos méthodes habituelles.",
     evening: "Là ça commence à ressembler au fameux verre.",
     any: "Traduction : trouvons juste un trou dans ton agenda.",
   } as Record<string, string>,
@@ -208,6 +210,31 @@ export const interactions = {
     methodology: "Méthodologie : absolument douteuse.",
     defaultRisk: "Confiance dans une méthodologie douteuse",
     questions: [
+      {
+        id: "website",
+        question: "Devant ce site, ta réaction honnête ?",
+        answers: [
+          {
+            id: "like",
+            label: "C’est débile, j’aime bien 😂",
+            reaction: "C’était globalement l’objectif.",
+            weight: 3,
+          },
+          {
+            id: "too-much",
+            label: "Il en fait beaucoup trop 🤣",
+            reaction: "Je refuse de commenter cette accusation 🙃",
+            weight: 1,
+          },
+          {
+            id: "finish",
+            label: "Bon… je vais quand même jusqu’au bout 😄",
+            reaction:
+              "Très bon choix. T’es déjà beaucoup trop loin pour abandonner.",
+            weight: 2,
+          },
+        ],
+      },
       {
         id: "fries",
         question: "Partager des frites ?",
@@ -243,13 +270,14 @@ export const interactions = {
           {
             id: "improvise",
             label: "On improvise",
-            reaction: "Se perdre ensemble : une activité presque gratuite.",
+            reaction: "Voilà. Là je reconnais mieux nos standards 🙃",
             weight: 3,
           },
           {
             id: "maps",
             label: "Google Maps immédiatement",
-            reaction: "Le service orientation remercie cette personne.",
+            reaction:
+              "Décision raisonnable. Ça change un peu de nos méthodes habituelles.",
             weight: 1,
           },
           {
@@ -268,26 +296,26 @@ export const interactions = {
         answers: [
           {
             id: "zero",
-            label: "0 minute",
-            reaction: "Le comité vient de régler trois alarmes.",
+            label: "0 minute, je suis une légende de la ponctualité 😄",
+            reaction: "Discipline impressionnante.",
             weight: -1,
           },
           {
             id: "ten",
-            label: "5-10 minutes",
-            reaction: "Une marge de négociation très européenne.",
+            label: "5-10 minutes, on reste civilisés 🙃",
+            reaction: "Tolérance saine, rien à signaler.",
             weight: 1,
           },
           {
             id: "warn",
-            label: "Tant que tu préviens",
-            reaction: "Communication saine. Nous sommes presque des adultes.",
+            label: "Tant que tu préviens, je fais semblant d’être mature 😂",
+            reaction: "Communication > chaos. C’est beau.",
             weight: 3,
           },
           {
             id: "me",
-            label: "Je suis probablement la personne en retard",
-            reaction: "Au moins nous avons une confession.",
+            label: "Je suis probablement la personne en retard 🤣",
+            reaction: "Au moins l’honnêteté est là 😂",
             weight: 2,
             risk: "Arrivée théoriquement imminente",
           },
@@ -300,7 +328,7 @@ export const interactions = {
           {
             id: "follow",
             label: "Je suis, évidemment 😂",
-            reaction: "Esprit plan bourbier détecté.",
+            reaction: "Petit démon content, bureau beaucoup moins.",
             weight: 3,
           },
           {
@@ -317,40 +345,15 @@ export const interactions = {
           },
         ],
       },
-      {
-        id: "website",
-        question: "Devant ce site, ta réaction honnête :",
-        answers: [
-          {
-            id: "like",
-            label: "C’est débile, j’aime bien 🤣",
-            reaction: "C’était globalement l’objectif.",
-            weight: 3,
-          },
-          {
-            id: "too-much",
-            label: "Il en fait beaucoup trop 😂",
-            reaction: "Je refuse de commenter cette accusation 🙃",
-            weight: 1,
-          },
-          {
-            id: "finish",
-            label: "Bon… je vais quand même jusqu’au bout 😄",
-            reaction:
-              "Très bon choix. T’es déjà beaucoup trop loin pour abandonner.",
-            weight: 2,
-          },
-        ],
-      },
     ] satisfies import("@/types/invitation").ScienceQuestion[],
   },
   footerSecrets: [
     "Mais ça aurait été beaucoup moins drôle.",
     "Et tu me connais.",
-    "Voilà.",
+    "Voilà 😂",
   ],
   starLabel: "Examiner le petit détail",
-  starReply: "Bravo. Tu viens de gagner absolument rien.",
+  starReply: "Bravo ! Tu viens de gagner absolument rien 😂",
   summary: {
     plan: "PLAN RETENU",
     organisation: "ORGANISATION",
@@ -409,16 +412,17 @@ export const personal = {
     "J’ai justement développé un site beaucoup trop élaboré pour te prendre environ 30 secondes.",
   ],
   glassLabel: "ce fameux verre",
-  glassReplies: [
-    "Des rumeurs circulent.",
-    "Cette légende urbaine pourrait vraiment devenir réelle 😄",
-    "Reste encore à l’observer dans son habitat naturel.",
-  ],
+  glassReply: "Voilà, on revient au sujet principal 😄",
   bourbierLabel: "Plan certifié raisonnablement bancal",
-  bourbierReplies: [
-    "Deux experts du plan bourbier. Qu’est-ce qui pourrait mal se passer ? 🙃",
-    "Ne rigole pas.",
-  ],
+  bourbierReply: "Ah. Donc on choisit officiellement la voie douteuse 🙃",
+  judgements: {
+    revised: "Revirement stratégique détecté 😂",
+    restless: "Le dossier bouge beaucoup. J’admire la stabilité.",
+    bancal:
+      "Risque de bourbier : acceptable selon des critères très discutables.",
+    spontaneous: "Petit démon content, bureau beaucoup moins.",
+    coherent: "Ça avance. Je commence presque à croire à ce verre.",
+  },
   agenda: {
     heading: "ÉTAT ACTUEL DES DISPONIBILITÉS",
     recipient: "agenda de ministre",
@@ -436,13 +440,14 @@ export const personal = {
     "Vu nos talents respectifs, le défi n’est pas de boire un verre. C’est d’y arriver sans transformer ça en plan bourbier.",
   demonLabel: "Toucher le petit démon de Léa",
   demonCaption: "Ton petit démon n’est pas convié aujourd’hui.",
+  demonIntro:
+    "On va tenter une sortie sans qu’il souffle des idées douteuses à l’oreille 🤣",
   demonReplies: [
     "Ah lui.",
-    "Il te lâche vraiment jamais.",
-    "Pour une fois tu peux le laisser à la maison.",
-    "Le verre est garanti sans emmerdes.*",
+    "Toujours dans les bons coups, bizarrement.",
+    "Pas aujourd’hui chef 😂",
+    "Pour une fois on tente un plan sans influence extérieure.",
   ],
-  demonFootnote: "*garantie absolument non contractuelle.",
   mathLabel: "Les maths sont formelles.",
   mathHeading: "CALCUL SCIENTIFIQUE",
   mathTerms: [
@@ -452,14 +457,10 @@ export const personal = {
   ],
   mathResult: "soirée statistiquement intéressante",
   mathReply: "Je n’ai absolument pas vérifié les maths.",
-  lyonLabel: "Ouvrir une archive du comité",
   lyonIntro:
-    "Promis, cette fois l’objectif n’est pas de finir à errer dans Lyon à une heure douteuse.",
-  lyonReplies: [
-    "Je maintiens que Lyon était sous contrôle 😂",
-    "Plus ou moins.",
-    "Bon changeons de sujet.",
-  ],
+    "Je précise que cette fois je n’ai pas prévu de finir à errer quelque part à une heure douteuse 😂",
+  lyonLabel: "Une archive du comité",
+  lyonReplies: ["Je maintiens que Lyon était sous contrôle.", "Plus ou moins."],
   quizLabel: "Passer le contrôle scientifique (facultatif)",
   activityHint: "Choisis une piste pour ouvrir l’agenda.",
   availabilityHint:
@@ -575,7 +576,7 @@ export const availability = {
     "Vendredi je débloque officiellement le mode liberté en soirée 😄",
   earliestBadge: "Mode chômage débloqué 😂",
   earliestHint: "Le vendredi 16 : soirée uniquement.",
-  dateReaction: "Un vrai jour dans le calendrier. Le cagou se tient prêt 😄",
+  dateReaction: "Ah ouais, organisation réelle. Ça devient sérieux 😄",
   calendarLabel: "Choisir un jour",
   previousMonth: "Mois précédent",
   nextMonth: "Mois suivant",

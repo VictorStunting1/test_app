@@ -10,6 +10,7 @@ import {
   invitation,
   interactions,
   journey,
+  personal,
 } from "@/config/invitation";
 
 export function AvailabilitySelector({
@@ -17,13 +18,17 @@ export function AvailabilitySelector({
   date,
   onDate,
   onMoment,
+  activityId,
+  showFeedback,
 }: {
   moment: string;
   date: string;
   onDate: (value: string) => void;
   onMoment: (id: string) => void;
+  activityId: string;
+  showFeedback: boolean;
 }) {
-  const [reaction, setReaction] = useState("");
+  const [reactedMoment, setReactedMoment] = useState("");
   const [revision, setRevision] = useState(0);
   const reduced = useReducedMotion();
   const firstEvening = date === availability.earliestDate;
@@ -36,11 +41,11 @@ export function AvailabilitySelector({
           value={date}
           onChange={(value) => {
             onDate(value);
-            setReaction("");
+            setReactedMoment("");
           }}
         />
         <p className="calendar-hint">{availability.earliestHint}</p>
-        {date && (
+        {date && showFeedback && (
           <div
             className="date-feedback"
             role="status"
@@ -83,7 +88,7 @@ export function AvailabilitySelector({
               className={`pill ${moment === item.id ? "active" : ""}`}
               onClick={() => {
                 onMoment(item.id);
-                setReaction(interactions.momentReactions[item.id] ?? "");
+                setReactedMoment(item.id);
                 setRevision((v) => v + 1);
               }}
             >
@@ -92,7 +97,19 @@ export function AvailabilitySelector({
           ))}
         </div>
       </fieldset>
-      <Reaction immediate text={reaction} revision={revision} />
+      <Reaction
+        immediate
+        text={
+          !showFeedback || !reactedMoment
+            ? ""
+            : activityId === "drink" && date && reactedMoment === "evening"
+              ? personal.judgements.coherent
+              : activityId === "surprise" && reactedMoment === "evening"
+                ? personal.judgements.spontaneous
+                : (interactions.momentReactions[reactedMoment] ?? "")
+        }
+        revision={revision}
+      />
     </div>
   );
 }
