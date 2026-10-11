@@ -48,3 +48,45 @@ export type VerdictFrame = {
   car?: boolean;
   thinkingTimer?: boolean;
 };
+
+export type ScienceChoices = Record<string, string>;
+export type SeriousnessChoices = {
+  activityId: string;
+  periodId: string;
+  momentId: string;
+  date: string;
+  scienceAnswers: ScienceChoices;
+};
+export type SeriousnessWeights = {
+  organisation: number;
+  idea: number;
+  improvisation: number;
+};
+export type SeriousnessPercentages = [number, number, number];
+export type SeriousnessProfile = {
+  labels: [string, string, string];
+  note: string;
+};
+export type SeriousnessRules = {
+  base: SeriousnessWeights;
+  preciseDate: Partial<SeriousnessWeights>;
+  activities: Record<string, Partial<SeriousnessWeights>>;
+  periods: Record<string, Partial<SeriousnessWeights>>;
+  moments: Record<string, Partial<SeriousnessWeights>>;
+  science: Record<string, Record<string, Partial<SeriousnessWeights>>>;
+  prudentAnswers: { questionId: string; answerId: string }[];
+  thresholds: {
+    organisation: number;
+    improvisation: number;
+    prudentAnswers: number;
+  };
+  profiles: Record<
+    | "balanced"
+    | "organised"
+    | "improvised"
+    | "bourbier"
+    | "confident"
+    | "prudent",
+    SeriousnessProfile
+  >;
+};

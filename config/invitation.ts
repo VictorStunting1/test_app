@@ -4,6 +4,7 @@ import type {
   ResponseSelection,
   SnailMood,
   VerdictFrame,
+  SeriousnessRules,
 } from "@/types/invitation";
 
 // Temps de lecture entre les réactions de verdict, en millisecondes.
@@ -108,31 +109,21 @@ export const invitation = {
     { id: "evening", label: "Soirée" },
     { id: "any", label: "Aucune préférence" },
   ] satisfies Choice[],
-  parametersHeading: "Les petits caractères",
-  parametersIntro: "Quelques paramètres d’une importance toute relative.",
+  parametersHeading: "Deux trois précisions",
+  parametersIntro: "Quelques détails d’une importance toute relative.",
   parameters: [
     {
-      icon: "shirt",
-      title: "Dress code",
-      text: "Viens comme tu veux, ce n’est pas un entretien d’embauche.",
-    },
-    {
-      icon: "wallet",
-      title: "Budget",
-      text: "Normal, je ne propose pas Monaco.",
+      icon: "target",
+      title: "Objectif",
+      text: "Faire enfin exister ce fameux verre autrement qu’en discussion Insta 😂",
     },
     {
       icon: "clock",
       title: "Durée",
-      text: "De 1h à « ah merde il est déjà cette heure-là ».",
+      text: "Durée variable selon le niveau de discussion, de vannes, et d’éventuels détours imprévus 🙃",
     },
   ],
   seriousnessLabel: "NIVEAU DE SÉRIEUX",
-  stats: [
-    { label: "organisation", value: 20 },
-    { label: "bonne idée", value: 30 },
-    { label: "improvisation", value: 50 },
-  ],
   finalHeading: "Alors, verdict ?",
   finalIntro: "Le comité attend ton avis. Avec un calme presque crédible.",
   decisions: [
@@ -371,22 +362,6 @@ export const interactions = {
       },
     ] satisfies import("@/types/invitation").ScienceQuestion[],
   },
-  statsVariants: [
-    invitation.stats,
-    [
-      { label: "organisation", value: 4 },
-      { label: "confiance injustifiée", value: 46 },
-      { label: "on verra", value: 50 },
-    ],
-    [
-      { label: "planification", value: 1 },
-      { label: "logique", value: 9 },
-      { label: "ça va le faire", value: 90 },
-    ],
-  ],
-  statsNote:
-    "Les statistiques peuvent légèrement varier selon l’humeur du comité.",
-  statsAction: "Recalculer le niveau de sérieux",
   footerSecrets: [
     "Mais ça aurait été beaucoup moins drôle.",
     "Et tu me connais.",
@@ -435,7 +410,7 @@ export const journey = {
   dateLabel: "Un jour précis ?",
   dateHint: "Une date précise ou un créneau large : comme tu préfères.",
   dateClear: "Franchement, peu importe 😂",
-  detailsLabel: "Les petits caractères (promis, rien de louche)",
+  detailsLabel: "Deux trois précisions",
   noTeases: ["Ahhh non 😂", "Léa.", "Fais pas la cagou 🤣"],
   noFinished: "Bon ok, j’arrête de tricher 🙃",
   noInitial: "Le comité prépare sa petite esquive…",
@@ -624,4 +599,93 @@ export const availability = {
   ],
   legend: { available: "Disponible", busy: "Occupé", selected: "Sélectionné" },
   eveningOnly: "soirée uniquement",
+};
+
+// Points humoristiques ajoutés aux trois dimensions, puis normalisés à 100 %.
+// Les identifiants correspondent aux options et aux réponses définies plus haut.
+export const seriousnessRules: SeriousnessRules = {
+  base: { organisation: 20, idea: 30, improvisation: 50 },
+  preciseDate: { organisation: 30, idea: 6 },
+  activities: {
+    drink: { organisation: 8, idea: 8 },
+    food: { organisation: 5, idea: 10 },
+    activity: { idea: 12, improvisation: 6 },
+    surprise: { idea: 8, improvisation: 24 },
+  },
+  periods: {
+    weekend: { organisation: 12, idea: 6 },
+    next: { organisation: 18, idea: 4 },
+    improvise: { idea: 8, improvisation: 22 },
+    [availability.flexibleId]: { idea: 5, improvisation: 18 },
+  },
+  moments: {
+    afternoon: { organisation: 8, idea: 6 },
+    early: { organisation: 4, idea: 6, improvisation: 3 },
+    evening: { idea: 6, improvisation: 7 },
+    any: { improvisation: 10 },
+  },
+  science: {
+    fries: {
+      yes: { idea: 8, improvisation: 2 },
+      few: { organisation: 6, idea: 3 },
+      no: { organisation: 4 },
+    },
+    directions: {
+      improvise: { idea: 2, improvisation: 14 },
+      maps: { organisation: 12, idea: 4 },
+      pretend: { idea: 4, improvisation: 16 },
+    },
+    late: {
+      zero: { organisation: 12 },
+      ten: { organisation: 6, idea: 2 },
+      warn: { organisation: 6, idea: 6 },
+      me: { improvisation: 12 },
+    },
+    bourbier: {
+      follow: { idea: 6, improvisation: 12 },
+      questions: { organisation: 8, idea: 6 },
+      hesitate: { idea: 8, improvisation: 8 },
+    },
+    website: {
+      like: { idea: 12, improvisation: 4 },
+      "too-much": { organisation: 2, idea: 6 },
+      finish: { idea: 8 },
+    },
+  },
+  prudentAnswers: [
+    { questionId: "directions", answerId: "maps" },
+    { questionId: "late", answerId: "zero" },
+    { questionId: "bourbier", answerId: "questions" },
+  ],
+  thresholds: { organisation: 40, improvisation: 45, prudentAnswers: 2 },
+  profiles: {
+    balanced: {
+      labels: ["organisation", "bonne idée", "improvisation"],
+      note: "Un mélange raisonnable de préparation et de décisions douteuses.",
+    },
+    organised: {
+      labels: ["organisation", "bonne idée", "improvisation"],
+      note: "Étonnamment structuré. Je suis presque inquiet.",
+    },
+    improvised: {
+      labels: ["organisation", "bonne idée", "on verra bien"],
+      note: "Très bien. On retrouve nos standards habituels 🙃",
+    },
+    bourbier: {
+      labels: [
+        "logistique",
+        "confiance injustifiée",
+        "plan bourbier potentiel",
+      ],
+      note: "Ça sent légèrement le plan bourbier. Donc probablement une bonne idée 😂",
+    },
+    confident: {
+      labels: ["organisation", "confiance injustifiée", "improvisation"],
+      note: "Beaucoup de confiance dans ce projet. J’apprécie l’audace 😄",
+    },
+    prudent: {
+      labels: ["organisation", "bonne idée", "chaos contrôlé"],
+      note: "Étonnamment structuré. Je suis presque inquiet.",
+    },
+  },
 };

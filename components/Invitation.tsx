@@ -5,8 +5,7 @@ import {
   ArrowDown,
   ArrowUpRight,
   Sparkles,
-  Shirt,
-  Wallet,
+  Target,
   Clock3,
   Heart,
 } from "lucide-react";
@@ -34,7 +33,11 @@ import { Reaction } from "./Reaction";
 import { useDelayedAction } from "./useDelayedAction";
 import { FinalDecision } from "./FinalDecision";
 import { InvitationSummary } from "./InvitationSummary";
-import type { ResponseSelection, ScienceResult } from "@/types/invitation";
+import type {
+  ResponseSelection,
+  ScienceResult,
+  ScienceChoices,
+} from "@/types/invitation";
 
 function Section({
   number,
@@ -92,6 +95,7 @@ export function Invitation() {
   const [activityRevision, setActivityRevision] = useState(0);
   const [agendaTitle, setAgendaTitle] = useState(c.availabilityHeading);
   const [science, setScience] = useState<ScienceResult>();
+  const [scienceAnswers, setScienceAnswers] = useState<ScienceChoices>({});
   const [footerClicks, setFooterClicks] = useState(0);
   const [decisionRevision, setDecisionRevision] = useState(0);
   const withdrawalTimer = useDelayedAction();
@@ -330,7 +334,10 @@ export function Invitation() {
                   <details className="fine-print optional-science">
                     <summary>{personal.quizLabel}</summary>
                     <p className="optional-quiz">{journey.optionalQuiz}</p>
-                    <CompatibilityTest onResult={setScience} />
+                    <CompatibilityTest
+                      onResult={setScience}
+                      onAnswersChange={setScienceAnswers}
+                    />
                   </details>
                 </Section>
                 <details className="fine-print">
@@ -340,15 +347,14 @@ export function Invitation() {
                     title={c.parametersHeading}
                     intro={c.parametersIntro}
                   >
-                    <div className="parameter-grid">
+                    <div className="parameter-grid clarification-grid">
                       {c.parameters.map((p) => {
                         const Icon =
                           (
                             {
-                              shirt: Shirt,
-                              wallet: Wallet,
+                              target: Target,
                               clock: Clock3,
-                            } as Record<string, typeof Shirt>
+                            } as Record<string, typeof Target>
                           )[p.icon] ?? Sparkles;
                         return (
                           <div className="parameter" key={p.title}>
@@ -359,7 +365,15 @@ export function Invitation() {
                         );
                       })}
                     </div>
-                    <SeriousnessGauge />
+                    <SeriousnessGauge
+                      choices={{
+                        activityId,
+                        periodId: period,
+                        momentId: moment,
+                        date,
+                        scienceAnswers,
+                      }}
+                    />
                   </Section>
                 </details>
               </div>

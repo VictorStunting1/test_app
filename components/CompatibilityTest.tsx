@@ -2,14 +2,16 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { interactions as c } from "@/config/invitation";
-import type { ScienceResult } from "@/types/invitation";
+import type { ScienceResult, ScienceChoices } from "@/types/invitation";
 import { Reaction } from "./Reaction";
 import { AnimatedNumber } from "./FunnyStat";
 
 export function CompatibilityTest({
   onResult,
+  onAnswersChange,
 }: {
   onResult: (result: ScienceResult | undefined) => void;
+  onAnswersChange: (answers: ScienceChoices) => void;
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [revisions, setRevisions] = useState<Record<string, number>>({});
@@ -17,6 +19,7 @@ export function CompatibilityTest({
   function choose(questionId: string, answerId: string) {
     const next = { ...answers, [questionId]: answerId };
     setAnswers(next);
+    onAnswersChange(next);
     setRevisions((current) => ({
       ...current,
       [questionId]: (current[questionId] ?? 0) + 1,

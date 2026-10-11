@@ -1,59 +1,83 @@
 "use client";
-import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { invitation, interactions } from "@/config/invitation";
+import { useEffect, useRef, useState } from "react";
+import { animate, useReducedMotion } from "framer-motion";
+import { invitation } from "@/config/invitation";
 import { FunnyStat } from "./FunnyStat";
+import {
+  calculateSeriousness,
+  normalizePercentages,
+} from "./calculateSeriousness";
+import type {
+  SeriousnessChoices,
+  SeriousnessPercentages,
+} from "@/types/invitation";
 
-export function SeriousnessGauge() {
+export function SeriousnessGauge({ choices }: { choices: SeriousnessChoices }) {
   const reduced = useReducedMotion();
-  const [variant, setVariant] = useState(0);
-  const stats = interactions.statsVariants[variant];
-  function recalculate() {
-    // Choose a different distribution every time, without an unbounded retry loop.
-    setVariant(
-      (current) =>
-        (current +
-          1 +
-          Math.floor(Math.random() * (interactions.statsVariants.length - 1))) %
-        interactions.statsVariants.length,
-    );
-  }
+  const result = calculateSeriousness(choices);
+  const target = result.values.join(",");
+  const [display, setDisplay] = useState(result.values);
+  const current = useRef(display);
+  useEffect(() => {
+    const to = target.split(",").map(Number) as SeriousnessPercentages;
+    const from = current.current;
+    function update(values: SeriousnessPercentages) {
+      current.current = values;
+      setDisplay(values);
+    }
+    if (reduced) {
+      update(to);
+      return;
+    }
+    // One shared animation preserves the total while all segments change.
+    const animation = animate(0, 1, {
+      duration: 0.32,
+      ease: "easeOut",
+      onUpdate: (progress) =>
+        update(
+          normalizePercentages(
+            from.map(
+              (value, index) => value + (to[index] - value) * progress,
+            ) as SeriousnessPercentages,
+          ),
+        ),
+    });
+    return () => animation.stop();
+  }, [target, reduced]);
   return (
     <div className="seriousness">
-      <button
-        type="button"
-        className="gauge-button"
-        aria-label={interactions.statsAction}
-        onClick={recalculate}
+      <span className="eyebrow">{invitation.seriousnessLabel}</span>
+      <div className="stat-bar" aria-hidden="true">
+        {display.map((value, index) => (
+          <span
+            key={index}
+            className={`tone-${index}`}
+            style={{ flexGrow: value }}
+          />
+        ))}
+      </div>
+      <div className="stat-labels" aria-hidden="true">
+        {result.labels.map((label, index) => (
+          <FunnyStat
+            key={index}
+            label={label}
+            value={display[index]}
+            index={index}
+            animated={false}
+          />
+        ))}
+      </div>
+      <span
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
       >
-        <span className="eyebrow">
-          {invitation.seriousnessLabel}
-          <span className="recalculate-hint">↻</span>
-        </span>
-        <div className="stat-bar" aria-hidden="true">
-          {stats.map((s, i) => (
-            <motion.span
-              key={i}
-              className={`tone-${i}`}
-              animate={{ flexGrow: s.value }}
-              transition={
-                reduced
-                  ? { duration: 0 }
-                  : { type: "spring", stiffness: 120, damping: 22 }
-              }
-            />
-          ))}
-        </div>
-        <div className="stat-labels">
-          {stats.map((s, i) => (
-            <FunnyStat key={i} {...s} index={i} />
-          ))}
-        </div>
-      </button>
-      <span className="sr-only" role="status">
-        {stats.map((s) => `${s.value} % ${s.label}`).join(", ")}
+        {result.labels
+          .map((label, index) => `${result.values[index]} % ${label}`)
+          .join(", ")}
       </span>
-      <p className="stats-note">{interactions.statsNote}</p>
+      <p className="stats-note">{result.note}</p>
     </div>
   );
 }

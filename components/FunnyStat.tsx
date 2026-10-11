@@ -23,17 +23,17 @@ export function FunnyStat({
   label,
   value,
   index,
+  animated = true,
 }: {
   label: string;
   value: number;
   index: number;
+  animated?: boolean;
 }) {
   return (
     <div className="funny-stat">
       <span className={`stat-dot tone-${index}`} />
-      <strong>
-        <AnimatedNumber value={value} /> %
-      </strong>
+      <strong>{animated ? <AnimatedNumber value={value} /> : value} %</strong>
       <span>{label}</span>
     </div>
   );

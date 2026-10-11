@@ -2220,3 +2220,47 @@ button,
     padding-inline: 16px;
   }
 }
+
+/* Two small clarifications, with three readable labels below their gauge. */
+.clarification-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.seriousness .stat-bar span {
+  flex-basis: 0;
+  min-width: 0;
+}
+.seriousness .stat-labels {
+  flex-wrap: wrap;
+  gap: 12px 22px;
+}
+.seriousness .funny-stat {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.seriousness .funny-stat strong,
+.seriousness .stat-dot {
+  flex-shrink: 0;
+}
+.seriousness .funny-stat strong {
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+}
+.seriousness .stats-note {
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .clarification-grid {
+    grid-template-columns: 1fr;
+  }
+  .seriousness .stat-labels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .seriousness .funny-stat {
+    align-items: baseline;
+  }
+  .seriousness .stat-dot {
+    align-self: center;
+  }
+}
