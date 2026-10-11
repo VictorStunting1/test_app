@@ -19,6 +19,20 @@ export const invitation = {
     title: "Plan Galère",
     description:
       "Une méthode beaucoup trop élaborée pour réussir à boire ce fameux verre.",
+    openGraph: {
+      title: "Mini surprise",
+      description: "À ouvrir quand t’as 2 min ahah",
+      images: ["https://plan-galere.vercel.app/og-preview.png"],
+      url: "https://plan-galere.vercel.app/",
+      type: "website" as const,
+      siteName: "Plan Galère",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: "Mini surprise",
+      description: "À ouvrir quand t’as 2 min ahah",
+      images: ["https://plan-galere.vercel.app/og-preview.png"],
+    },
   },
   brand: "le bureau du fameux verre",
   dossier: "MISSION : TROUVER UN CRÉNEAU",
