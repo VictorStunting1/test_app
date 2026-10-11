@@ -1,4 +1,5 @@
 import { availability } from "@/config/invitation";
+import type { DateAvailability } from "@/types/invitation";
 
 // ISO dates compare chronologically and stay independent of the phone's timezone.
 export function calendarDate(year: number, month: number, day: number) {
@@ -9,14 +10,20 @@ export function parseCalendarDate(value: string) {
   return new Date(`${value}T12:00:00Z`);
 }
 
-export function isAvailableDate(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+export function getDateAvailability(value: string): DateAvailability {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return "unavailable";
   const parsed = parseCalendarDate(value);
-  return (
-    !Number.isNaN(parsed.getTime()) &&
-    parsed.toISOString().slice(0, 10) === value &&
-    value >= availability.earliestDate
-  );
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.toISOString().slice(0, 10) !== value ||
+    value < availability.earliestDate
+  )
+    return "unavailable";
+  return availability.dateExceptions[value]?.status ?? "available";
+}
+
+export function isAvailableDate(value: string) {
+  return getDateAvailability(value) !== "unavailable";
 }
 
 export function isAvailableMoment(date: string, moment: string) {

@@ -5,6 +5,7 @@ import type {
   SnailMood,
   VerdictFrame,
   SeriousnessRules,
+  AvailabilityException,
 } from "@/types/invitation";
 
 // Temps de lecture entre les réactions de verdict, en millisecondes.
@@ -550,14 +551,30 @@ export const personal = {
   ] satisfies VerdictFrame[],
 };
 
+// Ces exceptions ne modifient pas les disponibilités des autres jours.
+const dateExceptions: Record<string, AvailabilityException> = {
+  "2026-10-19": {
+    status: "tentative",
+    note: "Peut-être garagiste dans la journée — je peux décaler :)",
+  },
+  "2026-10-22": {
+    status: "tentative",
+    note: "J’ai proposé de passer faire un coucou à mon ancienne boîte — rien de bloqué pour l’instant.",
+  },
+  "2026-10-24": {
+    status: "unavailable",
+    note: "Déjà pris — on a des invités :)",
+  },
+};
+
 export const availability = {
   earliestDate: "2026-10-16",
+  dateExceptions,
   earliestMoment: "evening",
   earliestReaction:
     "Vendredi je débloque officiellement le mode liberté en soirée 😄",
   earliestBadge: "Mode chômage débloqué 😂",
-  earliestHint:
-    "Le vendredi 16 : soirée uniquement. Les autres jours, tu choisis.",
+  earliestHint: "Le vendredi 16 : soirée uniquement.",
   dateReaction: "Un vrai jour dans le calendrier. Le cagou se tient prêt 😄",
   calendarLabel: "Choisir un jour",
   previousMonth: "Mois précédent",
@@ -572,7 +589,11 @@ export const availability = {
     "Samedi",
     "Dimanche",
   ],
-  legend: { available: "Disponible", busy: "Occupé", selected: "Sélectionné" },
+  legend: {
+    available: "Disponible",
+    tentative: "À confirmer",
+    unavailable: "Indisponible",
+  },
   eveningOnly: "soirée uniquement",
 };
 

@@ -2270,3 +2270,58 @@ button,
   padding-top: 0;
   margin-top: 0;
 }
+
+.calendar-day.tentative:not(.selected) {
+  background: #f2e9d8;
+  border-color: #d5bd90;
+  color: #746044;
+}
+.calendar-day.tentative.selected {
+  border-style: dashed;
+  border-color: #dec8a6;
+}
+.calendar-tentative-dot {
+  position: absolute;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.legend-dot.tentative {
+  background: #d5bd90;
+  border-color: #b29463;
+}
+.calendar-date-note,
+.calendar-blocked-note {
+  max-width: 420px;
+  margin: 12px auto 0;
+  padding: 13px 15px;
+  border: 1px solid #e3d5bc;
+  border-radius: 12px;
+  background: #f7f0e4;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.calendar-note-badge {
+  display: inline-block;
+  margin-bottom: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eadcc4;
+  color: #746044;
+  font-size: 12px;
+}
+.calendar-blocked-note {
+  border-color: var(--line);
+  background: #eee9eb;
+  color: var(--muted);
+  font-size: 13px;
+}
+.calendar-blocked-note strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
