@@ -401,9 +401,11 @@ export function Invitation() {
             {unlocked >= 4 && (
               <div className="journey-panel" hidden={step !== 4}>
                 <section className="final-section">
-                  <span className="eyebrow">{c.finalEyebrow}</span>
+                  {c.finalEyebrow && (
+                    <span className="eyebrow">{c.finalEyebrow}</span>
+                  )}
                   <h2>{c.finalHeading}</h2>
-                  <p className="final-intro">{c.finalIntro}</p>
+                  {c.finalIntro && <p className="final-intro">{c.finalIntro}</p>}
                   <FinalDecision
                     key="verdict"
                     decisionId={decision}

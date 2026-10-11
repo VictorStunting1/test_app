@@ -32,7 +32,7 @@ export const invitation = {
     ticket: "ENTRÉE POUR DEUX",
     caption: "statut : beaucoup trop discuté, pas encore bu",
   },
-  finalEyebrow: "LA BALLE EST DANS TON CAMP",
+  finalEyebrow: "",
   heroNote: "Pas de pression. Juste une bonne excuse pour se voir.",
   heroCta: "Étudier la proposition",
   activityHeading: "On fait quoi ?",
@@ -117,7 +117,7 @@ export const invitation = {
   ],
   seriousnessLabel: "NIVEAU DE SÉRIEUX",
   finalHeading: "Alors, verdict ?",
-  finalIntro: "Le comité attend ton avis. Avec un calme presque crédible.",
+  finalIntro: "",
   decisions: [
     { id: "yes", label: "Allez, vas-y", response: "Allez, vas-y 😄" },
     {
@@ -487,6 +487,7 @@ export const personal = {
   ] satisfies { decisionId: string; mood: SnailMood; label: string }[],
   thinkingTimerLabel: "Chrono mental · parfaitement fictif",
   thinkingTimerDisplay: "03:00",
+  thinkingTimerDurationMs: 1500,
   yesSequence: [
     { at: 0, text: "Voilà 😂", detail: "" },
     {

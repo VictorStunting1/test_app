@@ -52,6 +52,14 @@ export function FinalDecision({
         setReaction(frame.text);
         setDetail(frame.detail);
         setThinkingTimer(Boolean(frame.thinkingTimer));
+        if (frame.thinkingTimer) {
+          timers.push(
+            setTimeout(
+              () => setThinkingTimer(false),
+              personal.thinkingTimerDurationMs,
+            ),
+          );
+        }
         // Keep the car mounted until the sequence ends, so it finishes crossing.
         if (frame.car) setCar(true);
       }, frame.at),

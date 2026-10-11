@@ -10,7 +10,10 @@ export function ThinkingTimer() {
       <motion.span
         aria-hidden="true"
         animate={{ rotate: reduced ? 0 : [0, 0, 180, 180] }}
-        transition={{ duration: 2.5, ease: "easeInOut" }}
+        transition={{
+          duration: personal.thinkingTimerDurationMs / 1000,
+          ease: "easeInOut",
+        }}
       >
         <Hourglass size={16} />
       </motion.span>
