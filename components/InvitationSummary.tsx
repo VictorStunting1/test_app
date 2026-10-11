@@ -14,16 +14,19 @@ import {
   interactions,
   journey,
   personal,
+  appendScienceHighlights,
 } from "@/config/invitation";
 import { SnailIllustration } from "./SnailIllustration";
-import type { ResponseSelection } from "@/types/invitation";
+import type { ResponseSelection, ScienceResult } from "@/types/invitation";
 export function InvitationSummary({
   selection,
   decisionId,
+  science,
   onEdit,
 }: {
   selection: ResponseSelection | null;
   decisionId: string;
+  science?: ScienceResult;
   onEdit: () => void;
 }) {
   const reduced = useReducedMotion();
@@ -33,9 +36,10 @@ export function InvitationSummary({
   const [shareStatus, setShareStatus] = useState("");
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
-  const text = selection
+  const response = selection
     ? invitation.responseText(selection)
     : invitation.decisions.find((d) => d.id === decisionId)!.response;
+  const text = appendScienceHighlights(response, selection?.science ?? science);
   useEffect(() => {
     setShareStatus("");
     setCopied(false);

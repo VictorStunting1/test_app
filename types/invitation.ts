@@ -26,6 +26,7 @@ export type ScienceAnswer = {
   reaction: string;
   weight: number;
   risk?: string;
+  shareText?: string;
 };
 export type ScienceQuestion = {
   id: string;
@@ -36,6 +37,7 @@ export type ScienceResult = {
   score: number;
   answers: { question: string; answer: string }[];
   risk: string;
+  highlights?: string[];
 };
 
 export type SnailMood = "neutral" | "happy" | "skeptical" | "hopeful" | "sad";

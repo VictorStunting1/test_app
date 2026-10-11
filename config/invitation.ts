@@ -2,6 +2,7 @@ import type {
   Activity,
   Choice,
   ResponseSelection,
+  ScienceResult,
   SnailMood,
   VerdictFrame,
   SeriousnessRules,
@@ -21,10 +22,8 @@ export const invitation = {
   },
   brand: "le bureau du fameux verre",
   dossier: "MISSION : TROUVER UN CRÉNEAU",
-  badge: "À l’attention de",
-  title: "Une proposition extrêmement sérieuse vient de t’être transmise.",
-  intro:
-    "Bon allez, on arrête de parler de ce verre comme d’un projet prévu pour 2028.\nC’était ton idée à la base. Je ne fais qu’assurer un suivi de projet extrêmement rigoureux.",
+  title: "Bon. On se voit ?",
+  intro: "Ce fameux verre mérite mieux qu’un projet pour 2028 🙃",
   artwork: {
     heading: "UNE BONNE IDÉE",
     lines: ["Bon.", "On le cale quand"],
@@ -33,7 +32,7 @@ export const invitation = {
     caption: "statut : beaucoup trop discuté, pas encore bu",
   },
   finalEyebrow: "",
-  heroNote: "Pas de pression. Juste une bonne excuse pour se voir.",
+  heroNote: "Un verre. Quelques vannes. On tente ?",
   heroCta: "Étudier la proposition",
   activityHeading: "On fait quoi ?",
   activityIntro:
@@ -119,7 +118,7 @@ export const invitation = {
   finalHeading: "Alors, verdict ?",
   finalIntro: "",
   decisions: [
-    { id: "yes", label: "Allez, vas-y", response: "Allez, vas-y 😄" },
+    { id: "yes", label: "Vas-y, on se voit 😈", response: "Allez, vas-y 😄" },
     {
       id: "maybe",
       label: "Pourquoi pas 👀",
@@ -204,7 +203,11 @@ export const interactions = {
   science: {
     heading: "Test scientifique extrêmement fiable",
     intro: "Avant de continuer, quelques vérifications essentielles.",
-    optional: "FACULTATIF · AUCUNE VALEUR SCIENTIFIQUE",
+    disclaimer: "AUCUNE VALEUR SCIENTIFIQUE · JUSTE POUR LE FUN",
+    progressLabel: "Question",
+    nextLabel: "La suivante",
+    previousLabel: "La précédente",
+    replyLead: "Côté science",
     scoreLabel: "Compatibilité scientifique",
     methodology: "Méthodologie : absolument douteuse.",
     defaultRisk: "Confiance dans une méthodologie douteuse",
@@ -241,6 +244,7 @@ export const interactions = {
           {
             id: "yes",
             label: "Évidemment",
+            shareText: "Les frites se partagent.",
             reaction:
               "Le plan bourbier inclut donc un partage de frites. Ça se précise.",
             weight: 4,
@@ -249,6 +253,7 @@ export const interactions = {
           {
             id: "few",
             label: "Une ou deux",
+            shareText: "Une ou deux frites, pas plus.",
             reaction: "Diplomatiquement acceptable.",
             weight: 1,
             risk: "Quota de frites à négocier",
@@ -256,6 +261,7 @@ export const interactions = {
           {
             id: "no",
             label: "Touche à mes frites et ça part mal",
+            shareText: "Mes frites restent sous protection.",
             reaction: "Information transmise au service sécurité.",
             weight: -2,
             risk: "Frites sous haute surveillance",
@@ -296,24 +302,28 @@ export const interactions = {
           {
             id: "zero",
             label: "0 minute, je suis une légende de la ponctualité 😄",
+            shareText: "Ponctualité légendaire annoncée.",
             reaction: "Discipline impressionnante.",
             weight: -1,
           },
           {
             id: "ten",
             label: "5-10 minutes, on reste civilisés 🙃",
+            shareText: "5–10 min de marge.",
             reaction: "Tolérance saine, rien à signaler.",
             weight: 1,
           },
           {
             id: "warn",
             label: "Tant que tu préviens, je fais semblant d’être mature 😂",
+            shareText: "Si tu es en retard, préviens.",
             reaction: "Communication > chaos. C’est beau.",
             weight: 3,
           },
           {
             id: "me",
             label: "Je suis probablement la personne en retard 🤣",
+            shareText: "Je risque d’être la personne en retard.",
             reaction: "Au moins l’honnêteté est là 😂",
             weight: 2,
             risk: "Arrivée théoriquement imminente",
@@ -372,21 +382,20 @@ export const interactions = {
 
 export const mobilePlay = {
   snailLabel: "Toucher le cagou escargot",
-  snailReply:
-    "Le cagou avance doucement. Comme les grandes décisions, mais avec une coquille.",
+  snailReply: "Cagooou !!",
   carReply: "KA-CHOW. Départ vers un plan raisonnablement bancal.",
 };
 
 export const journey = {
-  steps: ["Une idée", "Un créneau", "Les petits secrets", "Ton verdict"],
+  steps: ["Une idée", "Un créneau", "Le contrôle scientifique", "Ton verdict"],
   continueLabels: [
     "Et côté agenda ?",
     "Découvrir la suite",
     "Donner mon verdict",
   ],
   backLabel: "Revenir en arrière",
-  optionalQuiz:
-    "Encore un test beaucoup trop élaboré. Tu peux parfaitement le passer.",
+  quizIntro:
+    "Cinq questions pour la science. Enfin… surtout pour les vannes 😂",
   dateLabel: "Un jour précis ?",
   dateHint: "Choisis un jour dans le calendrier, puis le moment qui t’arrange.",
   detailsLabel: "Deux trois précisions",
@@ -457,7 +466,9 @@ export const personal = {
     "Je précise que cette fois je n’ai pas prévu de finir à errer quelque part à une heure douteuse 😂",
   lyonLabel: "Une archive du comité",
   lyonReplies: ["Je maintiens que Lyon était sous contrôle.", "Plus ou moins."],
-  quizLabel: "Passer le contrôle scientifique (facultatif)",
+  quizLabel: "Le contrôle scientifique",
+  quizHint:
+    "Encore quelques réponses pour compléter ce dossier très peu scientifique.",
   activityHint: "Choisis une piste pour ouvrir l’agenda.",
   availabilityHint:
     "Choisis un jour dans le calendrier, puis un moment. « Aucune préférence » compte aussi.",
@@ -561,7 +572,7 @@ const dateExceptions: Record<string, AvailabilityException> = {
   },
   "2026-10-24": {
     status: "unavailable",
-    note: "Déjà pris — on a des invités :)",
+    note: "Déjà pris — j’ai des invités :)",
   },
 };
 
@@ -677,3 +688,11 @@ export const seriousnessRules: SeriousnessRules = {
     },
   },
 };
+
+// Deux clins d’œil maximum, identiques dans le texte affiché, copié et partagé.
+export function appendScienceHighlights(text: string, science?: ScienceResult) {
+  const highlights = science?.highlights?.slice(0, 2) ?? [];
+  return highlights.length
+    ? `${text}\n${interactions.science.replyLead} : ${highlights.join(" ")}`
+    : text;
+}

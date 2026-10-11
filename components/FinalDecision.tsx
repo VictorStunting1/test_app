@@ -88,7 +88,7 @@ export function FinalDecision({
   return (
     <>
       <div className="decision-buttons" hidden={resolved}>
-        {invitation.decisions.map((decision, index) =>
+        {invitation.decisions.map((decision) =>
           decision.id === "no" ? (
             <PlayfulNo key={decision.id} onRefuse={() => decide("no")} />
           ) : (
@@ -97,10 +97,10 @@ export function FinalDecision({
               type="button"
               key={decision.id}
               onClick={() => decide(decision.id)}
-              className={index === 0 ? "primary-button" : "secondary-button"}
+              className={`secondary-button ${decision.id === "yes" ? "decision-positive" : ""}`}
             >
               {decision.label}
-              {index === 0 && <ArrowUpRight size={18} />}
+              {decision.id === "yes" && <ArrowUpRight size={18} />}
             </motion.button>
           ),
         )}

@@ -1,8 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { interactions as c } from "@/config/invitation";
-import type { ScienceResult, ScienceChoices } from "@/types/invitation";
+import type {
+  ScienceAnswer,
+  ScienceResult,
+  ScienceChoices,
+} from "@/types/invitation";
 import { Reaction } from "./Reaction";
 import { AnimatedNumber } from "./FunnyStat";
 
@@ -16,7 +20,24 @@ export function CompatibilityTest({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [revisions, setRevisions] = useState<Record<string, number>>({});
   const [activeQuestion, setActiveQuestion] = useState("");
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const questionRef = useRef<HTMLFieldSetElement>(null);
+  const navigationRequested = useRef(false);
   const reduced = useReducedMotion();
+  useEffect(() => {
+    if (!navigationRequested.current) return;
+    navigationRequested.current = false;
+    questionRef.current?.focus({ preventScroll: true });
+    questionRef.current?.scrollIntoView({
+      block: "nearest",
+      behavior: reduced ? "instant" : "smooth",
+    });
+  }, [questionIndex, reduced]);
+  function moveQuestion(index: number) {
+    navigationRequested.current = true;
+    setActiveQuestion("");
+    setQuestionIndex(index);
+  }
   function choose(questionId: string, answerId: string) {
     const next = { ...answers, [questionId]: answerId };
     setActiveQuestion(questionId);
@@ -26,7 +47,7 @@ export function CompatibilityTest({
       ...current,
       [questionId]: (current[questionId] ?? 0) + 1,
     }));
-    const chosen = c.science.questions.map((q) =>
+    const chosen: (ScienceAnswer | undefined)[] = c.science.questions.map((q) =>
       q.answers.find((a) => a.id === next[q.id]),
     );
     if (chosen.every((a) => a !== undefined)) {
@@ -38,10 +59,16 @@ export function CompatibilityTest({
         })),
         risk:
           chosen.find((a) => a && "risk" in a)?.risk ?? c.science.defaultRisk,
+        highlights: chosen
+          .flatMap((answer) => (answer?.shareText ? [answer.shareText] : []))
+          .slice(0, 2),
       });
     } else onResult(undefined);
   }
   const complete = c.science.questions.every((q) => answers[q.id]);
+  const currentAnswered = Boolean(
+    answers[c.science.questions[questionIndex].id],
+  );
   const score =
     80 +
     c.science.questions.reduce(
@@ -51,11 +78,15 @@ export function CompatibilityTest({
     );
   return (
     <div className="science-panel">
-      <p className="eyebrow">{c.science.optional}</p>
-      {c.science.questions.map((q, i) => (
-        <fieldset key={q.id}>
+      <p className="eyebrow">{c.science.disclaimer}</p>
+      <p className="science-progress" role="status">
+        {c.science.progressLabel} {questionIndex + 1} /{" "}
+        {c.science.questions.length}
+      </p>
+      {c.science.questions.slice(questionIndex, questionIndex + 1).map((q) => (
+        <fieldset key={q.id} ref={questionRef} tabIndex={-1}>
           <legend>
-            <span className="question-index">0{i + 1}</span>
+            <span className="question-index">0{questionIndex + 1}</span>
             {q.question}
           </legend>
           <div className="science-answers">
@@ -89,6 +120,29 @@ export function CompatibilityTest({
           />
         </fieldset>
       ))}
+      <div className="science-navigation">
+        {questionIndex > 0 && (
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => moveQuestion(questionIndex - 1)}
+          >
+            {c.science.previousLabel}
+          </button>
+        )}
+        {questionIndex < c.science.questions.length - 1 && (
+          <button
+            type="button"
+            className="secondary-button quiz-next"
+            disabled={!currentAnswered}
+            onClick={() => {
+              if (currentAnswered) moveQuestion(questionIndex + 1);
+            }}
+          >
+            {c.science.nextLabel}
+          </button>
+        )}
+      </div>
       {complete && (
         <motion.div
           className="science-score"

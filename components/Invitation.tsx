@@ -131,9 +131,19 @@ export function Invitation() {
     journeyRef.current?.focus({ preventScroll: true });
   }, [step, reduceMotion]);
   const canContinue =
-    step === 1 ? Boolean(activity) : step === 2 ? hasSchedule : true;
+    step === 1
+      ? Boolean(activity)
+      : step === 2
+        ? hasSchedule
+        : step === 3
+          ? Boolean(science)
+          : true;
   const nextHint =
-    step === 1 ? personal.activityHint : personal.availabilityHint;
+    step === 1
+      ? personal.activityHint
+      : step === 2
+        ? personal.availabilityHint
+        : personal.quizHint;
   function showSummary() {
     if (decision === "lawyer") stopSound();
     setSummaryReady(true);
@@ -191,17 +201,6 @@ export function Invitation() {
   }
   return (
     <div className="site">
-      <header className="masthead">
-        <a href="#" className="brand">
-          <span className="brand-mark">
-            <Sparkles size={15} />
-          </span>
-          {c.brand}
-        </a>
-        <span className="header-note">
-          {c.senderName} <ArrowUpRight size={12} /> {c.recipientName}
-        </span>
-      </header>
       <main>
         {step === 0 && (
           <section className="hero">
@@ -215,9 +214,6 @@ export function Invitation() {
                 {c.dossier}
                 <span className="dossier-line" />
               </div>
-              <p className="recipient">
-                {c.badge} <span>{c.recipientName}</span>
-              </p>
               <h1>{c.title}</h1>
               <p className="hero-intro">{c.intro}</p>
               <button
@@ -360,14 +356,14 @@ export function Invitation() {
                   <PersonalSecrets
                     showLyon={activityId === "surprise" || moment === "evening"}
                   />
-                  <details className="fine-print optional-science">
-                    <summary>{personal.quizLabel}</summary>
-                    <p className="optional-quiz">{journey.optionalQuiz}</p>
+                  <div className="science-section">
+                    <h3>{personal.quizLabel}</h3>
+                    <p className="quiz-intro">{journey.quizIntro}</p>
                     <CompatibilityTest
                       onResult={setScience}
                       onAnswersChange={setScienceAnswers}
                     />
-                  </details>
+                  </div>
                 </Section>
                 <details className="fine-print">
                   <summary>{journey.detailsLabel}</summary>
@@ -436,6 +432,7 @@ export function Invitation() {
                               : selection
                           }
                           decisionId={decision}
+                          science={science}
                           onEdit={() => {
                             stopSound();
                             setDecision("");

@@ -1556,6 +1556,7 @@ button,
   background: #fff8;
 }
 .outgoing-message p {
+  white-space: pre-line;
   margin-top: 10px;
   font-size: 14px;
   color: var(--ink);
@@ -1966,8 +1967,9 @@ button,
   top: calc(100% + 8px);
 }
 .why-gimmick {
-  margin-top: 14px;
+  margin: 14px auto 0;
   max-width: 440px;
+  text-align: center;
 }
 .why-pill {
   display: inline-flex;
@@ -1993,6 +1995,7 @@ button,
   font-size: 14px;
   line-height: 1.7;
   white-space: pre-line;
+  text-align: left;
 }
 .why-answer::before {
   content: "";
@@ -2000,7 +2003,7 @@ button,
   width: 9px;
   height: 9px;
   top: -5px;
-  left: 24px;
+  left: calc(50% - 5px);
   rotate: 45deg;
   border-top: 1px solid #e0d4dc;
   border-left: 1px solid #e0d4dc;
@@ -2366,4 +2369,83 @@ button,
   margin-bottom: 4px;
   font-size: 12px;
   font-weight: 500;
+}
+
+/* A short, playful quiz with one question visible at a time. */
+.science-section {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.science-section > h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+.quiz-intro {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 10px 0 18px;
+}
+.science-progress {
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.science-panel > .eyebrow {
+  margin-bottom: 12px;
+}
+.science-panel fieldset {
+  scroll-margin-block: 24px;
+}
+.science-navigation {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.science-navigation button {
+  min-height: 48px;
+  font-size: 14px;
+}
+.science-navigation .quiz-next {
+  margin-left: auto;
+}
+.science-navigation button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+/* The positive answer stands out through its type and size, without a fill. */
+.decision-buttons .decision-positive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 17px 28px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  background: transparent;
+}
+.decision-buttons .decision-positive:hover {
+  background: transparent;
+  box-shadow: 0 0 0 2px #3223310d;
+}
+@media (max-width: 600px) {
+  .science-section {
+    margin-top: 18px;
+    padding-top: 18px;
+  }
+  .decision-buttons .decision-positive {
+    min-height: 62px;
+    font-size: 19px;
+    padding: 17px 18px;
+  }
 }
