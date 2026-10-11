@@ -25,7 +25,7 @@ Arrêter le serveur de développement avant de lancer la compilation de producti
 
 Tout le contenu est dans `config/invitation.ts` : noms, titre, introduction, activités, réactions, disponibilités, paramètres, jauge, décisions, textes du récapitulatif et métadonnées de partage. `responseText` définit le message copié. Les icônes d’activité disponibles sont `glass`, `food`, `activity` et `surprise`. Garder des identifiants uniques et au moins une option de moment. Aucun moment n’est présélectionné : « Aucune préférence » est un vrai choix. Les valeurs de la jauge sont des poids ; leur somme devrait être 100.
 
-Le parcours demande une activité, puis une période **ou un jour précis**, et un moment explicitement choisi : journée, début de soirée, soirée ou aucune préférence. Le bouton suivant reste désactivé avec une explication tant que ces choix ne sont pas faits. « Pourquoi pas » reste un intérêt prudent, sans confirmation. Le quiz se trouve dans un accordéon à la troisième étape et reste facultatif ; ses résultats restent dans le récapitulatif, sans alourdir le message envoyé.
+Le parcours demande une activité, puis une période, **un jour précis ou « Franchement, peu importe »**, et un moment explicitement choisi : journée, début de soirée, soirée ou aucune préférence. Le bouton suivant reste désactivé avec une explication tant que ces choix ne sont pas faits. « Pourquoi pas » reste un intérêt prudent, sans confirmation. Le quiz se trouve dans un accordéon à la troisième étape et reste facultatif ; ses résultats restent dans le récapitulatif, sans alourdir le message envoyé.
 
 La réponse à envoyer est une phrase courte. **Envoyer ma réponse** ouvre le partage natif lorsqu’il est disponible (HTTPS et navigateur compatible), et **Copier mon verdict** permet de coller la réponse dans la conversation Instagram. Le navigateur choisit les applications proposées : il ne permet ni de filtrer la liste sur Instagram, ni de présélectionner un compte destinataire. Instagram peut ne pas accepter un partage de texte. Il n’y a pas de boutons SMS/mail et aucun message n’est envoyé automatiquement. Si la copie est bloquée, un champ permet de copier manuellement.
 
@@ -55,7 +55,7 @@ Pour publier cette version : importer `VictorStunting1/test_app` depuis GitHub d
 
 ## Interactions et humour
 
-Les variantes de réactions, questions, réponses, scores et easter eggs sont dans `interactions`, exporté depuis `config/invitation.ts`. Chaque réponse scientifique possède un poids : le score est 80 + la somme des poids choisis. Ce quiz est facultatif et ne bloque jamais une réponse. Le récapitulatif inclut le score uniquement lorsque les trois questions sont remplies. La réponse à partager reste courte, sans les détails du quiz.
+Les variantes de réactions, questions, réponses, scores et easter eggs sont dans `interactions`, exporté depuis `config/invitation.ts`. Chaque réponse scientifique possède un poids : le score est 80 + la somme des poids choisis. Ce quiz est facultatif et ne bloque jamais une réponse. Le récapitulatif inclut le score uniquement lorsque les cinq questions sont remplies. Les trois questions initiales restent présentes, avec deux questions sur les plans bancals et le site lui-même. La réponse à partager reste courte, sans les détails du quiz.
 
 La jauge choisit aléatoirement une autre répartition parmi `statsVariants` (conserver au moins deux variantes dont les proportions totalisent 100). Les informations classifiées se réinitialisent après 3,5 secondes sans clic ; le titre d’agenda revient après 4 secondes. La plaisanterie sur la confiance dure une seconde et ne désactive aucune carte. Les minuteries sont annulées lors d’un nouveau choix ou du démontage des composants.
 
@@ -84,3 +84,13 @@ Les textes contextuels, les réactions de créneaux et les private jokes restent
 - Chaque récapitulatif a son cagou escargot : fou de joie pour le oui, dubitatif pour le peut-être, les mains jointes et en questionnement pour la réflexion, triste pour le non. Les expressions et leurs descriptions sont définies par `personal.verdictSnails`. Les petits mouvements respectent la réduction des animations. **Laisse-moi réfléchir 3 minutes** ouvre un dossier en réflexion, avec une réponse à partager distincte du peut-être.
 
 Le texte à copier reste une seule phrase utile, sans les private jokes ni le détail du quiz. Le partage et la copie restent des actions explicites.
+
+## Calendrier et disponibilité de Victor
+
+Le calendrier intégré remplace le champ de date natif. Il affiche les jours occupés, la sélection prune, une légende et des boutons tactiles ; ses flèches changent de mois. Au clavier, les flèches déplacent le focus d’un jour ou d’une semaine, et Entrée sélectionne le jour. Les dates sont traitées en ISO et UTC pour conserver le même jour sur tous les téléphones.
+
+Les règles et tous les textes sont dans `availability`, exporté depuis `config/invitation.ts` : `earliestDate` vaut **2026-10-16** et `earliestMoment` vaut **evening**. Les jours précédents sont désactivés. Le 16 sélectionne automatiquement Soirée et désactive les autres moments ; dès le 17, tous les moments sont possibles. Les règles sont aussi vérifiées dans le parcours, avant le récapitulatif. Pour déplacer la première disponibilité, modifier ces valeurs et les textes associés dans la configuration.
+
+Les périodes sont Ce week-end, Semaine prochaine et On improvisera. Le bouton **Franchement, peu importe 😂** est un choix explicite : il efface la date précise, conserve le moment choisi et transmet « Un jour à caler ensemble ». Choisir une autre période ou une date précise remplace ce choix. Aucun jour ni moment n’est présélectionné à l’arrivée.
+
+Le ticket d’accueil affiche « Bon. On le cale quand ce verre ? », avec un tilt réduit sur téléphone et une brève animation de flottement. Toute la carte est tactile et déclenche son easter egg. Le bouton **Pourquoi t’as fait tout ça ? 😂** fait tourner sept réponses dans une petite bulle. Le quiz reste facultatif ; ses réponses ont un feedback immédiat et des zones tactiles de 52 px minimum. Les nouvelles animations respectent la réduction des mouvements.

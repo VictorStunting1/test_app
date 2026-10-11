@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { interactions as c } from "@/config/invitation";
 import type { ScienceResult } from "@/types/invitation";
 import { Reaction } from "./Reaction";
@@ -13,6 +13,7 @@ export function CompatibilityTest({
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [revisions, setRevisions] = useState<Record<string, number>>({});
+  const reduced = useReducedMotion();
   function choose(questionId: string, answerId: string) {
     const next = { ...answers, [questionId]: answerId };
     setAnswers(next);
@@ -52,10 +53,14 @@ export function CompatibilityTest({
             <span className="question-index">0{i + 1}</span>
             {q.question}
           </legend>
-          <div className="pills">
+          <div className="science-answers">
             {q.answers.map((a) => (
               <motion.button
-                whileTap={{ scale: 0.98 }}
+                whileTap={reduced ? undefined : { scale: 0.97 }}
+                animate={{
+                  scale: !reduced && answers[q.id] === a.id ? [1, 1.02, 1] : 1,
+                }}
+                transition={{ duration: reduced ? 0 : 0.25 }}
                 key={a.id}
                 type="button"
                 aria-pressed={answers[q.id] === a.id}
@@ -67,6 +72,7 @@ export function CompatibilityTest({
             ))}
           </div>
           <Reaction
+            immediate
             text={q.answers.find((a) => a.id === answers[q.id])?.reaction ?? ""}
             revision={revisions[q.id] ?? 0}
           />

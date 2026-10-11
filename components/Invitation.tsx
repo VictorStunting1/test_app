@@ -15,8 +15,12 @@ import {
   interactions as fun,
   journey,
   personal,
+  availability,
 } from "@/config/invitation";
 import { ActivityCard } from "./ActivityCard";
+import { HeroTicket } from "./HeroTicket";
+import { WhyGimmick } from "./WhyGimmick";
+import { isAvailableDate, isAvailableMoment } from "./calendarUtils";
 import { AvailabilitySelector } from "./AvailabilitySelector";
 import {
   ActivityPrelude,
@@ -84,13 +88,11 @@ export function Invitation() {
   const [moment, setMoment] = useState("");
   const [decision, setDecision] = useState("");
   const [error, setError] = useState("");
-  const [whyClicks, setWhyClicks] = useState(0);
   const [withdrawReply, setWithdrawReply] = useState("");
   const [activityRevision, setActivityRevision] = useState(0);
   const [agendaTitle, setAgendaTitle] = useState(c.availabilityHeading);
   const [science, setScience] = useState<ScienceResult>();
   const [footerClicks, setFooterClicks] = useState(0);
-  const [starClicks, setStarClicks] = useState(0);
   const [decisionRevision, setDecisionRevision] = useState(0);
   const withdrawalTimer = useDelayedAction();
   const agendaTimer = useDelayedAction();
@@ -98,15 +100,21 @@ export function Invitation() {
   const resultRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const activity = c.activities.find((a) => a.id === activityId);
+  const hasSchedule = Boolean(
+    (period || isAvailableDate(date)) &&
+    moment &&
+    isAvailableMoment(date, moment),
+  );
   const selection: ResponseSelection | null =
-    activity && (period || date) && moment
+    activity && hasSchedule
       ? {
           activity,
           decisionId: decision,
           science,
           date,
           period:
-            c.periods.find((p) => p.id === period)?.label ?? journey.dateClear,
+            c.periods.find((p) => p.id === period)?.label ??
+            availability.flexibleSummary,
           moment: c.moments.find((m) => m.id === moment)!.label,
           decision: c.decisions.find((d) => d.id === decision)?.response ?? "",
         }
@@ -120,11 +128,7 @@ export function Invitation() {
     journeyRef.current?.focus({ preventScroll: true });
   }, [step, reduceMotion]);
   const canContinue =
-    step === 1
-      ? Boolean(activity)
-      : step === 2
-        ? Boolean((period || date) && moment)
-        : true;
+    step === 1 ? Boolean(activity) : step === 2 ? hasSchedule : true;
   const nextHint =
     step === 1 ? personal.activityHint : personal.availabilityHint;
   function showSummary() {
@@ -189,57 +193,13 @@ export function Invitation() {
                 {c.heroCta}
                 <ArrowDown size={17} />
               </button>
-              <button
-                type="button"
-                className="text-button why-button"
-                onClick={() => setWhyClicks((v) => v + 1)}
-              >
-                {fun.whyLabel}
-              </button>
-              <Reaction
-                text={
-                  whyClicks
-                    ? fun.whyAnswers[(whyClicks - 1) % fun.whyAnswers.length]
-                    : ""
-                }
-                revision={whyClicks}
-              />
+              <WhyGimmick />
               <p className="hero-note">
                 <Heart size={13} />
                 {c.heroNote}
               </p>
             </motion.div>
-            <div className="hero-art">
-              <div className="orbit orbit-one" aria-hidden="true" />
-              <div className="orbit orbit-two" aria-hidden="true" />
-              <div className="invitation-ticket">
-                <button
-                  type="button"
-                  aria-label={fun.starLabel}
-                  className="ticket-star secret-star"
-                  onClick={() => setStarClicks((v) => v + 1)}
-                >
-                  <Sparkles size={32} strokeWidth={1.2} />
-                </button>
-                <span className="ticket-small">{c.artwork.heading}</span>
-                <span className="ticket-title">
-                  {c.artwork.lines[0]}
-                  <br />
-                  {c.artwork.lines[1]}
-                  <br />
-                  <i>{c.artwork.question}</i>
-                </span>
-                <span className="ticket-bottom">
-                  {c.artwork.ticket} <ArrowUpRight size={18} />
-                </span>
-              </div>
-              <Reaction
-                text={starClicks ? fun.starReply : ""}
-                revision={starClicks}
-                className="star-reaction"
-              />
-              <span className="art-caption">{c.artwork.caption}</span>
-            </div>
+            <HeroTicket />
           </section>
         )}
         {step > 0 && (
@@ -320,7 +280,13 @@ export function Invitation() {
                   <AvailabilitySelector
                     date={date}
                     onDate={(value) => {
+                      if (value && !isAvailableDate(value)) return;
                       setDate(value);
+                      if (value) setPeriod("");
+                      if (value === availability.earliestDate)
+                        setMoment(availability.earliestMoment);
+                      agendaTimer.cancel();
+                      setAgendaTitle(c.availabilityHeading);
                       setError("");
                       setDecision("");
                     }}
@@ -328,6 +294,7 @@ export function Invitation() {
                     moment={moment}
                     onPeriod={(id) => {
                       setPeriod(id);
+                      setDate("");
                       setError("");
                       agendaTimer.cancel();
                       setAgendaTitle(
@@ -343,6 +310,7 @@ export function Invitation() {
                       setDecision("");
                     }}
                     onMoment={(id) => {
+                      if (!isAvailableMoment(date, id)) return;
                       setMoment(id);
                       setError("");
                       setDecision("");

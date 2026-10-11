@@ -25,10 +25,10 @@ export const invitation = {
     "Bon allez, on arrête de parler de ce verre comme d’un projet prévu pour 2028.\nC’était ton idée à la base. Je ne fais qu’assurer un suivi de projet extrêmement rigoureux.",
   artwork: {
     heading: "UNE BONNE IDÉE",
-    lines: ["Toi.", "Moi."],
-    question: "Ce fameux verre ?",
+    lines: ["Bon.", "On le cale quand"],
+    question: "ce verre ?",
     ticket: "ENTRÉE POUR DEUX",
-    caption: "probabilité de passer un bon moment : élevée",
+    caption: "statut : beaucoup trop discuté, pas encore bu",
   },
   finalEyebrow: "LA BALLE EST DANS TON CAMP",
   heroNote: "Pas de pression. Juste une bonne excuse pour se voir.",
@@ -91,11 +91,10 @@ export const invitation = {
   ] satisfies Activity[],
   availabilityHeading: "Et dans nos agendas ?",
   availabilityIntro:
-    "Vu que dès vendredi soir mon agenda devient étonnamment vide, je peux légèrement m’adapter au tien.",
+    "Disponible à partir du vendredi 16 octobre au soir. Après ça, mon agenda devient étonnamment flexible.",
   periodLabel: "LE BON CRÉNEAU",
   momentLabel: "PLUTÔT…",
   periods: [
-    { id: "week", label: "Cette semaine" },
     { id: "weekend", label: "Ce week-end" },
     { id: "next", label: "Semaine prochaine" },
     {
@@ -191,11 +190,15 @@ export const invitation = {
 
 // Tous les textes et variantes interactives restent personnalisables ici.
 export const interactions = {
-  whyLabel: "Pourquoi t’as fait tout ça ?",
+  whyLabel: "Pourquoi t’as fait tout ça ? 😂",
   whyAnswers: [
-    "Rappel historique : cette idée venait quand même de toi.",
-    "Je ne fais donc qu’assurer un suivi de projet extrêmement rigoureux.",
-    "Avec des moyens parfaitement disproportionnés, oui.",
+    "Parce qu’un simple message, c’était visiblement beaucoup trop raisonnable 😂",
+    "J’ai entendu ‘on prend un verre’ et j’ai réagi de manière parfaitement disproportionnée 🤣",
+    "Techniquement, j’aurais pu écrire 8 mots.\nMais où serait le fun ? 🙃",
+    "Rappel historique : cette idée venait quand même de toi 😄",
+    "Je ne fais donc qu’assurer un suivi de projet extrêmement rigoureux 😂",
+    "Tu voulais apprendre un peu le dev.\nVoilà un cas d’usage parfaitement essentiel 🤣",
+    "Une légère surinterprétation de ‘on prendra un verre’, rien de grave 🙃",
   ],
   withdrawLabel: "Je retire ma confiance",
   withdrawReplies: [
@@ -213,7 +216,6 @@ export const interactions = {
     "Bon : probablement pas un enlèvement.",
   ],
   periodReactions: {
-    week: "Ah ouais, efficacité maximale.",
     weekend: "Très raisonnable. Presque inquiétant venant de nous.",
     next: "On anticipe carrément maintenant ?",
     improvise: "Voilà. Je nous reconnais mieux.",
@@ -318,6 +320,55 @@ export const interactions = {
           },
         ],
       },
+      {
+        id: "bourbier",
+        question: "Face à un plan un peu bancal, tu fais quoi ?",
+        answers: [
+          {
+            id: "follow",
+            label: "Je suis, évidemment 😂",
+            reaction: "Esprit plan bourbier détecté.",
+            weight: 3,
+          },
+          {
+            id: "questions",
+            label: "Je pose deux questions puis je suis 😄",
+            reaction: "Un minimum de prudence. Étonnant.",
+            weight: 1,
+          },
+          {
+            id: "hesitate",
+            label: "Je fais semblant d’hésiter 🙃",
+            reaction: "Oui oui. On connaît cette technique 🤣",
+            weight: 2,
+          },
+        ],
+      },
+      {
+        id: "website",
+        question: "Devant ce site, ta réaction honnête :",
+        answers: [
+          {
+            id: "like",
+            label: "C’est débile, j’aime bien 🤣",
+            reaction: "C’était globalement l’objectif.",
+            weight: 3,
+          },
+          {
+            id: "too-much",
+            label: "Il en fait beaucoup trop 😂",
+            reaction: "Je refuse de commenter cette accusation 🙃",
+            weight: 1,
+          },
+          {
+            id: "finish",
+            label: "Bon… je vais quand même jusqu’au bout 😄",
+            reaction:
+              "Très bon choix. T’es déjà beaucoup trop loin pour abandonner.",
+            weight: 2,
+          },
+        ],
+      },
     ] satisfies import("@/types/invitation").ScienceQuestion[],
   },
   statsVariants: [
@@ -382,8 +433,8 @@ export const journey = {
   optionalQuiz:
     "Encore un test beaucoup trop élaboré. Tu peux parfaitement le passer.",
   dateLabel: "Un jour précis ?",
-  dateHint: "Facultatif. La période reste une bonne approximation.",
-  dateClear: "Peu importe le jour",
+  dateHint: "Une date précise ou un créneau large : comme tu préfères.",
+  dateClear: "Franchement, peu importe 😂",
   detailsLabel: "Les petits caractères (promis, rien de louche)",
   noTeases: ["Ahhh non 😂", "Léa.", "Fais pas la cagou 🤣"],
   noFinished: "Bon ok, j’arrête de tricher 🙃",
@@ -417,7 +468,7 @@ export const personal = {
     heading: "ÉTAT ACTUEL DES DISPONIBILITÉS",
     recipient: "agenda de ministre",
     recipientValue: "12 %",
-    sender: "dès vendredi soir · flexibilité premium",
+    sender: "dès vendredi 16 au soir · flexibilité premium",
     senderValue: "104 %",
     note: "Avantage du chômage temporaire : j’ai officiellement beaucoup trop de temps.",
     analysisLabel: "Voir l’analyse scientifique",
@@ -543,4 +594,34 @@ export const personal = {
       detail: "",
     },
   ] satisfies VerdictFrame[],
+};
+
+export const availability = {
+  earliestDate: "2026-10-16",
+  earliestMoment: "evening",
+  earliestReaction:
+    "Vendredi je débloque officiellement le mode liberté en soirée 😄",
+  earliestBadge: "Mode chômage débloqué 😂",
+  earliestHint:
+    "Le vendredi 16 : soirée uniquement. Les autres jours, tu choisis.",
+  dateReaction: "Un vrai jour dans le calendrier. Le cagou se tient prêt 😄",
+  flexibleId: "anyday",
+  flexibleSummary: "Un jour à caler ensemble",
+  flexibleReaction: "Très bien. Trouvons juste un trou dans ton agenda 😂",
+  flexibleAside: "Organisation : 0. Confiance : 100 % 🙃",
+  calendarLabel: "Choisir un jour",
+  previousMonth: "Mois précédent",
+  nextMonth: "Mois suivant",
+  weekdays: ["L", "M", "M", "J", "V", "S", "D"],
+  weekdayNames: [
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+    "Dimanche",
+  ],
+  legend: { available: "Disponible", busy: "Occupé", selected: "Sélectionné" },
+  eveningOnly: "soirée uniquement",
 };

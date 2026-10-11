@@ -1879,3 +1879,344 @@ button,
 .thinking-timer strong {
   font-variant-numeric: tabular-nums;
 }
+
+/* The ticket keeps its tilt without shrinking its type or touch target. */
+.ticket-float {
+  --ticket-tilt: 7deg;
+  rotate: var(--ticket-tilt);
+}
+.hero-art .invitation-ticket {
+  transform: none;
+  width: 280px;
+  min-height: 274px;
+  padding: 25px 24px;
+  color: var(--ink);
+  text-align: left;
+}
+.hero-art .ticket-title {
+  font-size: 32px;
+  letter-spacing: -1px;
+  line-height: 1.18;
+  margin-top: 25px;
+}
+.hero-art .ticket-title i {
+  font-size: inherit;
+}
+.hero-art .ticket-bottom {
+  width: 100%;
+  margin-top: 22px;
+  font-size: 10px;
+}
+.hero-art .ticket-small {
+  font-size: 10px;
+  padding-top: 7px;
+  padding-right: 27px;
+}
+.hero-art .art-caption {
+  display: block;
+  max-width: 280px;
+  text-align: center;
+  line-height: 1.6;
+  font-size: 11px;
+  transform: none;
+}
+.hero-art .star-reaction {
+  top: calc(100% + 8px);
+}
+.why-gimmick {
+  margin-top: 14px;
+  max-width: 440px;
+}
+.why-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  border: 1px solid #d9cbd4;
+  color: var(--accent);
+  background: #efe8ed;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+}
+.why-answer {
+  position: relative;
+  margin-top: 12px;
+  border: 1px solid #e0d4dc;
+  border-radius: 14px;
+  background: #fdfbf8;
+  padding: 16px 18px;
+  color: var(--accent);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+.why-answer::before {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  top: -5px;
+  left: 24px;
+  rotate: 45deg;
+  border-top: 1px solid #e0d4dc;
+  border-left: 1px solid #e0d4dc;
+  background: #fdfbf8;
+}
+.date-choice {
+  border-block: 1px solid var(--line);
+  padding-block: 22px;
+  margin-block: 22px;
+}
+.date-choice h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.date-hint,
+.calendar-hint {
+  margin: 8px 0 16px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.calendar-hint {
+  margin: 12px 0 0;
+}
+.calendar {
+  max-width: 420px;
+  margin: 0 auto;
+  border: 1px solid #e3d9df;
+  border-radius: 16px;
+  background: var(--paper);
+  padding: 10px 8px 16px;
+  overflow: hidden;
+}
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.calendar-month {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  color: var(--ink);
+  text-transform: capitalize;
+}
+.calendar-nav {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  width: 44px;
+  min-height: 48px;
+  background: transparent;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.calendar-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px 0;
+}
+.calendar-weekdays {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding-bottom: 8px;
+}
+.calendar-day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #fff9;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0;
+  color: var(--ink);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  touch-action: manipulation;
+}
+.calendar-day:disabled {
+  color: #918c90;
+  background: #eae6e6;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.calendar-day.selected {
+  color: white;
+  background: var(--accent);
+}
+.calendar-day:focus-visible,
+.calendar-nav:focus-visible {
+  outline-offset: -3px;
+}
+.calendar-evening-dot {
+  position: absolute;
+  bottom: 6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 0 0;
+  margin: 14px 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  font-size: 12px;
+  color: var(--muted);
+}
+.calendar-legend li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid #c7b9c1;
+}
+.legend-dot.available {
+  background: #fff;
+}
+.legend-dot.busy {
+  background: #cbc5c9;
+  border-color: #cbc5c9;
+}
+.legend-dot.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.flexible-day {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  min-height: 52px;
+  margin: 12px auto 0;
+  font-size: 14px;
+}
+.date-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 0 0;
+  color: var(--accent);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.date-feedback > span {
+  flex-shrink: 0;
+}
+.date-feedback small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.freedom-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eee5ec;
+  font-size: 12px;
+}
+.availability-panel fieldset {
+  min-width: 0;
+}
+.availability-panel .pill:disabled {
+  opacity: 0.4;
+  background: #eee9ec;
+  cursor: not-allowed;
+  border-color: var(--line);
+}
+.science-answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  gap: 10px;
+}
+.science-answers .pill {
+  min-height: 52px;
+  white-space: normal;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px 15px;
+}
+@media (hover: hover) {
+  .calendar-day:not(:disabled):not(.selected):hover {
+    background: #ece4e9;
+    border-color: #cdb9c6;
+  }
+  .calendar-nav:not(:disabled):hover {
+    background: #eee5ec;
+  }
+  .why-pill:hover {
+    background: #e7dce4;
+  }
+}
+@media (max-width: 600px) {
+  .hero-art {
+    height: 300px;
+    margin: 20px 0 36px;
+  }
+  .ticket-float {
+    --ticket-tilt: 4deg;
+  }
+  .hero-art .invitation-ticket {
+    width: min(260px, calc(100vw - 70px));
+    min-height: 244px;
+    padding: 22px 20px;
+  }
+  .hero-art .ticket-title {
+    font-size: clamp(25px, 7.1vw, 28px);
+    line-height: 1.18;
+  }
+  .hero-art .orbit {
+    width: 268px;
+    height: 268px;
+  }
+  .hero-art .orbit-two {
+    width: 210px;
+    height: 210px;
+  }
+  .hero-art .art-caption {
+    bottom: -6px;
+    max-width: 260px;
+    padding-inline: 4px;
+  }
+  .hero-art .star-reaction {
+    top: calc(100% + 8px);
+  }
+  .why-pill {
+    font-size: 14px;
+  }
+  .calendar {
+    margin-inline: -18px;
+    padding-inline: 4px;
+    max-width: none;
+  }
+  .calendar-legend {
+    column-gap: 9px;
+    padding-inline: 3px;
+  }
+  .science-panel {
+    padding-inline: 16px;
+  }
+}
