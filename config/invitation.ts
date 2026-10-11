@@ -118,7 +118,7 @@ export const invitation = {
   finalHeading: "Alors, verdict ?",
   finalIntro: "",
   decisions: [
-    { id: "yes", label: "Vas-y, on se voit 😈", response: "Allez, vas-y 😄" },
+    { id: "yes", label: "Vas-y, on se voit", response: "Allez, vas-y 😄" },
     {
       id: "maybe",
       label: "Pourquoi pas 👀",

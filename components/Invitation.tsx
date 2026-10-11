@@ -203,19 +203,20 @@ export function Invitation() {
     <div className="site">
       <main>
         {step === 0 && (
-          <section className="hero">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="dossier">
-                <span className="live-dot" />
-                {c.dossier}
-                <span className="dossier-line" />
-              </div>
-              <h1>{c.title}</h1>
-              <p className="hero-intro">{c.intro}</p>
+          <motion.section
+            className="hero hero-ticket-first"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <h1 className="sr-only">{c.title}</h1>
+            <div className="dossier">
+              <span className="live-dot" />
+              {c.dossier}
+              <span className="dossier-line" />
+            </div>
+            <HeroTicket />
+            <div className="hero-actions">
               <button
                 type="button"
                 className="primary-button hero-cta"
@@ -229,9 +230,8 @@ export function Invitation() {
                 <Heart size={13} />
                 {c.heroNote}
               </p>
-            </motion.div>
-            <HeroTicket />
-          </section>
+            </div>
+          </motion.section>
         )}
         {step > 0 && (
           <>

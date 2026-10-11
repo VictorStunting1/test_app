@@ -100,6 +100,50 @@ h2,
   align-items: center;
   padding: 77px 0 78px;
 }
+.hero.hero-ticket-first {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+  padding: 32px 0 46px;
+}
+.hero-ticket-first .dossier {
+  justify-content: center;
+  margin-bottom: 0;
+}
+.hero-ticket-first .hero-art {
+  height: 340px;
+  transform: none;
+  margin: 0 0 24px;
+}
+.hero-ticket-first .hero-art:has(.star-reaction p) {
+  margin-bottom: 56px;
+}
+.hero-ticket-first .hero-art:has(.star-reaction p) .art-caption {
+  visibility: hidden;
+}
+.hero-ticket-first .hero-cta {
+  width: 100%;
+  margin-top: 0;
+  min-height: 54px;
+  font-size: 15px;
+}
+.hero-ticket-first .hero-note {
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1.7;
+}
+@media (max-width: 600px) {
+  .hero.hero-ticket-first {
+    padding-top: 24px;
+    gap: 18px;
+  }
+  .hero-ticket-first .hero-art {
+    height: 280px;
+    margin-bottom: 16px;
+  }
+}
 .dossier {
   display: flex;
   align-items: center;
