@@ -1,6 +1,6 @@
 import { sounds, type SoundName } from "@/config/audio";
 
-// Un contexte débloqué au clic permet aussi la célébration différée sur mobile.
+// Le contexte audio est débloqué directement depuis le clic/tap sur mobile.
 // Chaque source est à usage unique : un nouveau départ repart toujours à 0.
 export class InvitationAudio {
   private context: AudioContext | null = null;

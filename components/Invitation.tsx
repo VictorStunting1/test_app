@@ -153,13 +153,7 @@ export function Invitation() {
     }
     const sound = decisionSounds[id];
     if (sound) {
-      playSound(sound, {
-        delayMs:
-          id === "yes"
-            ? Math.max(...personal.yesSequence.map((frame) => frame.at)) +
-              personal.readingMs
-            : 0,
-      });
+      playSound(sound);
     }
     setError("");
     setDecision(id);
