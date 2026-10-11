@@ -395,7 +395,7 @@ export const journey = {
   noInitial: "Le comité prépare sa petite esquive…",
   shareLabel: "Envoyer ma réponse",
   shareHint:
-    "Choisis Instagram si proposé, puis notre conversation. Sinon, copie ton verdict et colle-le dans notre échange.",
+    "Choisis Insta si c'est proposé, puis notre conv. Sinon, copie ton verdict et colle-le en DM 🙃",
   shareUnavailable:
     "Le partage n’est pas disponible ici. Copie ton verdict pour notre conversation Instagram.",
   sharedLabel: "Réponse transmise à l’application choisie.",
