@@ -10,7 +10,6 @@ import {
   invitation,
   interactions,
   journey,
-  personal,
 } from "@/config/invitation";
 
 export function AvailabilitySelector({
@@ -18,14 +17,12 @@ export function AvailabilitySelector({
   date,
   onDate,
   onMoment,
-  activityId,
   showFeedback,
 }: {
   moment: string;
   date: string;
   onDate: (value: string) => void;
   onMoment: (id: string) => void;
-  activityId: string;
   showFeedback: boolean;
 }) {
   const [reactedMoment, setReactedMoment] = useState("");
@@ -118,11 +115,7 @@ export function AvailabilitySelector({
         text={
           !showFeedback || !reactedMoment
             ? ""
-            : activityId === "drink" && date && reactedMoment === "evening"
-              ? personal.judgements.coherent
-              : activityId === "surprise" && reactedMoment === "evening"
-                ? personal.judgements.spontaneous
-                : (interactions.momentReactions[reactedMoment] ?? "")
+            : (interactions.momentReactions[reactedMoment] ?? "")
         }
         revision={revision}
       />

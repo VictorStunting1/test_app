@@ -325,7 +325,6 @@ export function Invitation() {
                     onInspect={() => setAgendaActive(true)}
                   />
                   <AvailabilitySelector
-                    activityId={activityId}
                     showFeedback={!agendaActive}
                     date={date}
                     onDate={(value) => {

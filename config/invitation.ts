@@ -210,9 +210,9 @@ export const interactions = {
   momentReactions: {
     afternoon: "Ah ouais, réponse étonnamment mature 😄",
     early:
-      "Décision raisonnable. Ça change un peu de nos méthodes habituelles.",
-    evening: "Là ça commence à ressembler au fameux verre.",
-    any: "Traduction : trouvons juste un trou dans ton agenda.",
+      "Décision raisonnable, ça change un peu de nos méthodes habituelles 😂",
+    evening: "Ça avance, je commence presque à croire à ce verre 🤣",
+    any: "Ah donc tu me laisses carte blanche 😂😂",
   } as Record<string, string>,
   science: {
     heading: "Test scientifique extrêmement fiable",
