@@ -44,7 +44,6 @@ export function AvailabilitySelector({
             setReactedMoment("");
           }}
         />
-        <p className="calendar-hint">{availability.earliestHint}</p>
         {date && showFeedback && (
           <div
             className="date-feedback"

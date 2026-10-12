@@ -38,6 +38,7 @@ export function DatePicker({
   const dayRefs = useRef(new Map<string, HTMLButtonElement>());
   const monthId = useId();
   const noteId = useId();
+  const partialNoteId = useId();
   const reduced = useReducedMotion();
   const [year, monthNumber] = month.split("-").map(Number);
   const monthIndex = monthNumber - 1;
@@ -46,6 +47,7 @@ export function DatePicker({
   const days = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
   const slots = Math.ceil((offset + days) / 7) * 7;
   const selectedException = availability.dateExceptions[value];
+  const showFirstEvening = availability.earliestDate.startsWith(month);
   const blockedNotes = Object.entries(availability.dateExceptions).filter(
     ([date, exception]) =>
       date.startsWith(month) && exception.status === "unavailable",
@@ -160,16 +162,19 @@ export function DatePicker({
                   else dayRefs.current.delete(date);
                 }}
                 type="button"
-                className={`calendar-day ${status === "tentative" ? "tentative" : ""} ${value === date ? "selected" : ""}`}
+                className={`calendar-day ${status === "tentative" ? "tentative" : ""} ${eveningOnly ? "evening-only" : ""} ${value === date ? "selected" : ""}`}
                 data-date={date}
                 data-availability={status}
                 disabled={!available}
                 aria-pressed={value === date}
                 aria-label={`${dayFormatter.format(parseCalendarDate(date))}${status !== "available" ? ` · ${availability.legend[status]}` : eveningOnly ? ` · ${availability.eveningOnly}` : ""}`}
                 aria-describedby={
-                  value === date && selectedException?.status === "tentative"
-                    ? noteId
-                    : undefined
+                  eveningOnly
+                    ? partialNoteId
+                    : value === date &&
+                        selectedException?.status === "tentative"
+                      ? noteId
+                      : undefined
                 }
                 whileTap={available && !reduced ? { scale: 0.92 } : undefined}
                 transition={{ duration: 0.15 }}
@@ -200,6 +205,12 @@ export function DatePicker({
             <span className="legend-dot busy" />
             {availability.legend.unavailable}
           </li>
+          {showFirstEvening && (
+            <li>
+              <span className="legend-dot partial" aria-hidden="true" />
+              {availability.legend.partial}
+            </li>
+          )}
         </ul>
       </div>
       {selectedException?.status === "tentative" && (
@@ -214,6 +225,17 @@ export function DatePicker({
             {availability.legend.tentative}
           </span>
           <p>{selectedException.note}</p>
+        </div>
+      )}
+      {showFirstEvening && (
+        <div id={partialNoteId} className="calendar-partial-note">
+          <strong>
+            <span className="legend-dot partial" aria-hidden="true" />
+            {dayFormatter.format(parseCalendarDate(availability.earliestDate))}
+            {" · "}
+            {availability.legend.partial}
+          </strong>
+          <p>{availability.earliestHint}</p>
         </div>
       )}
       {blockedNotes.map(([date, exception]) => (
