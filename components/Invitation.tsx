@@ -14,7 +14,6 @@ import {
   interactions as fun,
   journey,
   personal,
-  availability,
 } from "@/config/invitation";
 import { ActivityCard } from "./ActivityCard";
 import { HeroTicket } from "./HeroTicket";
@@ -331,11 +330,9 @@ export function Invitation() {
                     date={date}
                     onDate={(value) => {
                       if (value && !isAvailableDate(value)) return;
+                      if (value !== date) setMoment("");
                       setDate(value);
                       setAgendaActive(false);
-                      if (value === availability.earliestDate)
-                        setMoment(availability.earliestMoment);
-                      else if (!isAvailableMoment(value, moment)) setMoment("");
                       setError("");
                       setDecision("");
                     }}
