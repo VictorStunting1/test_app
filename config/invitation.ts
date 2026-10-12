@@ -582,7 +582,12 @@ const dateExceptions: Record<string, AvailabilityException> = {
   },
   "2026-10-21": {
     status: "tentative",
-    note: "J’ai proposé de passer faire un coucou à mon ancienne boîte — rien de bloqué pour l’instant.",
+    note: "Le matin, je passe faire un coucou à mon ancienne boîte vers 10h30 ou 11h. Pour nous : après-midi ou soirée :)",
+    allowedMoments: ["afternoon", "early", "evening", "any"],
+    momentLabels: {
+      afternoon: "Après-midi",
+      any: "Aucune préférence (après-midi ou soir)",
+    },
   },
   "2026-10-24": {
     status: "unavailable",

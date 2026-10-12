@@ -1,4 +1,4 @@
-import { availability } from "@/config/invitation";
+import { availability, invitation } from "@/config/invitation";
 import type { DateAvailability } from "@/types/invitation";
 
 // ISO dates compare chronologically and stay independent of the phone's timezone.
@@ -27,7 +27,18 @@ export function isAvailableDate(value: string) {
 }
 
 export function isAvailableMoment(date: string, moment: string) {
+  if (!invitation.moments.some((choice) => choice.id === moment)) return false;
+  const allowedMoments = availability.dateExceptions[date]?.allowedMoments;
+  if (allowedMoments && !allowedMoments.includes(moment)) return false;
   return (
     date !== availability.earliestDate || moment === availability.earliestMoment
+  );
+}
+
+export function getMomentLabel(date: string, moment: string) {
+  return (
+    availability.dateExceptions[date]?.momentLabels?.[moment] ??
+    invitation.moments.find((choice) => choice.id === moment)?.label ??
+    ""
   );
 }

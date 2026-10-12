@@ -19,7 +19,11 @@ import {
 import { ActivityCard } from "./ActivityCard";
 import { HeroTicket } from "./HeroTicket";
 import { WhyGimmick } from "./WhyGimmick";
-import { isAvailableDate, isAvailableMoment } from "./calendarUtils";
+import {
+  getMomentLabel,
+  isAvailableDate,
+  isAvailableMoment,
+} from "./calendarUtils";
 import { AvailabilitySelector } from "./AvailabilitySelector";
 import {
   ActivityPrelude,
@@ -118,7 +122,7 @@ export function Invitation() {
           decisionId: decision,
           science,
           date,
-          moment: c.moments.find((m) => m.id === moment)!.label,
+          moment: getMomentLabel(date, moment),
           decision: c.decisions.find((d) => d.id === decision)?.response ?? "",
         }
       : null;
@@ -331,6 +335,7 @@ export function Invitation() {
                       setAgendaActive(false);
                       if (value === availability.earliestDate)
                         setMoment(availability.earliestMoment);
+                      else if (!isAvailableMoment(value, moment)) setMoment("");
                       setError("");
                       setDecision("");
                     }}

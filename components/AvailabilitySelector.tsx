@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Reaction } from "./Reaction";
 import { DatePicker } from "./DatePicker";
 import { SnailIllustration } from "./SnailIllustration";
-import { isAvailableMoment } from "./calendarUtils";
+import { getMomentLabel, isAvailableMoment } from "./calendarUtils";
 import {
   availability,
   invitation,
@@ -92,7 +92,7 @@ export function AvailabilitySelector({
                 setRevision((v) => v + 1);
               }}
             >
-              {item.label}
+              {getMomentLabel(date, item.id)}
             </button>
           ))}
         </div>

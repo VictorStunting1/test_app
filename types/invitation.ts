@@ -94,4 +94,6 @@ export type DateAvailability = "available" | "tentative" | "unavailable";
 export type AvailabilityException = {
   status: Exclude<DateAvailability, "available">;
   note: string;
+  allowedMoments?: string[];
+  momentLabels?: Record<string, string>;
 };
