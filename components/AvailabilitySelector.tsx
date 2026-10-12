@@ -46,7 +46,7 @@ export function AvailabilitySelector({
         />
         {date && showFeedback && (
           <div
-            className="date-feedback"
+            className={`date-feedback ${firstEvening ? "calendar-partial-note" : ""}`}
             role="status"
             aria-live="polite"
             aria-atomic="true"

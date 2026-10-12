@@ -602,7 +602,6 @@ export const availability = {
   earliestReaction:
     "Vendredi je débloque officiellement le mode liberté en soirée 😄",
   earliestBadge: "Mode chômage débloqué 😂",
-  earliestHint: "En journée : indisponible. Disponible uniquement en soirée :)",
   dateReaction: "Ah ouais, organisation réelle. Ça devient sérieux 😄",
   calendarLabel: "Choisir un jour",
   previousMonth: "Mois précédent",
@@ -621,7 +620,6 @@ export const availability = {
     available: "Disponible",
     tentative: "À confirmer",
     unavailable: "Indisponible",
-    partial: "Soirée uniquement",
   },
   eveningOnly: "soirée uniquement",
 };

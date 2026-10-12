@@ -2436,25 +2436,9 @@ button,
   border: 1px solid currentColor;
   background: linear-gradient(90deg, currentColor 50%, transparent 50%);
 }
-.legend-dot.partial {
-  border-color: var(--accent);
-  background: linear-gradient(90deg, var(--accent) 50%, transparent 50%);
-}
 .calendar-partial-note {
   border-color: #d9cbd4;
   background: #f0e9ee;
-}
-.calendar-partial-note strong {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 4px;
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 500;
-}
-.calendar-partial-note .legend-dot {
-  flex-shrink: 0;
 }
 
 /* A short, playful quiz with one question visible at a time. */
