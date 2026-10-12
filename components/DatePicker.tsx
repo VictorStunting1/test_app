@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { availability } from "@/config/invitation";
@@ -26,9 +26,11 @@ const dayFormatter = new Intl.DateTimeFormat("fr-FR", {
 export function DatePicker({
   value,
   onChange,
+  selectedDateContent,
 }: {
   value: string;
   onChange: (date: string) => void;
+  selectedDateContent?: ReactNode;
 }) {
   const [month, setMonth] = useState(() =>
     (value || availability.earliestDate).slice(0, 7),
@@ -216,6 +218,7 @@ export function DatePicker({
           <p>{selectedException.note}</p>
         </div>
       )}
+      {selectedDateContent}
       {blockedNotes.map(([date, exception]) => (
         <div className="calendar-blocked-note" key={date}>
           <strong>

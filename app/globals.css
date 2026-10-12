@@ -2229,11 +2229,14 @@ button,
 }
 .freedom-badge {
   display: inline-block;
-  margin-top: 8px;
+  margin-bottom: 8px;
   padding: 4px 9px;
   border-radius: 999px;
-  background: #eee5ec;
+  border: 1px solid #cfb8c8;
+  background: #e4d6df;
+  color: #4f3548;
   font-size: 12px;
+  font-weight: 600;
 }
 .availability-panel fieldset {
   min-width: 0;
@@ -2402,6 +2405,10 @@ button,
   font-size: 14px;
   line-height: 1.7;
   overflow-wrap: anywhere;
+}
+.calendar-partial-note .date-feedback {
+  padding-top: 0;
+  color: var(--ink);
 }
 .calendar-note-badge {
   display: inline-block;

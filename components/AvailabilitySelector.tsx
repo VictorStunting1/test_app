@@ -39,14 +39,40 @@ export function AvailabilitySelector({
         <p className="date-hint">{journey.dateHint}</p>
         <DatePicker
           value={date}
+          selectedDateContent={
+            firstEvening && showFeedback ? (
+              <div
+                className="calendar-partial-note"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                <span className="freedom-badge">
+                  {availability.earliestBadge}
+                </span>
+                <div className="date-feedback">
+                  <motion.span
+                    key={date}
+                    aria-hidden="true"
+                    initial={{ scale: reduced ? 1 : 0.88, x: reduced ? 0 : -5 }}
+                    animate={{ scale: 1, x: 0 }}
+                    transition={{ duration: reduced ? 0 : 0.3 }}
+                  >
+                    <SnailIllustration mood="happy" size={42} />
+                  </motion.span>
+                  <p>{availability.earliestReaction}</p>
+                </div>
+              </div>
+            ) : undefined
+          }
           onChange={(value) => {
             onDate(value);
             setReactedMoment("");
           }}
         />
-        {date && showFeedback && (
+        {date && showFeedback && !firstEvening && (
           <div
-            className={`date-feedback ${firstEvening ? "calendar-partial-note" : ""}`}
+            className="date-feedback"
             role="status"
             aria-live="polite"
             aria-atomic="true"
@@ -61,16 +87,7 @@ export function AvailabilitySelector({
               <SnailIllustration mood="happy" size={42} />
             </motion.span>
             <div>
-              <p>
-                {firstEvening
-                  ? availability.earliestReaction
-                  : availability.dateReaction}
-              </p>
-              {firstEvening && (
-                <span className="freedom-badge">
-                  {availability.earliestBadge}
-                </span>
-              )}
+              <p>{availability.dateReaction}</p>
             </div>
           </div>
         )}
