@@ -580,7 +580,7 @@ const dateExceptions: Record<string, AvailabilityException> = {
     status: "tentative",
     note: "Peut-être garagiste dans la journée — je peux décaler :)",
   },
-  "2026-10-22": {
+  "2026-10-21": {
     status: "tentative",
     note: "J’ai proposé de passer faire un coucou à mon ancienne boîte — rien de bloqué pour l’instant.",
   },
